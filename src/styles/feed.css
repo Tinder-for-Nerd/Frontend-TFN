@@ -1,0 +1,106 @@
+/* Feed Page */
+.pm-feed-page {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  background: var(--bg-base);
+}
+
+.pm-feed-header {
+  padding: var(--space-6);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.pm-feed-header__title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: var(--text-primary);
+}
+
+.pm-feed-filters {
+  flex: 1;
+  max-width: 300px;
+}
+
+.pm-feed-filters__input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-family: var(--font-body);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s ease;
+}
+
+.pm-feed-filters__input:focus {
+  outline: none;
+  border-color: var(--brand-teal);
+  box-shadow: 0 0 0 3px var(--brand-teal-glow);
+}
+
+.pm-feed-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.pm-feed-footer {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  justify-content: center;
+}
+
+/* Mobile Optimization */
+@media (max-width: 640px) {
+  .pm-feed-page {
+    height: 100dvh;
+  }
+
+  .pm-feed-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .pm-feed-header__title {
+    font-size: 24px;
+  }
+
+  .pm-feed-filters {
+    width: 100%;
+    max-width: none;
+  }
+
+  .pm-feed-footer {
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: max(var(--space-4), env(safe-area-inset-bottom)) var(--space-4) var(--space-4);
+  }
+
+  .pm-feed-footer button {
+    min-height: 44px;
+    width: 100%;
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    .pm-feed-filters__input:active {
+      border-color: var(--brand-teal);
+      background: var(--bg-surface);
+    }
+  }
+}
