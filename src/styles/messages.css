@@ -5,22 +5,35 @@
 
 .pm-messages-layout {
   display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 20px;
-  /* Make the layout exactly fill the available height (viewport minus header/padding) */
-  height: calc(100vh - 140px);
-  min-height: 500px;
+  grid-template-columns: 360px 1fr;
+  gap: 0;
+  height: 100vh;
+  margin: 0;
+  border-radius: 0;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   LEFT PANEL (Thread List)
-   ───────────────────────────────────────────────────────────── */
+/* Override the default AppShell padding when in messages mode */
+.pm-messages-shell .pm-main {
+  padding: 0 !important;
+  display: block !important;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.pm-messages-shell .pm-panel {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
 .pm-thread-panel {
   display: flex !important;
   flex-direction: column;
-  gap: 16px;
+  gap: 0;
   overflow: hidden;
   height: 100%;
+  background: var(--surface-container-low);
+  border-right: 1px solid var(--outline-variant) !important;
 }
 
 .pm-thread-list {
@@ -40,26 +53,36 @@
 
 .pm-thread-item {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 12px;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
   background: transparent;
-  border: 1px solid transparent;
+  border: none;
+  border-bottom: 1px solid var(--outline-variant);
   text-align: left;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: var(--text-primary);
+  color: var(--on-surface);
   position: relative;
 }
 
 .pm-thread-item:hover {
-  background: rgba(15, 23, 42, 0.04);
+  background: var(--surface-container-high);
 }
 
 .pm-thread-item.is-active {
-  background: rgba(14, 207, 191, 0.08); /* brand-teal with opacity */
-  border-color: rgba(14, 207, 191, 0.15);
+  background: var(--surface-container-highest);
+}
+
+.pm-thread-item.is-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 4px;
+  background: var(--primary);
+  border-radius: 0 4px 4px 0;
 }
 
 .pm-thread-item > div {
@@ -118,18 +141,18 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  padding: 0 !important; /* Panel handles padding internally for fixed header/footer */
+  padding: 0 !important;
+  background: var(--surface-container-lowest);
 }
 
 .pm-chat-panel__head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 24px;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-  background: var(--surface-1);
-  border-top-left-radius: inherit;
-  border-top-right-radius: inherit;
+  padding: 16px 32px;
+  height: 72px;
+  border-bottom: 1px solid var(--outline-variant);
+  background: var(--surface-container-lowest);
 }
 
 .pm-chat-panel__identity {
@@ -167,115 +190,251 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  position: relative;
 }
 
 .pm-message-bubble p {
   margin: 0;
-  background: rgba(15, 23, 42, 0.05);
+  background: var(--surface-container-high);
   padding: 12px 16px;
   border-radius: 16px;
   border-bottom-left-radius: 4px;
   font-size: 0.95rem;
   line-height: 1.5;
-  color: var(--text-primary);
+  color: var(--on-surface);
+  box-shadow: var(--shadow-ambient);
+}
+
+.pm-message-bubble__footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 4px;
 }
 
 .pm-message-bubble span {
-  font-size: 0.7rem;
-  color: var(--text-secondary);
-  margin-left: 4px;
+  font-size: 0.65rem;
+  color: var(--on-surface-variant);
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .pm-message-bubble.is-sent {
   align-self: flex-end;
-  text-align: right;
 }
 
 .pm-message-bubble.is-sent p {
-  background: var(--brand-teal);
-  color: #fff;
+  background: var(--primary);
+  color: var(--on-primary);
   border-radius: 16px;
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 16px;
+  /* Stronger contrast for readability */
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
 }
 
-.pm-message-bubble.is-sent span {
+.pm-message-bubble.is-sent .pm-message-bubble__footer {
+  justify-content: flex-end;
   margin-right: 4px;
   margin-left: 0;
+}
+
+.pm-message-status {
+  display: flex;
+  align-items: center;
+  color: var(--primary);
+}
+
+.pm-message-status.is-seen {
+  color: var(--primary);
+}
+
+.pm-chat-panel__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .pm-chat-composer {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 24px;
-  border-top: 1px solid rgba(15, 23, 42, 0.06);
-  background: var(--surface-1);
-  border-bottom-left-radius: inherit;
-  border-bottom-right-radius: inherit;
+  padding: 20px 32px;
+  border-top: 1px solid var(--outline-variant);
+  background: var(--surface-container-lowest);
+}
+
+.pm-composer-tools {
+  display: flex;
+  gap: 4px;
 }
 
 .pm-chat-composer .pm-input {
   flex: 1;
-  margin: 0;
-  border-radius: 30px;
+  background: var(--surface-container-low);
+  border-radius: 24px;
   padding: 12px 20px;
+  border: 1px solid var(--outline-variant);
+  transition: all 0.2s;
 }
 
-.pm-typing-indicator {
+.pm-chat-composer .pm-input:focus {
+  border-color: var(--primary);
+  background: var(--surface-container-lowest);
+}
+
+.pm-typing-indicator-chat {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 12px;
   padding: 12px 16px;
-  background: rgba(15, 23, 42, 0.05);
+  background: var(--surface-container-low);
   border-radius: 16px;
   border-bottom-left-radius: 4px;
   width: fit-content;
+  margin-bottom: 8px;
 }
 
-.pm-typing-indicator span {
-  width: 6px;
-  height: 6px;
-  background: var(--text-secondary);
+.pm-typing-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.pm-typing-dots span {
+  width: 5px;
+  height: 5px;
+  background: var(--primary);
   border-radius: 50%;
-  animation: pm-typing 1.4s infinite ease-in-out both;
+  animation: pm-typing-bounce 1.4s infinite ease-in-out both;
 }
 
-.pm-typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-.pm-typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-.pm-typing-indicator span:nth-child(3) { animation-delay: 0s; }
+.pm-typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.pm-typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+.pm-typing-dots span:nth-child(3) { animation-delay: 0s; }
 
-@keyframes pm-typing {
-  0%, 80%, 100% { transform: scale(0); }
-  40% { transform: scale(1); }
+@keyframes pm-typing-bounce {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+  40% { transform: scale(1); opacity: 1; }
 }
 
-/* ============================================================================
-   RESPONSIVE DESIGN
-   ============================================================================ */
+.pm-unread-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0;
+}
 
-/* Medium Devices */
-@media (max-width: 900px) {
+.pm-unread-divider::before,
+.pm-unread-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--outline-variant);
+}
+
+.pm-unread-divider span {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.pm-online-dot {
+  width: 10px;
+  height: 10px;
+  background: #10b981;
+  border: 2px solid var(--surface-container-lowest);
+  border-radius: 50%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.pm-offline-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--on-surface-variant);
+  border: 2px solid var(--surface-container-lowest);
+  border-radius: 50%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  opacity: 0.5;
+}
+
+.pm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.pm-modal-content {
+  background: var(--surface-container-low);
+  border-radius: 24px;
+  border: 1px solid var(--outline-variant);
+  box-shadow: var(--shadow-modal);
+  width: 100%;
+  overflow: hidden;
+  animation: pm-modal-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pm-modal-in {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.pm-search-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  padding: 0 16px;
+  height: 44px;
+  transition: all 0.2s;
+}
+
+.pm-search-input:focus-within {
+  border-color: var(--primary);
+  background: var(--surface-container-lowest);
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.1);
+}
+
+.pm-search-input input {
+  background: transparent;
+  border: none;
+  flex: 1;
+  font-size: 14px;
+  color: var(--on-surface);
+  outline: none;
+}
+
+/* Response Fixes */
+@media (max-width: 1024px) {
   .pm-messages-layout {
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: 300px 1fr;
   }
 }
 
-/* Mobile Devices */
 @media (max-width: 768px) {
   .pm-messages-layout {
     grid-template-columns: 1fr;
-    /* On mobile, usually the thread list is shown or the chat panel is shown, not both side-by-side */
-    /* For simplicity in this layout, we let them stack, but they will overflow height */
-    height: auto;
   }
-
   .pm-thread-panel {
-    /* Limit height on mobile so you can scroll to chat, or hide one panel */
-    height: 350px;
+    display: none !important;
   }
-
-  .pm-chat-panel {
-    height: 500px;
+  .pm-messages-shell.is-showing-threads .pm-thread-panel {
+    display: flex !important;
+  }
+  .pm-messages-shell.is-showing-threads .pm-chat-panel {
+    display: none !important;
   }
 }

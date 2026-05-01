@@ -1,8 +1,11 @@
 import { cx } from '../../utils/helpers';
 
-export function Icon({ name, className = '' }) {
+export function Icon({ name, size = 18, className = '', ...props }) {
+  const incomingStyle = props.style || {};
   const common = {
     className: cx('pm-icon', className),
+    width: size,
+    height: size,
     viewBox: '0 0 24 24',
     fill: 'none',
     stroke: 'currentColor',
@@ -10,6 +13,11 @@ export function Icon({ name, className = '' }) {
     strokeLinecap: 'round',
     strokeLinejoin: 'round',
     'aria-hidden': 'true',
+    ...props,
+    style: {
+      '--pm-icon-size': `${size}px`,
+      ...incomingStyle,
+    },
   };
 
   switch (name) {
@@ -109,10 +117,68 @@ export function Icon({ name, className = '' }) {
           <path d="M4 7h16M4 12h16M4 17h16" />
         </svg>
       );
+    case 'close':
+      return (
+        <svg {...common}>
+          <path d="M6 6l12 12M18 6 6 18" />
+        </svg>
+      );
+    case 'check-circle':
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="9" />
+          <path d="m8.5 12.2 2.3 2.3 4.8-5" />
+        </svg>
+      );
     case 'plus':
       return (
         <svg {...common}>
           <path d="M12 5v14M5 12h14" />
+        </svg>
+      );
+    case 'phone':
+      return (
+        <svg {...common}>
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+        </svg>
+      );
+    case 'video':
+      return (
+        <svg {...common}>
+          <path d="m22 8-6 4 6 4V8z" />
+          <rect x="2" y="6" width="14" height="12" rx="2" ry="2" />
+        </svg>
+      );
+    case 'more':
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </svg>
+      );
+    case 'smile':
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="10" />
+          <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+          <line x1="9" y1="9" x2="9.01" y2="9" />
+          <line x1="15" y1="9" x2="15.01" y2="9" />
+        </svg>
+      );
+    case 'microphone':
+      return (
+        <svg {...common}>
+          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z" />
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+          <line x1="12" y1="19" x2="12" y2="22" />
+        </svg>
+      );
+    case 'check-double':
+      return (
+        <svg {...common}>
+          <path d="M18 6 7 17l-5-5" />
+          <path d="m22 10-7.5 7.5L13 16" />
         </svg>
       );
     case 'chevron-right':

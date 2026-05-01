@@ -1,18 +1,21 @@
 /* Profile Page */
 .pm-profile-page {
-  max-width: 800px;
+  width: min(100%, 980px);
   margin: 0 auto;
-  background: var(--bg-base);
-  min-height: 100dvh;
+  display: grid;
+  align-content: start;
+  gap: var(--space-6);
+  min-height: auto;
 }
 
 .pm-profile-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-8);
+  padding: var(--space-6);
   background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
   gap: var(--space-4);
 }
 
@@ -24,16 +27,22 @@
   color: var(--text-primary);
 }
 
+.pm-profile-header p {
+  margin: var(--space-2) 0 0;
+  color: var(--text-secondary);
+}
+
 .pm-profile-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  margin: var(--space-8);
-  padding: var(--space-8);
+  border-radius: 12px;
+  margin: 0;
+  padding: var(--space-8) !important;
   display: flex;
   flex-direction: column;
   gap: var(--space-8);
   box-shadow: var(--shadow-sm);
+  overflow: hidden;
 }
 
 .pm-profile-avatar-section {
@@ -75,8 +84,14 @@
 .pm-profile-bio {
   padding: var(--space-6);
   background: var(--bg-base);
-  border-radius: var(--radius-md);
+  border-radius: 12px;
   border: 1px solid var(--border-subtle);
+  width: 100%;
+}
+
+.pm-profile-bio p {
+  margin: 0;
+  color: var(--text-secondary);
 }
 
 .pm-profile-bio__textarea {
@@ -96,6 +111,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  width: 100%;
 }
 
 .pm-profile-section__title {
@@ -115,6 +131,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-6);
+  width: 100%;
 }
 
 .pm-profile-field {
@@ -141,7 +158,6 @@
 /* Mobile Optimization */
 @media (max-width: 640px) {
   .pm-profile-page {
-    min-height: 100dvh;
     padding-bottom: env(safe-area-inset-bottom);
   }
 
@@ -156,7 +172,6 @@
   }
 
   .pm-profile-card {
-    margin: var(--space-4);
     padding: var(--space-6);
     gap: var(--space-6);
   }

@@ -1,15 +1,18 @@
 /* Settings Page */
 .pm-settings-page {
-  max-width: 800px;
+  width: min(100%, 980px);
   margin: 0 auto;
-  background: var(--bg-base);
-  min-height: 100dvh;
+  display: grid;
+  align-content: start;
+  gap: var(--space-6);
+  min-height: auto;
 }
 
 .pm-settings-header {
-  padding: var(--space-8);
+  padding: var(--space-6);
   background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
 }
 
 .pm-settings-header__title {
@@ -20,8 +23,13 @@
   color: var(--text-primary);
 }
 
+.pm-settings-header p {
+  margin: var(--space-2) 0 0;
+  color: var(--text-secondary);
+}
+
 .pm-settings-sections {
-  padding: var(--space-8);
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-8);
@@ -30,7 +38,7 @@
 .pm-settings-section {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border-radius: 12px;
   padding: var(--space-6);
   display: flex;
   flex-direction: column;
@@ -53,7 +61,8 @@
   gap: var(--space-4);
   padding: var(--space-4);
   background: var(--bg-base);
-  border-radius: var(--radius-md);
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
 }
 
 .pm-setting-label {
@@ -152,7 +161,6 @@
 /* Mobile Optimization */
 @media (max-width: 640px) {
   .pm-settings-page {
-    min-height: 100dvh;
     padding-bottom: env(safe-area-inset-bottom);
   }
 
@@ -165,7 +173,6 @@
   }
 
   .pm-settings-sections {
-    padding: var(--space-4);
     gap: var(--space-6);
   }
 

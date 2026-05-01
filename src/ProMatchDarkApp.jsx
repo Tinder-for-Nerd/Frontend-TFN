@@ -1,21 +1,9 @@
 import { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import { BrowserRouter, Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { InstagramReelsFeed } from './components/common';
-import {
-  LoginPage,
-  FeedPage,
-  ProfilePage,
-  MessagesPage,
-  ConnectionsPage,
-  CalendarPage,
-  SettingsPage,
-  NotificationsPage,
-  AnalyticsPage,
-  LandingPage,
-  FeaturesPage,
-  AboutPage,
-  ContactPage,
-} from './components/pages';
+import { LandingPage, FeaturesPage, AboutPage, ContactPage } from './modules/public/pages';
+import { LoginPage } from './modules/auth/pages';
+import { FeedPage, ProfilePage, MessagesPage, ConnectionsPage, CalendarPage, SettingsPage, NotificationsPage, AnalyticsPage } from './modules/dashboard/pages';
 import './styles/promatch-dark.css';
 import './styles/instagram-feed.css';
 import './styles/messages.css';
@@ -178,21 +166,21 @@ const profiles = {
     id: 'me',
     username: 'me',
     name: 'Alex Kumar',
-    title: 'CS Student @ NTU',
+    title: 'Student & ML Engineer | FinTech Builder',
     role: 'Student',
     audience: 'Student',
     domain: 'DeepTech',
     intent: 'Co-founder',
     commitment: 'Flexible',
     workStyle: 'Hybrid',
-    location: 'Singapore',
+    location: 'Singapore | Open to remote',
     avatar: 'AK',
     tone: 'violet',
     match: 73,
     verified: false,
-    bio: 'Building ML and front-end prototypes with a focus on practical learning, mentorship, and portfolio growth.',
-    headline: 'Building ML and front-end projects in public.',
-    skills: ['React', 'Python', 'SQL', 'ML'],
+    bio: 'Developing ML-powered FinTech apps to solve real-world problems. Passionate about building projects, collaborating with peers, and scaling solutions.',
+    headline: 'Driving FinTech innovation with ML & front-end expertise',
+    skills: ['React', 'Python', 'SQL', 'ML', 'Front-End'],
     goals: ['Find mentor', 'Book 1:1 sessions', 'Build portfolio projects'],
     why: ['Complete your social links', 'Book your first session', 'Attend an event'],
     mutuals: 5,
@@ -891,10 +879,10 @@ function Chip({ tone = 'muted', active = false, onClick, className = '', childre
   );
 }
 
-function Avatar({ name, initials, size = 'md', tone = 'violet', online = false, className = '' }) {
+function Avatar({ name, initials, src, size = 'md', tone = 'violet', online = false, className = '' }) {
   return (
-    <span className={cx('pm-avatar', `pm-avatar--${size}`, `pm-avatar--${tone}`, className)}>
-      <span>{initials || initialsFromName(name || 'PM')}</span>
+    <span className={cx('pm-avatar', `pm-avatar--${size}`, `pm-avatar--${tone}`, className)} style={src ? { backgroundImage: `url(${src})`, backgroundSize: 'cover', backgroundPosition: 'center', color: 'transparent' } : {}}>
+      {!src && <span>{initials || initialsFromName(name || 'PM')}</span>}
       {online ? <span className="pm-avatar__dot" aria-hidden="true" /> : null}
     </span>
   );
@@ -1002,13 +990,15 @@ function MiniProfileCard({ profile, compact = false, ctaLabel = 'Connect', secon
 
       {!compact ? <p className="pm-match-card__bio">{profile.bio}</p> : null}
 
-      <div className="pm-match-card__skills">
-        {profile.skills.slice(0, compact ? 3 : 4).map((skill) => (
-          <Badge tone={skill === 'React' ? 'violet' : skill === 'Python' || skill === 'ML' ? 'teal' : skill === 'Design' || skill === 'Figma' ? 'rose' : 'muted'} key={skill}>
-            {skill}
-          </Badge>
-        ))}
-      </div>
+      {!compact ? (
+        <div className="pm-match-card__skills">
+          {profile.skills.slice(0, 4).map((skill) => (
+            <Badge tone={skill === 'React' ? 'violet' : skill === 'Python' || skill === 'ML' ? 'teal' : skill === 'Design' || skill === 'Figma' ? 'rose' : 'muted'} key={skill}>
+              {skill}
+            </Badge>
+          ))}
+        </div>
+      ) : null}
 
       {!compact ? (
         <div className="pm-match-card__why">
@@ -1430,15 +1420,24 @@ function OnboardingPage() {
 
   const [role, setRole] = useState('student');
   const [name, setName] = useState('Alex Kumar');
-  const [location, setLocation] = useState('Singapore');
-  const [headline, setHeadline] = useState('ML Engineer building in FinTech');
-  const [selectedSkills, setSelectedSkills] = useState(['React', 'Product']);
-  const [selectedDomains, setSelectedDomains] = useState(['FinTech']);
+  const [location, setLocation] = useState('Singapore | Open to remote');
+  const [headline, setHeadline] = useState('Driving FinTech innovation with ML & front-end expertise');
+  const [profilePic, setProfilePic] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setProfilePic(URL.createObjectURL(file));
+    }
+  };
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [selectedDomains, setSelectedDomains] = useState([]);
   const [selectedIntents, setSelectedIntents] = useState(['Co-founder']);
   const [commitment, setCommitment] = useState('Flexible');
   const [workStyle, setWorkStyle] = useState('Hybrid');
   const [experience, setExperience] = useState(3);
-  const [bio, setBio] = useState('Building ML and front-end projects with a focus on practical learning and portfolio growth.');
+  const [bio, setBio] = useState('Developing ML-powered FinTech apps to solve real-world problems. Passionate about building projects, collaborating with peers, and scaling solutions.');
   const [preferredSkills, setPreferredSkills] = useState(['React', 'ML']);
   const [preferredDomains, setPreferredDomains] = useState(['FinTech']);
   const [socialType, setSocialType] = useState('LinkedIn');
@@ -1481,7 +1480,7 @@ function OnboardingPage() {
         <aside className="pm-onboarding-preview pm-card">
           <p className="pm-kicker">Profile preview</p>
           <div className="pm-profile-preview">
-            <Avatar name={name} initials="AK" tone="violet" size="xl" />
+            <Avatar name={name} initials="AK" src={profilePic} tone="violet" size="xl" />
             <div>
               <strong>{name}</strong>
               <span>{role === 'student' ? 'Student profile' : 'Professional profile'}</span>
@@ -1511,13 +1510,14 @@ function OnboardingPage() {
           {step === 'step-1' ? (
             <>
               <SectionHeader eyebrow="Step 1 of 4" title="Let's set up your profile" description="This is how other builders will find you." />
-              <div className="pm-upload-zone">
-                <Avatar name={name} initials="AK" tone="teal" size="xl" />
+              <div className="pm-upload-zone" onClick={() => fileInputRef.current?.click()} style={{ cursor: 'pointer' }}>
+                <Avatar name={name} initials="AK" src={profilePic} tone="teal" size="xl" />
                 <div>
                   <strong>Upload photo</strong>
                   <p>Drag and drop or click to upload a profile image.</p>
                 </div>
-                <Button variant="secondary" size="sm">
+                <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" style={{ display: 'none' }} />
+                <Button variant="secondary" size="sm" onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}>
                   Change
                 </Button>
               </div>

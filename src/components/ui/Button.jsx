@@ -4,10 +4,11 @@ import { Icon } from './Icon';
 
 export function Button({ to, href, variant = 'primary', size = 'md', icon, className = '', type = 'button', children, ...props }) {
   const classes = cx('pm-button', `pm-button--${variant}`, `pm-button--${size}`, className);
+  const hasLabel = children !== undefined && children !== null && children !== '';
   const content = (
     <>
       {icon ? <Icon name={icon} className="pm-button__icon" /> : null}
-      <span>{children}</span>
+      {hasLabel ? <span>{children}</span> : null}
     </>
   );
 
