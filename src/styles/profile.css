@@ -296,6 +296,120 @@
   font-weight: 800;
 }
 
+.pm-gh-sidecard {
+  padding: 12px;
+}
+
+.pm-gh-sidecard__body {
+  display: grid;
+  gap: 10px;
+}
+
+.pm-gh-sidecard__row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--text-secondary);
+  font-weight: 800;
+}
+
+.pm-gh-side-list {
+  display: grid;
+  gap: 10px;
+}
+
+.pm-gh-side-item strong {
+  display: block;
+  font-weight: 1000;
+  margin-bottom: 2px;
+}
+
+.pm-gh-post-list {
+  display: grid;
+  gap: 12px;
+}
+
+.pm-gh-post {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-base);
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.pm-gh-post__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pm-gh-post__who {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+.pm-gh-post__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  background: linear-gradient(135deg, var(--brand-teal), var(--brand-violet));
+  background-size: cover;
+  background-position: center;
+  display: grid;
+  place-items: center;
+  color: var(--text-inverse);
+  font-weight: 1000;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.pm-gh-post__meta {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.pm-gh-post__meta strong {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pm-gh-post__body {
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-weight: 700;
+}
+
+.pm-gh-post__footer {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pm-gh-post__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 9999px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--text-secondary);
+  font-weight: 900;
+  font-size: 0.85rem;
+}
+
+.pm-gh-post__pill--end {
+  margin-left: auto;
+}
+
 /* Mobile Optimization */
 @media (max-width: 640px) {
   .pm-gh-profile {

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppShell } from '../../../components/layout';
 import { Button, Badge, Icon } from '../../../components/ui';
-import { profiles as allProfiles } from '../../../data/mockData';
+import { profiles as allProfiles, events as allEvents } from '../../../data/mockData';
 import '../../../styles/profile.css';
 
 export function ProfilePage() {
@@ -26,6 +26,47 @@ export function ProfilePage() {
   }, [initialProfile]);
 
   const isMe = (profile?.username ?? 'me') === 'me';
+
+  const workingFor = useMemo(() => {
+    const title = profile?.title ?? '';
+    const at = title.split('@')[1]?.trim();
+    if (at) return at;
+    return profile?.companyStage ? `Startup (${profile.companyStage})` : profile?.domain ?? '';
+  }, [profile]);
+
+  const meetingsOrganized = useMemo(() => {
+    const hostName = profile?.name;
+    if (!hostName) return [];
+    return (allEvents ?? []).filter((event) => event?.host === hostName).slice(0, 4);
+  }, [profile]);
+
+  const posts = useMemo(() => {
+    const author = profile ?? allProfiles?.me;
+    const base = [
+      {
+        id: 'p1',
+        content: 'Sharing a quick update: building a clean scheduling + billing flow for mentorship sessions.',
+        timestamp: '2d',
+        likes: 18,
+        comments: 4,
+      },
+      {
+        id: 'p2',
+        content: 'Looking for collaborators on a hackathon project. If you are into React + product thinking, let’s connect.',
+        timestamp: '5d',
+        likes: 34,
+        comments: 9,
+      },
+      {
+        id: 'p3',
+        content: 'Just shipped a LinkedIn-style feed UI in our student dashboard. Next: better profile pages.',
+        timestamp: '1w',
+        likes: 51,
+        comments: 13,
+      },
+    ];
+    return base.map((item) => ({ ...item, author }));
+  }, [profile]);
 
   const primaryActions = isMe ? (
     <div className="pm-gh-actions">
@@ -114,6 +155,41 @@ export function ProfilePage() {
                 <span>{profile?.avgResponse ?? '—'} avg response</span>
               </div>
             </div>
+
+            <section className="pm-gh-card pm-gh-sidecard" aria-label="Currently working for">
+              <header className="pm-gh-card__head">
+                <h2>Currently working for</h2>
+              </header>
+              <div className="pm-gh-sidecard__body">
+                <div className="pm-gh-sidecard__row">
+                  <Icon name="company" size={16} />
+                  <span>{workingFor || '—'}</span>
+                </div>
+              </div>
+            </section>
+
+            <section className="pm-gh-card pm-gh-sidecard" aria-label="Meetings organized">
+              <header className="pm-gh-card__head">
+                <h2>Meetings organized</h2>
+                <span className="pm-gh-muted">{profile?.events ?? meetingsOrganized.length}</span>
+              </header>
+              <div className="pm-gh-sidecard__body">
+                {meetingsOrganized.length ? (
+                  <div className="pm-gh-side-list">
+                    {meetingsOrganized.map((event) => (
+                      <div key={event.id} className="pm-gh-side-item">
+                        <strong>{event.title}</strong>
+                        <span className="pm-gh-muted">
+                          {event.date} · {event.time}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="pm-gh-muted">No organized meetings yet.</div>
+                )}
+              </div>
+            </section>
           </aside>
 
           <main className="pm-gh-main" aria-label="Profile main">
@@ -126,11 +202,11 @@ export function ProfilePage() {
                 <Icon name="home" size={16} /> Overview
               </button>
               <button
-                className={activeTab === 'repos' ? 'is-active' : ''}
+                className={activeTab === 'posts' ? 'is-active' : ''}
                 type="button"
-                onClick={() => setActiveTab('repos')}
+                onClick={() => setActiveTab('posts')}
               >
-                <Icon name="spark" size={16} /> Repositories
+                <Icon name="messages" size={16} /> Posts
               </button>
               <button
                 className={activeTab === 'activity' ? 'is-active' : ''}
@@ -191,28 +267,51 @@ export function ProfilePage() {
               </div>
             ) : null}
 
-            {activeTab === 'repos' ? (
+            {activeTab === 'posts' ? (
               <div className="pm-gh-section">
-                <section className="pm-gh-card" aria-label="Repositories">
+                <section className="pm-gh-card" aria-label="Posts">
                   <header className="pm-gh-card__head">
-                    <h2>Repositories</h2>
-                    <span className="pm-gh-muted">Sample projects</span>
+                    <h2>Posts</h2>
+                    <span className="pm-gh-muted">Recent updates</span>
                   </header>
-                  <div className="pm-gh-repo-list">
-                    {(
-                      [
-                        { name: 'collab-matcher', meta: 'React · Vite', desc: 'Discover and connect with builders.' },
-                        { name: 'session-booking', meta: 'UI · Scheduling', desc: 'Booking and billing flow prototypes.' },
-                        { name: 'feed-ui', meta: 'Design system', desc: 'LinkedIn-like feed components.' },
-                      ]
-                    ).map((repo) => (
-                      <div key={repo.name} className="pm-gh-repo">
-                        <div>
-                          <strong>{repo.name}</strong>
-                          <p>{repo.desc}</p>
-                        </div>
-                        <span className="pm-gh-repo__meta">{repo.meta}</span>
-                      </div>
+                  <div className="pm-gh-post-list">
+                    {posts.map((post) => (
+                      <article key={post.id} className="pm-gh-post">
+                        <header className="pm-gh-post__head">
+                          <div className="pm-gh-post__who">
+                            <div
+                              className="pm-gh-post__avatar"
+                              style={
+                                post.author?.src
+                                  ? { backgroundImage: `url(${post.author.src})` }
+                                  : undefined
+                              }
+                              aria-hidden="true"
+                            >
+                              {!post.author?.src ? (post.author?.avatar ?? 'ME') : null}
+                            </div>
+                            <div className="pm-gh-post__meta">
+                              <strong>{post.author?.name ?? 'Member'}</strong>
+                              <span className="pm-gh-muted">{post.timestamp}</span>
+                            </div>
+                          </div>
+                          <button className="pm-icon-button" type="button" aria-label="Post options">
+                            <Icon name="more" size={18} />
+                          </button>
+                        </header>
+                        <div className="pm-gh-post__body">{post.content}</div>
+                        <footer className="pm-gh-post__footer">
+                          <span className="pm-gh-post__pill">
+                            <Icon name="thumbs-up" size={14} /> {post.likes}
+                          </span>
+                          <span className="pm-gh-post__pill">
+                            <Icon name="message-circle" size={14} /> {post.comments}
+                          </span>
+                          <span className="pm-gh-post__pill pm-gh-post__pill--end">
+                            <Icon name="send" size={14} /> Share
+                          </span>
+                        </footer>
+                      </article>
                     ))}
                   </div>
                 </section>
