@@ -88,7 +88,7 @@ export default function App() {
           <Route path="/dashboard/profile" element={<P><ProfilePage /></P>} />
           <Route path="/dashboard/messages" element={<P><MessagesPage /></P>} />
           <Route path="/dashboard/connections" element={<P><ConnectionsPage /></P>} />
-          <Route path="/dashboard/calendar" element={<P><CalendarPage /></P>} />
+          <Route path="/dashboard/calendar" element={<P><CalendarPage variant="student" /></P>} />
           <Route path="/dashboard/settings" element={<P><SettingsPage /></P>} />
           <Route path="/dashboard/notifications" element={<P><NotificationsPage /></P>} />
           <Route path="/dashboard/analytics" element={<P><AnalyticsPage /></P>} />
