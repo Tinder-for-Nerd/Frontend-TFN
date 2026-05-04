@@ -13,3 +13,4 @@ export { AnalyticsPage } from './AnalyticsPage';
 export { EventDetailPage } from './EventDetailPage';
 export { HostEventPage } from './HostEventPage';
 export { CreateOpportunityPage } from './CreateOpportunityPage';
+export { OrganizerDashboardPage } from './OrganizerDashboardPage';

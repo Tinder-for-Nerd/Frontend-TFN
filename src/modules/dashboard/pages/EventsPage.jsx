@@ -61,7 +61,16 @@ export function EventsPage({ variant = 'student' }) {
       variant={variant} 
       title="Events" 
       subtitle={variant === 'pro' ? 'Community and founder events' : 'Student and community events'} 
-      actions={<Button variant="primary" icon="spark" to={`/${variant}/events/host`}>Host an event</Button>}
+      actions={
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+          <Button variant="secondary" to={`/${variant}/events/organizer`}>
+            Organizer dashboard
+          </Button>
+          <Button variant="primary" icon="spark" to={`/${variant}/events/host`}>
+            Host an event
+          </Button>
+        </div>
+      }
     >
       <div className="pm-events-container">
         {/* Featured Section */}

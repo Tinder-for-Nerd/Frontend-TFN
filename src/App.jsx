@@ -21,6 +21,7 @@ import {
   EventDetailPage,
   HostEventPage,
   CreateOpportunityPage,
+  OrganizerDashboardPage,
   CallPage
 } from './modules/dashboard/pages';
 import { StudentHomePage, StudentProgressPage, StudentFeedPage, StudentBillingPage } from './modules/student/pages';
@@ -103,6 +104,7 @@ export default function App() {
           <Route path="/student/sessions" element={<P><SessionsPage /></P>} />
           <Route path="/student/billing" element={<P><StudentBillingPage /></P>} />
           <Route path="/student/events" element={<P><EventsPage variant="student" /></P>} />
+          <Route path="/student/events/organizer" element={<P><OrganizerDashboardPage variant="student" /></P>} />
           <Route path="/student/events/host" element={<P><HostEventPage variant="student" /></P>} />
           <Route path="/student/events/create-opportunity" element={<P><CreateOpportunityPage variant="student" /></P>} />
           <Route path="/student/events/:eventId" element={<P><EventDetailPage variant="student" /></P>} />
@@ -117,6 +119,7 @@ export default function App() {
           <Route path="/pro/inbox/:threadId" element={<P><ProInboxPage /></P>} />
           <Route path="/pro/calendar" element={<P><ProCalendarPage /></P>} />
           <Route path="/pro/events" element={<P><EventsPage variant="pro" /></P>} />
+          <Route path="/pro/events/organizer" element={<P><OrganizerDashboardPage variant="pro" /></P>} />
           <Route path="/pro/events/host" element={<P><HostEventPage variant="pro" /></P>} />
           <Route path="/pro/events/create-opportunity" element={<P><CreateOpportunityPage variant="pro" /></P>} />
           <Route path="/pro/events/:eventId" element={<P><EventDetailPage variant="pro" /></P>} />
