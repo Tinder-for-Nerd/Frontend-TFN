@@ -125,9 +125,10 @@ export default function App() {
           <Route path="/pro/events/:eventId" element={<P><EventDetailPage variant="pro" /></P>} />
           <Route path="/pro/analytics" element={<P><ProAnalyticsPage /></P>} />
           <Route path="/pro/company" element={<P><ProCompanyPage /></P>} />
+          <Route path="/pro/profile/:username" element={<P><ProfilePage variant="pro" /></P>} />
 
           {/* Protected: Shared */}
-          <Route path="/profile/:username" element={<P><ProfilePage /></P>} />
+          <Route path="/profile/:username" element={<P><ProfilePage variant="student" /></P>} />
           <Route path="/settings" element={<P><SettingsPage /></P>} />
           <Route path="/notifications" element={<P><NotificationsPage /></P>} />
           <Route path="/call/:sessionId" element={<P><CallPage /></P>} />

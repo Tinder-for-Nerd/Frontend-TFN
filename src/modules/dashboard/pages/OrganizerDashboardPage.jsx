@@ -98,6 +98,8 @@ export function OrganizerDashboardPage({ variant = 'student' }) {
     navigate(`/${variant}/events`);
   };
 
+  const profileBase = variant === 'pro' ? '/pro/profile' : '/profile';
+
   return (
     <AppShell
       variant={variant}
@@ -273,7 +275,7 @@ export function OrganizerDashboardPage({ variant = 'student' }) {
                       key={att.id}
                       type="button"
                       className="pm-org-attendee"
-                      onClick={() => navigate(`/profile/${att.username}`)}
+                      onClick={() => navigate(`${profileBase}/${att.username}`)}
                     >
                       <div className="pm-org-attendee__who">
                         <div className="pm-org-attendee__avatar" aria-hidden="true">
@@ -317,4 +319,3 @@ function Kpi({ label, value, icon }) {
     </div>
   );
 }
-

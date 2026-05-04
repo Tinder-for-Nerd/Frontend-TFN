@@ -5,7 +5,7 @@ import { Button, Badge, Icon } from '../../../components/ui';
 import { profiles as allProfiles, events as allEvents } from '../../../data/mockData';
 import '../../../styles/profile.css';
 
-export function ProfilePage() {
+export function ProfilePage({ variant = 'student' }) {
   const { username = 'me' } = useParams();
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
@@ -97,7 +97,7 @@ export function ProfilePage() {
 
   return (
     <AppShell
-      variant="student"
+      variant={variant}
       title={profile?.name ?? 'Profile'}
       subtitle={isMe ? 'Your profile' : 'Profile'}
       actions={null}

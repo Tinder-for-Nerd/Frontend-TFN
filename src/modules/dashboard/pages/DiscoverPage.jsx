@@ -15,6 +15,7 @@ export function DiscoverPage({ variant }) {
   const scrollTimeoutRef = useRef(null);
 
   const profilesSource = variant === 'pro' ? proDiscoverProfiles : studentDiscoverProfiles;
+  const profileBase = variant === 'pro' ? '/pro/profile' : '/profile';
   const SNAP_THRESHOLD = 0.3;
   const CONTAINER_HEIGHT = 600; // Fixed container height
   const SPRING_EASING = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
@@ -178,7 +179,7 @@ export function DiscoverPage({ variant }) {
                   <div style={{ width: '100%' }}>
                     <MiniProfileCard
                       profile={profile}
-                      extraLink={`/profile/${profile.username}`}
+                      extraLink={`${profileBase}/${profile.username}`}
                     />
                   </div>
                 </div>
