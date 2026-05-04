@@ -200,6 +200,19 @@ export function Icon({ name, size = 18, className = '', ...props }) {
           <path d="M3 12h10m-3-3 3 3-3 3" />
         </svg>
       );
+    case 'send':
+      return (
+        <svg {...common}>
+          <path d="m22 2-7 20-4-9-9-4Z" />
+          <path d="M22 2 11 13" />
+        </svg>
+      );
+    case 'message-circle':
+      return (
+        <svg {...common}>
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-7.6 8.38 8.38 0 0 1 3.8.9L21 3.5Z" />
+        </svg>
+      );
     default:
       return null;
   }

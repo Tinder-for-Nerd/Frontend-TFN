@@ -1,306 +1,363 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { cx } from '../../../utils/helpers';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 import { AppShell } from '../../../components/layout';
-import { Icon, Button, Avatar, Badge } from '../../../components/ui';
-import { MiniProfileCard } from '../../../components/common';
+import { Icon, Avatar, Badge } from '../../../components/ui';
 import { studentThreads, proThreads, profiles } from '../../../data/mockData';
 import '../../../styles/messages.css';
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const FILTER_OPTIONS = [
+  { value: 'all', label: 'All' },
+  { value: 'unread', label: 'Unread' },
+];
+
+const PAGE_META = {
+  student: {
+    title: 'Messages | Tinder for Nerds',
+    subtitle: 'Keep the momentum high with real-time conversations.',
+    heading: 'Messages',
+  },
+  pro: {
+    title: 'Inbox | Tinder for Nerds',
+    subtitle: 'Keep the momentum high with real-time conversations.',
+    heading: 'Inbox',
+  },
+};
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+function ThreadItem({ thread, isActive, onSelect }) {
+  const hasUnread = thread.unread > 0;
+  return (
+    <button
+      className={cx('wa-thread', isActive && 'is-active')}
+      onClick={() => onSelect(thread.id)}
+      aria-current={isActive ? 'true' : undefined}
+    >
+      <div className="wa-thread__avatar-wrap">
+        <Avatar
+          name={thread.person.name}
+          src={thread.person.avatar_url}
+          initials={thread.person.avatar}
+          tone={thread.person.tone}
+          size="lg"
+        />
+        {thread.status === 'Online' && <span className="wa-thread__online-dot" />}
+      </div>
+
+      <div className="wa-thread__body">
+        <div className="wa-thread__row">
+          <span className={cx('wa-thread__name', hasUnread && 'is-unread')}>
+            {thread.person.name}
+          </span>
+          <span className={cx('wa-thread__time', hasUnread && 'is-unread')}>
+            {thread.time}
+          </span>
+        </div>
+        <div className="wa-thread__row">
+          <p className={cx('wa-thread__preview', hasUnread && 'is-unread')}>
+            {thread.last}
+          </p>
+          {hasUnread && (
+            <span className="wa-thread__badge">{thread.unread}</span>
+          )}
+        </div>
+      </div>
+    </button>
+  );
+}
+
+function MessageBubble({ msg, isLast }) {
+  const isSent = msg.from === 'me';
+  return (
+    <div className={cx('wa-bubble', isSent ? 'is-sent' : 'is-received')}>
+      <div className="wa-bubble__tail" />
+      <p className="wa-bubble__text">{msg.body}</p>
+      <span className="wa-bubble__meta">
+        <span>{msg.time}</span>
+        {isSent && (
+          <Icon
+            name="check-double"
+            size={14}
+            className={cx('wa-bubble__check', isLast && 'is-seen')}
+            aria-label="Seen"
+          />
+        )}
+      </span>
+    </div>
+  );
+}
+
+function EmptyState() {
+  return (
+    <div className="wa-empty" role="status" aria-label="No conversation selected">
+      <div className="wa-empty__visual">
+        <div className="wa-empty__ring">
+          <Icon name="message-circle" size={56} />
+        </div>
+      </div>
+      <h2 className="wa-empty__title">Tinder for Nerds Web</h2>
+      <p className="wa-empty__desc">
+        Send and receive messages with builders and mentors.
+        <br />
+        Select a conversation from the sidebar to get started.
+      </p>
+      <div className="wa-empty__security">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+        <span>End-to-end encrypted</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
 
 export function MessagesPage({ variant = 'student' }) {
   const { threadId } = useParams();
   const navigate = useNavigate();
   const scrollRef = useRef(null);
-  
+  const inputRef = useRef(null);
+
   const threads = variant === 'student' ? studentThreads : proThreads;
+  const meta = PAGE_META[variant] ?? PAGE_META.student;
+
   const [activeThread, setActiveThread] = useState(null);
   const [message, setMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [filter, setFilter] = useState('all'); // all, unread
-  const [showProfile, setShowProfile] = useState(null);
+  const [filter, setFilter] = useState('all');
 
-  usePageMeta(
-    `Messages | ProMatch`,
-    'High-momentum messaging for builders and mentors.'
-  );
+  usePageMeta(meta.title, meta.subtitle);
 
+  // Sync active thread with URL param
   useEffect(() => {
-    if (threadId) {
-      const thread = threads.find(t => t.id === threadId);
-      if (thread) setActiveThread(thread);
-    } else if (threads.length > 0) {
-      setActiveThread(threads[0]);
-    }
+    const match = threads.find((t) => t.id === threadId);
+    setActiveThread(match ?? threads[0] ?? null);
   }, [threadId, threads]);
 
+  // Auto-scroll to latest message
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [activeThread]);
 
-  const handleThreadSelect = (id) => {
-    navigate(`/${variant}/messages/${id}`);
-  };
+  const handleThreadSelect = useCallback(
+    (id) => navigate(`/${variant}/messages/${id}`),
+    [navigate, variant]
+  );
 
-  const handleSendMessage = (e) => {
-    if (e) e.preventDefault();
-    if (!message.trim()) return;
-    
-    // Logic for sending message would go here
-    setMessage('');
-  };
+  const handleSendMessage = useCallback(
+    (e) => {
+      e?.preventDefault();
+      if (!message.trim()) return;
+      setMessage('');
+      inputRef.current?.focus();
+    },
+    [message]
+  );
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSendMessage();
+      }
+    },
+    [handleSendMessage]
+  );
 
-  const filteredThreads = threads.filter(t => {
-    const matchesSearch = t.person.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         t.last.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredThreads = threads.filter((t) => {
+    const query = searchQuery.toLowerCase();
+    const matchesSearch =
+      t.person.name.toLowerCase().includes(query) ||
+      t.last.toLowerCase().includes(query);
     const matchesFilter = filter === 'all' || (filter === 'unread' && t.unread > 0);
     return matchesSearch && matchesFilter;
   });
 
+  const canSend = message.trim().length > 0;
+  const msgCount = activeThread?.messages?.length ?? 0;
+
   return (
-    <AppShell 
-      variant={variant} 
-      title={variant === 'student' ? 'Messages' : 'Inbox'}
-      subtitle="Keep the momentum high with real-time conversations."
-      hideTopbar={true}
-      className={cx('pm-messages-shell', !activeThread && 'is-showing-threads')}
+    <AppShell
+      variant={variant}
+      title={meta.heading}
+      subtitle={meta.subtitle}
+      hideTopbar
+      className="pm-messages-shell"
     >
-      <div className="pm-messages-layout">
-        {/* Thread List Panel */}
-        <aside className="pm-thread-panel">
-          <header className="pm-panel__header" style={{ padding: '24px', borderBottom: '1px solid var(--outline-variant)', display: 'flex', flexDirection: 'column', gap: '20px', background: 'var(--surface-container-low)', flexShrink: 0 }}>
-            <div className="pm-search-input">
-              <Icon name="search" size={16} style={{ opacity: 0.5 }} />
-              <input 
-                type="text" 
-                placeholder="Search messages..." 
+      <div className="wa-layout">
+        {/* ── Thread sidebar ── */}
+        <aside className="wa-sidebar" aria-label="Conversations">
+          {/* Sidebar header */}
+          <header className="wa-sidebar__head">
+            <div className="wa-sidebar__top">
+              <h1 className="wa-sidebar__title">Chats</h1>
+              <div className="wa-sidebar__icons">
+                <button className="wa-icon-btn" aria-label="New chat" title="New chat">
+                  <Icon name="plus" size={20} />
+                </button>
+                <button className="wa-icon-btn" aria-label="More options" title="More options">
+                  <Icon name="more" size={20} />
+                </button>
+              </div>
+            </div>
+
+            <div className="wa-search" role="search">
+              <Icon name="search" size={16} className="wa-search__icon" />
+              <input
+                type="search"
+                className="wa-search__input"
+                placeholder="Search or start new chat"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ flex: 1, border: 'none', background: 'transparent', outline: 'none', fontSize: '14px', color: 'var(--on-surface)' }}
+                aria-label="Search conversations"
               />
             </div>
-            <div className="pm-filter-tabs" style={{ display: 'flex', gap: '24px' }}>
-              <button 
-                className={cx('pm-tab-btn', filter === 'all' && 'is-active')} 
-                onClick={() => setFilter('all')}
-                style={{ background: 'none', border: 'none', padding: '0', cursor: 'pointer', fontSize: '14px', fontWeight: filter === 'all' ? '800' : '500', color: filter === 'all' ? 'var(--primary)' : 'var(--on-surface-variant)', transition: 'all 0.2s', position: 'relative' }}
-              >
-                All
-                {filter === 'all' && <div style={{ position: 'absolute', bottom: '-8px', left: '0', right: '0', height: '2px', background: 'var(--primary)', borderRadius: '2px' }} />}
-              </button>
-              <button 
-                className={cx('pm-tab-btn', filter === 'unread' && 'is-active')} 
-                onClick={() => setFilter('unread')}
-                style={{ background: 'none', border: 'none', padding: '0', cursor: 'pointer', fontSize: '14px', fontWeight: filter === 'unread' ? '800' : '500', color: filter === 'unread' ? 'var(--primary)' : 'var(--on-surface-variant)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '6px', position: 'relative' }}
-              >
-                Unread {threads.some(t => t.unread > 0) && <Badge tone="primary" dot />}
-                {filter === 'unread' && <div style={{ position: 'absolute', bottom: '-8px', left: '0', right: '0', height: '2px', background: 'var(--primary)', borderRadius: '2px' }} />}
-              </button>
+
+            <div className="wa-tabs" role="tablist">
+              {FILTER_OPTIONS.map(({ value, label }) => (
+                <button
+                  key={value}
+                  role="tab"
+                  aria-selected={filter === value}
+                  className={cx('wa-tab', filter === value && 'is-active')}
+                  onClick={() => setFilter(value)}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
           </header>
-          
-          <div className="pm-thread-list" style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', background: 'var(--surface-container-low)' }}>
-            {filteredThreads.map((thread) => {
-              const isActive = activeThread?.id === thread.id;
-              return (
-                <button
-                  key={thread.id}
-                  onClick={() => handleThreadSelect(thread.id)}
-                  style={{ 
-                    width: '100%', 
-                    display: 'grid', 
-                    gridTemplateColumns: 'auto 1fr auto', 
-                    alignItems: 'center', 
-                    gap: '16px', 
-                    padding: '16px 24px', 
-                    border: 'none', 
-                    borderBottom: '1px solid var(--outline-variant)', 
-                    background: isActive ? 'var(--surface-container-high)' : 'transparent', 
-                    textAlign: 'left', 
-                    cursor: 'pointer', 
-                    transition: 'all 0.2s',
-                    position: 'relative'
-                  }}
-                >
-                  {isActive && <div style={{ position: 'absolute', left: '0', top: '0', bottom: '0', width: '4px', background: 'var(--primary)' }} />}
-                  
-                  <div style={{ position: 'relative', flexShrink: 0 }}>
-                    <Avatar 
-                      name={thread.person.name} 
-                      src={thread.person.avatar_url} 
-                      initials={thread.person.avatar}
-                      tone={thread.person.tone}
-                      size="md"
-                    />
-                    <div className={thread.status === 'Online' || thread.status === 'Typing' ? 'pm-online-dot' : 'pm-offline-dot'} style={{ border: '2px solid var(--surface-container-low)' }} />
-                  </div>
-                  
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '2px' }}>
-                      <strong style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--on-surface)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {thread.person.name}
-                      </strong>
-                    </div>
-                    <p style={{ 
-                      fontSize: '0.8rem',
-                      margin: 0,
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      color: thread.unread > 0 ? 'var(--on-surface)' : 'var(--on-surface-variant)',
-                      fontWeight: thread.unread > 0 ? '700' : '400'
-                    }}>
-                      {thread.status === 'Typing' ? <span style={{ color: 'var(--primary)', fontWeight: 700 }}>Typing...</span> : thread.last}
-                    </p>
-                  </div>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', flexShrink: 0 }}>
-                    <span style={{ fontSize: '0.7rem', opacity: 0.5 }}>{thread.time}</span>
-                    {thread.unread > 0 && (
-                      <Badge tone="primary">{thread.unread}</Badge>
-                    )}
-                  </div>
-                </button>
-              );
-            })}
+          {/* Thread list */}
+          <div className="wa-thread-list" role="listbox">
+            {filteredThreads.length === 0 ? (
+              <div className="wa-thread-list__empty">
+                <Icon name="search" size={32} style={{ opacity: 0.3, marginBottom: 12 }} />
+                <p>No conversations found</p>
+              </div>
+            ) : (
+              filteredThreads.map((thread) => (
+                <ThreadItem
+                  key={thread.id}
+                  thread={thread}
+                  isActive={activeThread?.id === thread.id}
+                  onSelect={handleThreadSelect}
+                />
+              ))
+            )}
           </div>
         </aside>
 
-        {/* Chat Panel */}
-        <main className="pm-chat-panel">
+        {/* ── Chat panel ── */}
+        <main className="wa-chat" aria-label="Conversation">
           {activeThread ? (
             <>
-              <header className="pm-chat-panel__head">
-                <div className="pm-chat-panel__identity" onClick={() => setShowProfile(activeThread.person)} style={{ cursor: 'pointer' }}>
-                  <div style={{ position: 'relative' }}>
-                    <Avatar 
-                      name={activeThread.person.name} 
-                      src={activeThread.person.avatar_url} 
-                      initials={activeThread.person.avatar}
-                      tone={activeThread.person.tone}
-                      size="md"
-                    />
-                    <div className={activeThread.status === 'Online' || activeThread.status === 'Typing' ? 'pm-online-dot' : 'pm-offline-dot'} />
-                  </div>
-                  <div>
-                    <strong>{activeThread.person.name}</strong>
-                    <span style={{ 
-                      color: activeThread.status === 'Online' || activeThread.status === 'Typing' ? 'var(--primary)' : 'var(--on-surface-variant)',
-                      fontSize: '11px',
-                      fontWeight: 700,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em'
-                    }}>
-                      {activeThread.status === 'Typing' ? 'Typing...' : activeThread.status === 'Online' ? 'Active now' : activeThread.status}
+              {/* Chat header */}
+              <header className="wa-chat__head">
+                <button
+                  className="wa-chat__contact"
+                  aria-label={`View ${activeThread.person.name}'s profile`}
+                >
+                  <Avatar
+                    name={activeThread.person.name}
+                    src={activeThread.person.avatar_url}
+                    initials={activeThread.person.avatar}
+                    tone={activeThread.person.tone}
+                    size="md"
+                  />
+                  <div className="wa-chat__contact-info">
+                    <span className="wa-chat__contact-name">{activeThread.person.name}</span>
+                    <span className="wa-chat__contact-status">
+                      {activeThread.status === 'Online' && (
+                        <span className="wa-status-dot" />
+                      )}
+                      {activeThread.status}
                     </span>
                   </div>
-                </div>
-                <div className="pm-chat-panel__actions">
-                  <Button variant="ghost" size="sm" title="Voice call"><Icon name="phone" /></Button>
-                  <Button variant="ghost" size="sm" title="Video call"><Icon name="video" /></Button>
-                  <Button variant="ghost" size="sm" title="View profile" onClick={() => setShowProfile(activeThread.person)}><Icon name="profile" /></Button>
-                  <div style={{ width: '1px', height: '24px', background: 'var(--outline-variant)', margin: '0 8px' }} />
-                  <Button variant="ghost" size="sm"><Icon name="more" /></Button>
+                </button>
+
+                <div className="wa-chat__head-actions">
+                  <button className="wa-icon-btn" aria-label="Video call" title="Video call">
+                    <Icon name="video" size={20} />
+                  </button>
+                  <button className="wa-icon-btn" aria-label="Voice call" title="Voice call">
+                    <Icon name="phone" size={20} />
+                  </button>
+                  <button className="wa-icon-btn" aria-label="Search in chat" title="Search">
+                    <Icon name="search" size={20} />
+                  </button>
+                  <button className="wa-icon-btn" aria-label="Chat options" title="Options">
+                    <Icon name="more" size={20} />
+                  </button>
                 </div>
               </header>
 
-              <div className="pm-message-stack" ref={scrollRef}>
-                <div className="pm-date-divider">
-                  <span>Today</span>
+              {/* Messages area */}
+              <div
+                className="wa-messages"
+                ref={scrollRef}
+                role="log"
+                aria-live="polite"
+              >
+                <div className="wa-messages__inner">
+                  <div className="wa-date-chip">
+                    <span>TODAY</span>
+                  </div>
+
+                  {activeThread.messages?.map((msg, i) => (
+                    <MessageBubble key={msg.id} msg={msg} isLast={i === msgCount - 1} />
+                  ))}
                 </div>
-
-                {activeThread.messages?.map((msg, idx) => (
-                  <div key={msg.id}>
-                    {idx === activeThread.messages.length - activeThread.unread && (
-                      <div className="pm-unread-divider">
-                        <span>New Messages</span>
-                      </div>
-                    )}
-                    <div className={cx('pm-message-bubble', msg.from === 'me' && 'is-sent')}>
-                      <p>{msg.body}</p>
-                      <div className="pm-message-bubble__footer">
-                        <span>{msg.time}</span>
-                        {msg.from === 'me' && (
-                          <div className="pm-message-status">
-                            <Icon name="check-double" size={12} />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                {activeThread.status === 'Typing' && (
-                  <div className="pm-typing-indicator-chat">
-                    <div className="pm-typing-dots">
-                      <span></span><span></span><span></span>
-                    </div>
-                    <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--primary)' }}>{activeThread.person.name.split(' ')[0]} is typing</span>
-                  </div>
-                )}
               </div>
 
-              <form className="pm-chat-composer" onSubmit={handleSendMessage}>
-                <div className="pm-composer-tools">
-                  <Button variant="ghost" size="sm" type="button" title="Attach file">
-                    <Icon name="plus" />
-                  </Button>
-                  <Button variant="ghost" size="sm" type="button" title="Add emoji">
-                    <Icon name="smile" />
-                  </Button>
+              {/* Composer */}
+              <form
+                className="wa-composer"
+                onSubmit={handleSendMessage}
+                aria-label="Compose message"
+              >
+                <button className="wa-icon-btn" type="button" aria-label="Emoji">
+                  <Icon name="smile" size={22} />
+                </button>
+                <button className="wa-icon-btn" type="button" aria-label="Attach file">
+                  <Icon name="plus" size={22} />
+                </button>
+
+                <div className="wa-composer__input-area">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    className="wa-composer__input"
+                    placeholder="Type a message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    aria-label="Message input"
+                  />
                 </div>
-                <input 
-                  type="text" 
-                  className="pm-input" 
-                  placeholder="Ask for feedback or share a thought..." 
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                />
-                <div className="pm-composer-tools">
-                  <Button variant="ghost" size="sm" type="button" title="Record voice">
-                    <Icon name="microphone" />
-                  </Button>
-                  <Button variant="primary" size="sm" type="submit" disabled={!message.trim()}>
-                    <Icon name="spark" />
-                  </Button>
-                </div>
+
+                <button
+                  className={cx('wa-icon-btn wa-composer__send', canSend && 'is-active')}
+                  type={canSend ? 'submit' : 'button'}
+                  aria-label={canSend ? 'Send message' : 'Voice message'}
+                >
+                  <Icon name={canSend ? 'send' : 'microphone'} size={22} />
+                </button>
               </form>
             </>
           ) : (
-            <div className="pm-empty-state" style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--on-surface-variant)' }}>
-              <div className="pm-card" style={{ padding: '48px', textAlign: 'center', maxWidth: '320px', background: 'var(--surface-container-low)' }}>
-                <Icon name="messages" size={64} style={{ marginBottom: '24px', opacity: 0.1, color: 'var(--primary)' }} />
-                <h3 style={{ color: 'var(--on-surface)', marginBottom: '8px' }}>Select a conversation</h3>
-                <p style={{ fontSize: '14px', lineHeight: 1.6 }}>Choose a builder or mentor from the left to start a high-momentum conversation.</p>
-                <Button variant="primary" style={{ marginTop: '24px' }} onClick={() => navigate('/student/discover')}>Discover people</Button>
-              </div>
-            </div>
+            <EmptyState />
           )}
         </main>
       </div>
-
-      {/* Mini Profile Popup */}
-      {showProfile && (
-        <div className="pm-modal-overlay" onClick={() => setShowProfile(null)}>
-          <div className="pm-modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '400px' }}>
-            <MiniProfileCard profile={showProfile} hideActions={true} />
-            <div style={{ padding: '24px', borderTop: '1px solid var(--outline-variant)', display: 'grid', gap: '12px', background: 'var(--surface-container-lowest)' }}>
-              <Button to={`/profile/${showProfile.id}`} variant="primary" className="pm-btn-full">View Full Profile</Button>
-              <Button variant="secondary" onClick={() => setShowProfile(null)} className="pm-btn-full">Close</Button>
-            </div>
-          </div>
-        </div>
-      )}
     </AppShell>
   );
 }

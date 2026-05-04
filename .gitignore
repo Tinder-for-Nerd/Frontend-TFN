@@ -25,3 +25,7 @@ dist-ssr
 
 # Vite
 .vite
+.vercel
+
+# Local headless Chrome profile (dev-only)
+.chrome-headless-prof*/

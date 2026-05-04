@@ -7,7 +7,7 @@ import { SectionHeader, StatCard, ActivityItem } from '../../../components/commo
 import { profiles, availabilityWeeks, events } from '../../../data/mockData';
 
 export function ProCompanyPage() {
-  usePageMeta('ProMatch | Company', 'Create and edit a company profile with team, role, and skill requirements.');
+  usePageMeta('Tinder for Nerds | Company', 'Create and edit a company profile with team, role, and skill requirements.');
 
   return (
     <AppShell variant="pro" title="Company" subtitle="Your startup page and needs profile" actions={<Button variant="secondary">Edit mode</Button>}>

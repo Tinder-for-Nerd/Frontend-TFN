@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { ProtectedRoute } from './components/common/ProtectedRoute';
 
 // Modular Page Imports
 import { LandingPage, FeaturesPage, AboutPage, ContactPage } from './modules/public/pages';
-import { LoginPage } from './modules/auth/pages';
+import { LoginPage, LogoutPage } from './modules/auth/pages';
 import { OnboardingPage } from './modules/onboarding/pages';
 import { 
   FeedPage, 
@@ -16,9 +18,12 @@ import {
   DiscoverPage,
   SessionsPage,
   EventsPage,
+  EventDetailPage,
+  HostEventPage,
+  CreateOpportunityPage,
   CallPage
 } from './modules/dashboard/pages';
-import { StudentHomePage, StudentProgressPage } from './modules/student/pages';
+import { StudentHomePage, StudentProgressPage, StudentFeedPage } from './modules/student/pages';
 import { 
   ProOverviewPage, 
   NetworkPage, 
@@ -27,6 +32,9 @@ import {
   ProAnalyticsPage, 
   ProCompanyPage 
 } from './modules/pro/pages';
+
+// Helper: wrap element with ProtectedRoute
+const P = ({ children }) => <ProtectedRoute>{children}</ProtectedRoute>;
 
 // Helper for Legacy Routes
 function LegacyChatRoute() {
@@ -58,78 +66,89 @@ function LegacyProfileRoute() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/features" element={<FeaturesPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/login" element={<LoginPage mode="login" />} />
-        <Route path="/signup" element={<LoginPage mode="signup" />} />
-        <Route path="/onboarding" element={<Navigate to="/onboarding/step-1" replace />} />
-        <Route path="/onboarding/:step" element={<OnboardingPage />} />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public pages — accessible without login */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/login" element={<LoginPage mode="login" />} />
+          <Route path="/signup" element={<LoginPage mode="signup" />} />
+          <Route path="/logout" element={<LogoutPage />} />
 
-        {/* Dashboard Pages */}
-        <Route path="/dashboard/feed" element={<FeedPage />} />
-        <Route path="/dashboard/profile" element={<ProfilePage />} />
-        <Route path="/dashboard/messages" element={<MessagesPage />} />
-        <Route path="/dashboard/connections" element={<ConnectionsPage />} />
-        <Route path="/dashboard/calendar" element={<CalendarPage />} />
-        <Route path="/dashboard/settings" element={<SettingsPage />} />
-        <Route path="/dashboard/notifications" element={<NotificationsPage />} />
-        <Route path="/dashboard/analytics" element={<AnalyticsPage />} />
+          {/* Protected: Onboarding */}
+          <Route path="/onboarding" element={<P><OnboardingPage /></P>} />
+          <Route path="/onboarding/:step" element={<P><OnboardingPage /></P>} />
 
-        {/* Student Domain */}
-        <Route path="/student" element={<Navigate to="/student/home" replace />} />
-        <Route path="/student/home" element={<StudentHomePage />} />
-        <Route path="/student/discover" element={<DiscoverPage variant="student" />} />
-        <Route path="/student/connections" element={<ConnectionsPage />} />
-        <Route path="/student/messages" element={<MessagesPage variant="student" />} />
-        <Route path="/student/messages/:threadId" element={<MessagesPage variant="student" />} />
-        <Route path="/student/sessions" element={<SessionsPage />} />
-        <Route path="/student/events" element={<EventsPage variant="student" />} />
-        <Route path="/student/events/:eventId" element={<EventsPage variant="student" />} />
-        <Route path="/student/progress" element={<StudentProgressPage />} />
+          {/* Protected: Dashboard Pages */}
+          <Route path="/dashboard/feed" element={<P><FeedPage /></P>} />
+          <Route path="/dashboard/profile" element={<P><ProfilePage /></P>} />
+          <Route path="/dashboard/messages" element={<P><MessagesPage /></P>} />
+          <Route path="/dashboard/connections" element={<P><ConnectionsPage /></P>} />
+          <Route path="/dashboard/calendar" element={<P><CalendarPage /></P>} />
+          <Route path="/dashboard/settings" element={<P><SettingsPage /></P>} />
+          <Route path="/dashboard/notifications" element={<P><NotificationsPage /></P>} />
+          <Route path="/dashboard/analytics" element={<P><AnalyticsPage /></P>} />
 
-        {/* Pro Domain */}
-        <Route path="/pro" element={<Navigate to="/pro/overview" replace />} />
-        <Route path="/pro/overview" element={<ProOverviewPage />} />
-        <Route path="/pro/discover" element={<DiscoverPage variant="pro" />} />
-        <Route path="/pro/network" element={<NetworkPage />} />
-        <Route path="/pro/inbox" element={<ProInboxPage />} />
-        <Route path="/pro/inbox/:threadId" element={<ProInboxPage />} />
-        <Route path="/pro/calendar" element={<ProCalendarPage />} />
-        <Route path="/pro/events" element={<EventsPage variant="pro" />} />
-        <Route path="/pro/events/:eventId" element={<EventsPage variant="pro" />} />
-        <Route path="/pro/analytics" element={<ProAnalyticsPage />} />
-        <Route path="/pro/company" element={<ProCompanyPage />} />
+          {/* Protected: Student Domain */}
+          <Route path="/student" element={<Navigate to="/student/home" replace />} />
+          <Route path="/student/home" element={<P><StudentHomePage /></P>} />
+          <Route path="/student/feed" element={<P><StudentFeedPage /></P>} />
+          <Route path="/student/discover" element={<P><DiscoverPage variant="student" /></P>} />
+          <Route path="/student/connections" element={<P><ConnectionsPage /></P>} />
+          <Route path="/student/messages" element={<P><MessagesPage variant="student" /></P>} />
+          <Route path="/student/messages/:threadId" element={<P><MessagesPage variant="student" /></P>} />
+          <Route path="/student/sessions" element={<P><SessionsPage /></P>} />
+          <Route path="/student/events" element={<P><EventsPage variant="student" /></P>} />
+          <Route path="/student/events/host" element={<P><HostEventPage variant="student" /></P>} />
+          <Route path="/student/events/create-opportunity" element={<P><CreateOpportunityPage variant="student" /></P>} />
+          <Route path="/student/events/:eventId" element={<P><EventDetailPage variant="student" /></P>} />
+          <Route path="/student/progress" element={<P><StudentProgressPage /></P>} />
 
-        {/* Shared and Catch-all */}
-        <Route path="/profile/:username" element={<ProfilePage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/notifications" element={<NotificationsPage />} />
-        <Route path="/call/:sessionId" element={<CallPage />} />
+          {/* Protected: Pro Domain */}
+          <Route path="/pro" element={<Navigate to="/pro/overview" replace />} />
+          <Route path="/pro/overview" element={<P><ProOverviewPage /></P>} />
+          <Route path="/pro/discover" element={<P><DiscoverPage variant="pro" /></P>} />
+          <Route path="/pro/network" element={<P><NetworkPage /></P>} />
+          <Route path="/pro/inbox" element={<P><ProInboxPage /></P>} />
+          <Route path="/pro/inbox/:threadId" element={<P><ProInboxPage /></P>} />
+          <Route path="/pro/calendar" element={<P><ProCalendarPage /></P>} />
+          <Route path="/pro/events" element={<P><EventsPage variant="pro" /></P>} />
+          <Route path="/pro/events/host" element={<P><HostEventPage variant="pro" /></P>} />
+          <Route path="/pro/events/create-opportunity" element={<P><CreateOpportunityPage variant="pro" /></P>} />
+          <Route path="/pro/events/:eventId" element={<P><EventDetailPage variant="pro" /></P>} />
+          <Route path="/pro/analytics" element={<P><ProAnalyticsPage /></P>} />
+          <Route path="/pro/company" element={<P><ProCompanyPage /></P>} />
 
-        {/* Redirects */}
-        <Route path="/feed" element={<Navigate to="/student/discover" replace />} />
-        <Route path="/connections" element={<Navigate to="/student/connections" replace />} />
-        <Route path="/messages" element={<Navigate to="/student/messages" replace />} />
-        <Route path="/bookings" element={<Navigate to="/student/sessions" replace />} />
-        <Route path="/events" element={<Navigate to="/student/events" replace />} />
-        <Route path="/profile" element={<Navigate to="/profile/me" replace />} />
+          {/* Protected: Shared */}
+          <Route path="/profile/:username" element={<P><ProfilePage /></P>} />
+          <Route path="/settings" element={<P><SettingsPage /></P>} />
+          <Route path="/notifications" element={<P><NotificationsPage /></P>} />
+          <Route path="/call/:sessionId" element={<P><CallPage /></P>} />
 
-        {/* Legacy Support */}
-        <Route path="/discover" element={<LegacyDiscoverRoute />} />
-        <Route path="/matches" element={<LegacyMatchesRoute />} />
-        <Route path="/chat" element={<LegacyChatRoute />} />
-        <Route path="/chat/:threadId" element={<LegacyChatRoute />} />
-        <Route path="/booking" element={<LegacyBookingRoute />} />
-        <Route path="/booking/:professionalId" element={<LegacyBookingRoute />} />
-        <Route path="/events/:eventId" element={<LegacyEventsRoute />} />
-        <Route path="/profile/:userId" element={<LegacyProfileRoute />} />
-        
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+          {/* Redirects */}
+          <Route path="/feed" element={<Navigate to="/student/discover" replace />} />
+          <Route path="/connections" element={<Navigate to="/student/connections" replace />} />
+          <Route path="/messages" element={<Navigate to="/student/messages" replace />} />
+          <Route path="/bookings" element={<Navigate to="/student/sessions" replace />} />
+          <Route path="/events" element={<Navigate to="/student/events" replace />} />
+          <Route path="/profile" element={<Navigate to="/profile/me" replace />} />
+
+          {/* Legacy Support */}
+          <Route path="/discover" element={<LegacyDiscoverRoute />} />
+          <Route path="/matches" element={<LegacyMatchesRoute />} />
+          <Route path="/chat" element={<LegacyChatRoute />} />
+          <Route path="/chat/:threadId" element={<LegacyChatRoute />} />
+          <Route path="/booking" element={<LegacyBookingRoute />} />
+          <Route path="/booking/:professionalId" element={<LegacyBookingRoute />} />
+          <Route path="/events/:eventId" element={<LegacyEventsRoute />} />
+          <Route path="/profile/:userId" element={<LegacyProfileRoute />} />
+          
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }

@@ -1,16 +1,18 @@
 /* Notifications Page */
 .pm-notifications-page {
-  max-width: 800px;
-  margin: 0 auto;
-  background: var(--bg-base);
-  min-height: 100dvh;
+  width: 100%;
+  background: var(--bg-surface);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 .pm-notifications-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-8);
+  padding: var(--space-6) var(--space-8);
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
   gap: var(--space-4);
@@ -18,14 +20,14 @@
 
 .pm-notifications-header__title {
   margin: 0;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   font-family: var(--font-display);
   color: var(--text-primary);
 }
 
 .pm-notifications-list {
-  padding: var(--space-6);
+  padding: var(--space-4) var(--space-6);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);

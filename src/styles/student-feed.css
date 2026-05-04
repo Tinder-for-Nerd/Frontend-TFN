@@ -1,0 +1,279 @@
+/* Student Feed Page */
+.pm-student-feed {
+  width: min(100%, 820px);
+  margin: 0 auto;
+  display: grid;
+  gap: var(--space-6);
+  align-content: start;
+}
+
+.pm-student-feed__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pm-student-feed__search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border-default);
+  background: rgba(255, 255, 255, 0.82);
+  min-width: min(340px, 48vw);
+}
+
+.pm-student-feed__search input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.pm-student-feed__composer {
+  padding: 18px;
+  border-radius: 12px;
+}
+
+.pm-student-feed__composer-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.pm-student-feed__composer-meta strong {
+  display: block;
+  font-size: 0.98rem;
+}
+
+.pm-student-feed__composer-meta span {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.pm-student-feed__textarea {
+  width: 100%;
+  min-height: 112px;
+  resize: vertical;
+  border-radius: 12px;
+  border: 1px solid var(--border-default);
+  background: rgba(255, 255, 255, 0.82);
+  padding: 14px 14px;
+  line-height: 1.55;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.pm-student-feed__textarea:focus {
+  border-color: var(--brand-teal);
+  box-shadow: 0 0 0 3px var(--brand-teal-glow);
+}
+
+.pm-student-feed__composer-actions {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pm-student-feed__composer-tools {
+  display: flex;
+  gap: 6px;
+}
+
+.pm-student-feed__tool {
+  border-radius: 12px;
+}
+
+.pm-student-feed__list {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.pm-student-feed__empty {
+  padding: 20px;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.pm-student-feed__empty h2 {
+  margin-top: 12px;
+  font-size: 1.25rem;
+}
+
+.pm-student-feed__empty p {
+  margin-top: 6px;
+  color: var(--text-secondary);
+}
+
+/* Post card */
+.pm-student-post {
+  padding: 18px;
+  border-radius: 12px;
+}
+
+.pm-student-post__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pm-student-post__identity {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  min-width: 0;
+}
+
+.pm-student-post__meta {
+  min-width: 0;
+}
+
+.pm-student-post__name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pm-student-post__name-row strong {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pm-student-post__meta span {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.pm-student-post__menu {
+  border-radius: 12px;
+}
+
+.pm-student-post__body {
+  margin-top: 12px;
+}
+
+.pm-student-post__body p {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.pm-student-post__attachments {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.pm-student-attachment {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.72);
+  color: inherit;
+  text-decoration: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.pm-student-attachment:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0, 127, 108, 0.24);
+  box-shadow: var(--shadow-sm);
+}
+
+.pm-student-attachment__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--brand-teal-subtle);
+  color: var(--brand-teal-dim);
+  display: grid;
+  place-items: center;
+}
+
+.pm-student-attachment__copy strong {
+  display: block;
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+
+.pm-student-attachment__copy span {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pm-student-attachment__chev {
+  opacity: 0.6;
+}
+
+.pm-student-post__footer {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.pm-student-post__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.pm-student-post__action:hover {
+  background: rgba(0, 68, 201, 0.06);
+  color: var(--text-primary);
+  border-color: rgba(0, 68, 201, 0.1);
+}
+
+.pm-student-post__action--end {
+  margin-left: auto;
+}
+
+@media (max-width: 920px) {
+  .pm-student-feed__search {
+    min-width: 220px;
+  }
+}
+
+@media (max-width: 640px) {
+  .pm-student-feed__actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .pm-student-feed__search {
+    min-width: 0;
+    flex: 1;
+  }
+}
+

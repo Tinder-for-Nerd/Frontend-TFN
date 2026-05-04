@@ -52,7 +52,7 @@ export function EventsPage({ variant = 'student' }) {
   const activeEvent = events.find((event) => event.id === eventId) || eventList[0];
 
   usePageMeta(
-    variant === 'pro' ? 'Pro Events | ProMatch' : 'Student Events | ProMatch',
+    variant === 'pro' ? 'Pro Events | Tinder for Nerds' : 'Student Events | Tinder for Nerds',
     'Browse virtual and in-person events hosted by professionals and the community.'
   );
 
@@ -61,7 +61,7 @@ export function EventsPage({ variant = 'student' }) {
       variant={variant} 
       title="Events" 
       subtitle={variant === 'pro' ? 'Community and founder events' : 'Student and community events'} 
-      actions={<Button variant="primary" icon="spark">Host an event</Button>}
+      actions={<Button variant="primary" icon="spark" to={`/${variant}/events/host`}>Host an event</Button>}
     >
       <div className="pm-events-container">
         {/* Featured Section */}
@@ -78,7 +78,7 @@ export function EventsPage({ variant = 'student' }) {
                   <span>{activeEvent.date} @ {activeEvent.time}</span>
                 </div>
                 <div className="pm-hero-meta-item">
-                  <Icon name="messages" size={18} />
+                  <Icon name="spark" size={18} />
                   <span>{activeEvent.format} Event</span>
                 </div>
               </div>
@@ -113,7 +113,7 @@ export function EventsPage({ variant = 'student' }) {
       </div>
 
       <style>{`
-        /* From Uiverse.io by TCdesign-dev — Adapted for ProMatch */
+        /* From Uiverse.io by TCdesign-dev — Adapted for Tinder for Nerds */
         .pm-calendar-btn {
           align-items: center;
           appearance: none;
@@ -171,7 +171,7 @@ export function EventsPage({ variant = 'student' }) {
           transform: translateY(2px);
         }
 
-        /* From Uiverse.io by nikk7007 — Adapted for ProMatch */ 
+        /* From Uiverse.io by nikk7007 — Adapted for Tinder for Nerds */ 
         .pm-rsvp-btn {
           --color: #00A97F;
           --color2: rgb(10, 25, 30);

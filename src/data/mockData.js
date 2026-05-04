@@ -147,18 +147,16 @@ export const socialTypes = ['LinkedIn', 'GitHub', 'Portfolio', 'Twitter'];
 export const studentNav = [
   { label: 'Home', to: '/student/home', icon: 'home' },
   { label: 'Discover', to: '/student/discover', icon: 'spark' },
-  { label: 'My Connections', to: '/student/connections', icon: 'connections' },
+  { label: 'Feed', to: '/student/feed', icon: 'events' },
   { label: 'Messages', to: '/student/messages', icon: 'messages', badge: '2' },
   { label: 'Events', to: '/student/events', icon: 'events' },
   { label: 'My Progress', to: '/student/progress', icon: 'chart' },
-  { label: 'Profile', to: '/profile/me', icon: 'profile' },
   { label: 'Settings', to: '/settings', icon: 'settings' },
 ];
 
 export const proNav = [
   { label: 'Overview', to: '/pro/overview', icon: 'home' },
   { label: 'Discover', to: '/pro/discover', icon: 'spark' },
-  { label: 'Network', to: '/pro/network', icon: 'connections' },
   { label: 'Inbox', to: '/pro/inbox', icon: 'messages', badge: '3' },
   { label: 'Calendar', to: '/pro/calendar', icon: 'calendar' },
   { label: 'Events', to: '/pro/events', icon: 'events' },

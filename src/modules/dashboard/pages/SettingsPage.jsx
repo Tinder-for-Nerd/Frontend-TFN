@@ -24,7 +24,7 @@ export function SettingsPage() {
         <header className="pm-settings-header">
           <div>
             <h1 className="pm-settings-header__title">Account settings</h1>
-            <p>Fine-tune how ProMatch works for you.</p>
+            <p>Fine-tune how Tinder for Nerds works for you.</p>
           </div>
         </header>
 

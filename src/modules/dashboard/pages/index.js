@@ -10,3 +10,6 @@ export { CalendarPage } from './CalendarPage';
 export { SettingsPage } from './SettingsPage';
 export { NotificationsPage } from './NotificationsPage';
 export { AnalyticsPage } from './AnalyticsPage';
+export { EventDetailPage } from './EventDetailPage';
+export { HostEventPage } from './HostEventPage';
+export { CreateOpportunityPage } from './CreateOpportunityPage';

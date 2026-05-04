@@ -38,7 +38,7 @@ export function OnboardingPage() {
   const [socialType, setSocialType] = useState('LinkedIn');
   const [socialUrl, setSocialUrl] = useState('https://linkedin.com/in/');
 
-  usePageMeta('ProMatch | Onboarding', 'Complete the four-step ProMatch onboarding flow and prepare your profile for discovery.');
+  usePageMeta('Tinder for Nerds | Onboarding', 'Complete the four-step Tinder for Nerds onboarding flow and prepare your profile for discovery.');
 
   if (!isValidStep) {
     return <Navigate to="/onboarding/step-1" replace />;

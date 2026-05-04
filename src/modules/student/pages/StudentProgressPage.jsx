@@ -36,7 +36,7 @@ function MatchArc({ value, size = 180, stroke = 12 }) {
 }
 
 export function StudentProgressPage() {
-  usePageMeta('My Progress | ProMatch', 'Track profile quality, activity growth, skill gaps, and your network progress.');
+  usePageMeta('My Progress | Tinder for Nerds', 'Track profile quality, activity growth, skill gaps, and your network progress.');
 
   return (
     <AppShell 

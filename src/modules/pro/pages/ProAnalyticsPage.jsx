@@ -7,7 +7,7 @@ import { SectionHeader, StatCard, ActivityItem } from '../../../components/commo
 import { profiles, availabilityWeeks, events } from '../../../data/mockData';
 
 export function ProAnalyticsPage() {
-  usePageMeta('ProMatch | Analytics', 'Analytics, charts, and response metrics for professional users.');
+  usePageMeta('Tinder for Nerds | Analytics', 'Analytics, charts, and response metrics for professional users.');
 
   return (
     <AppShell variant="pro" title="Analytics" subtitle="Track the signals that shape your pipeline" actions={<Button variant="secondary">Export CSV</Button>}>

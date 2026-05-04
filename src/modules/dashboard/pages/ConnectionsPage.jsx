@@ -6,7 +6,7 @@ import { profiles, studentConnections } from '../../../data/mockData';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 
 export function ConnectionsPage() {
-  usePageMeta('My Connections | ProMatch', 'Manage your network, view pending requests, and discover suggested matches.');
+  usePageMeta('My Connections | Tinder for Nerds', 'Manage your network, view pending requests, and discover suggested matches.');
   
   const [activeTab, setActiveTab] = useState('connected');
   const [query, setQuery] = useState('');

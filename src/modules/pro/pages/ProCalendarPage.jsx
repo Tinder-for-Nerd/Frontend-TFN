@@ -9,7 +9,7 @@ import { profiles, availabilityWeeks, events } from '../../../data/mockData';
 export function ProCalendarPage() {
   const [monthView, setMonthView] = useState('monthly');
 
-  usePageMeta('ProMatch | Calendar', 'Monthly and weekly calendar views for availability, sessions, and bookings.');
+  usePageMeta('Tinder for Nerds | Calendar', 'Monthly and weekly calendar views for availability, sessions, and bookings.');
 
   return (
     <AppShell variant="pro" title="Calendar" subtitle="Availability and bookings for professional users" actions={<Button variant="secondary">Share availability</Button>}>

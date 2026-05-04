@@ -54,7 +54,7 @@ export default function LoginPage({ mode = 'login' }) {
         <div className="pm-login-card">
           <div className="pm-login-card__header">
             <Link to="/" className="pm-login-logo">
-              <span className="pm-logo-text">ProMatch</span>
+              <span className="pm-logo-text">Tinder for Nerds</span>
             </Link>
           </div>
 
@@ -159,7 +159,7 @@ export default function LoginPage({ mode = 'login' }) {
 
         <div className="pm-login-content">
           <div className="pm-login-content__section">
-            <h2>Why ProMatch?</h2>
+            <h2>Why Tinder for Nerds?</h2>
             <ul className="pm-login-content__list">
               <li>AI-powered matching based on skills and intent</li>
               <li>Direct access to vetted professionals and founders</li>

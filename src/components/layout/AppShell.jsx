@@ -9,7 +9,7 @@ import { profiles } from '../../constants/profiles';
 
 export function AppShell({
   children,
-  title = 'ProMatch',
+  title = 'Tinder for Nerds',
   subtitle,
   variant = 'student',
   actions,
@@ -148,7 +148,7 @@ export function AppShell({
           </nav>
         </div>
 
-        <div className="pm-sidebar__user">
+        <Link to="/profile/me" className="pm-sidebar__user">
           <Avatar
             name={user.name}
             src={user.src}
@@ -163,7 +163,7 @@ export function AppShell({
               <span>{variant === 'pro' ? 'Pro Member' : 'Student'}</span>
             </div>
           )}
-        </div>
+        </Link>
       </aside>
 
       <div className="pm-app-shell__content">
@@ -197,6 +197,14 @@ export function AppShell({
             </button>
 
             <div className="pm-topbar__actions">
+              <Link
+                className="pm-topbar__action"
+                to={variant === 'pro' ? '/pro/network' : '/student/connections'}
+                aria-label="Connections"
+              >
+                <Icon name="connections" />
+              </Link>
+
               <Link
                 className="pm-topbar__bell"
                 to="/notifications"
@@ -232,8 +240,8 @@ export function AppShell({
                     Settings
                   </Link>
                   <hr className="pm-divider" />
-                  <Link to="/" onClick={() => setProfileMenuOpen(false)}>
-                    Sign out
+                  <Link to="/logout" onClick={() => setProfileMenuOpen(false)} className="is-logout">
+                    Log out
                   </Link>
                 </div>
               </details>

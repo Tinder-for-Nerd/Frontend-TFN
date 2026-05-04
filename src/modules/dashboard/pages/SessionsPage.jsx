@@ -11,7 +11,7 @@ export function SessionsPage() {
   const [selectedSlot, setSelectedSlot] = useState(availabilityWeeks[0].slots[0]);
   const selectedDayInfo = availabilityWeeks.find((day) => day.date === selectedDay) || availabilityWeeks[0];
 
-  usePageMeta('ProMatch | Sessions', 'Student bookings and availability management for calls, feedback, and mentoring sessions.');
+  usePageMeta('Tinder for Nerds | Sessions', 'Student bookings and availability management for calls, feedback, and mentoring sessions.');
 
   return (
     <AppShell variant="student" title="Sessions" subtitle="Upcoming calls and your availability" actions={<Button to="/student/messages" variant="secondary">Back to messages</Button>}>

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
 
 /* ── tiny SVG icon helpers ── */
 const EyeIcon = () => (
@@ -95,6 +96,13 @@ const isValidEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
 export default function LoginPage({ mode = 'login' }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login, isAuthenticated } = useAuth();
+  const from = location.state?.from?.pathname || '/student/home';
+
+  // If already logged in, redirect away from login page
+  useEffect(() => { if (isAuthenticated) navigate(from, { replace: true }); }, [isAuthenticated]);
+
   const [email, setEmail]               = useState('');
   const [password, setPassword]         = useState('');
   const [name, setName]                 = useState('');
@@ -103,6 +111,7 @@ export default function LoginPage({ mode = 'login' }) {
   const [error, setError]               = useState('');
   const [loading, setLoading]           = useState(false);
   const [touched, setTouched]           = useState({});
+  const [role, setRole]                 = useState('student');
   const emailRef = useRef(null);
 
   const isSignup      = mode === 'signup';
@@ -133,8 +142,10 @@ export default function LoginPage({ mode = 'login' }) {
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 1200));
-      localStorage.setItem('user', JSON.stringify({ email, name: name || email }));
-      navigate('/onboarding/step-1');
+      login({ email, name: name || email, role });
+      const defaultRedirect = role === 'pro' ? '/pro/overview' : '/student/home';
+      const redirectTarget = location.state?.from?.pathname || defaultRedirect;
+      navigate(redirectTarget, { replace: true });
     } catch (err) {
       setError(err.message || 'Invalid credentials. Please try again.');
     } finally {
@@ -156,7 +167,7 @@ export default function LoginPage({ mode = 'login' }) {
           <div className="pm-login-card__header">
             <Link to="/" className="pm-login-logo" aria-label="Back to home">
               <span className="pm-login-logo__mark">P</span>
-              <span className="pm-login-logo__text">ProMatch</span>
+              <span className="pm-login-logo__text">Tinder for Nerds</span>
             </Link>
           </div>
 
@@ -168,6 +179,24 @@ export default function LoginPage({ mode = 'login' }) {
                   ? 'Join 2,400+ builders discovering serious matches'
                   : 'Get back to discovering your next co-founder'}
               </p>
+            </div>
+
+            {/* Role Selection */}
+            <div className="pm-login-form__role-toggle">
+              <button
+                type="button"
+                className={`pm-role-btn ${role === 'student' ? 'is-active' : ''}`}
+                onClick={() => setRole('student')}
+              >
+                Student
+              </button>
+              <button
+                type="button"
+                className={`pm-role-btn ${role === 'pro' ? 'is-active' : ''}`}
+                onClick={() => setRole('pro')}
+              >
+                Professional
+              </button>
             </div>
 
             {/* Error banner */}
@@ -318,7 +347,7 @@ export default function LoginPage({ mode = 'login' }) {
         {/* ── RIGHT: Value prop panel ── */}
         <div className="pm-login-content">
           <div className="pm-login-content__section">
-            <h2>Why ProMatch?</h2>
+            <h2>Why Tinder for Nerds?</h2>
             <p className="pm-login-content__lede">
               The fastest path from idea to team.
             </p>

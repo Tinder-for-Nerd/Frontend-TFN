@@ -9,7 +9,7 @@ import { profiles, availabilityWeeks, events } from '../../../data/mockData';
 export function NetworkPage() {
   const [tab, setTab] = useState('all');
 
-  usePageMeta('ProMatch | Pro Network', 'Professional network management with connection cards, domain groups, and pipeline tracking.');
+  usePageMeta('Tinder for Nerds | Pro Network', 'Professional network management with connection cards, domain groups, and pipeline tracking.');
 
   return (
     <AppShell variant="pro" title="Network" subtitle="Manage the relationships that matter most." actions={<Button to="/pro/inbox" variant="secondary">Open inbox</Button>}>

@@ -88,7 +88,7 @@ export function LandingPage() {
         <div className="pm-nav-container">
           <div className="pm-landing-nav__logo">
             <Icon name="spark" size={24} />
-            ProMatch
+            Tinder for Nerds
           </div>
           
           <button 
@@ -104,7 +104,7 @@ export function LandingPage() {
             <li><a href="#process" onClick={(e) => { e.preventDefault(); scrollToSection('process'); }}>How it works</a></li>
             <li><a href="#pricing" onClick={(e) => { e.preventDefault(); scrollToSection('pricing'); }}>Pricing</a></li>
             <li className="pm-nav-cta">
-              <GlowButton to="/login" className="pm-nav-glow">Sign in</GlowButton>
+              <GlowButton to="/login" className="pm-nav-glow">Enter App</GlowButton>
             </li>
           </ul>
         </div>
@@ -122,7 +122,7 @@ export function LandingPage() {
             Move from discovery to collaboration in minutes.
           </p>
           <div className="pm-landing-hero__cta">
-            <GlowButton to="/login">Get Started For Free</GlowButton>
+            <GlowButton to="/student/home">Get Started For Free</GlowButton>
             <Link className="pm-landing-secondary-link" to="/student/home">
               View demo workspace
             </Link>
@@ -134,7 +134,7 @@ export function LandingPage() {
           </div>
         </div>
 
-        <div className="pm-landing-product" aria-label="ProMatch product preview">
+        <div className="pm-landing-product" aria-label="Tinder for Nerds product preview">
           <div className="pm-landing-product__top">
             <div className="pm-landing-avatar">
               <img src={alexAvatar} alt="Alex Kumar profile" />
@@ -172,7 +172,7 @@ export function LandingPage() {
       <Section id="features" className="pm-landing-features">
         <div className="pm-landing-header">
           <Badge tone="teal" variant="soft">Features</Badge>
-          <h2>Why ProMatch</h2>
+          <h2>Why Tinder for Nerds</h2>
           <p>Engineered for high-momentum collaboration.</p>
         </div>
         <div className="pm-features-grid">
@@ -231,7 +231,7 @@ export function LandingPage() {
               <li>✓ Send messages</li>
               <li>✓ Book calls</li>
             </ul>
-            <GlowButton to="/login">Get started</GlowButton>
+            <GlowButton to="/student/home">Get started</GlowButton>
           </div>
           <div className="pm-pricing-card pm-pricing-card--featured pm-interactive-lift">
             <div className="pm-badge">Most popular</div>
@@ -242,7 +242,7 @@ export function LandingPage() {
               <li>✓ Priority search</li>
               <li>✓ Analytics</li>
             </ul>
-            <GlowButton to="/login">Start free trial</GlowButton>
+            <GlowButton to="/student/home">Start free trial</GlowButton>
           </div>
         </div>
       </Section>
@@ -251,7 +251,7 @@ export function LandingPage() {
       <Section className="pm-landing-cta">
         <div className="pm-cta-card">
           <h2>Ready to find your next collaboration?</h2>
-          <GlowButton to="/login">Join ProMatch Now</GlowButton>
+          <GlowButton to="/student/home">Join Tinder for Nerds Now</GlowButton>
         </div>
       </Section>
 
@@ -259,7 +259,7 @@ export function LandingPage() {
       <footer className="pm-landing-footer">
         <div className="pm-footer-content">
           <div className="pm-footer-brand">
-            <div className="pm-landing-nav__logo">ProMatch</div>
+            <div className="pm-landing-nav__logo">Tinder for Nerds</div>
             <p>Ambitious Precision in Networking.</p>
           </div>
           <div className="pm-footer-nav">
@@ -276,7 +276,7 @@ export function LandingPage() {
           </div>
         </div>
         <div className="pm-footer-bottom">
-          <p>&copy; 2024 ProMatch. All rights reserved.</p>
+          <p>&copy; 2024 Tinder for Nerds. All rights reserved.</p>
         </div>
       </footer>
     </div>

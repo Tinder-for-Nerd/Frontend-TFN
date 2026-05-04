@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 
 // Global design system — provides all CSS custom properties, component styles, and layout
-import './styles/promatch-dark.css';
+import './styles/tinderfornerds-dark.css';
 import './styles/instagram-feed.css';
 import './styles/messages.css';
 import './styles/premium-messages.css';

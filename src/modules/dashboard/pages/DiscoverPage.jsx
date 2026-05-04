@@ -20,7 +20,7 @@ export function DiscoverPage({ variant }) {
   const SPRING_EASING = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 
   usePageMeta(
-    variant === 'pro' ? 'ProMatch | Pro Discover' : 'ProMatch | Student Discover',
+    variant === 'pro' ? 'Tinder for Nerds | Pro Discover' : 'Tinder for Nerds | Student Discover',
     'Swipe through AI-ranked discovery feed with instant loading and smooth transitions.',
   );
 

@@ -8,7 +8,7 @@ export function CallPage() {
   const { sessionId = 'sarah-chen' } = useParams();
   const profile = profiles[sessionId] || profiles.sarah;
 
-  usePageMeta('ProMatch | Call room', 'Join a clean video call room with meeting controls and session context.');
+  usePageMeta('Tinder for Nerds | Call room', 'Join a clean video call room with meeting controls and session context.');
 
   return (
     <div className="pm-call-page">

@@ -5,14 +5,14 @@ export function AboutPage() {
   return (
     <div className="pm-about-page">
       <section className="pm-about-hero">
-        <h1>About ProMatch</h1>
+        <h1>About Tinder for Nerds</h1>
         <p>We believe finding the right collaborator shouldn't be a game of chance.</p>
       </section>
 
       <section className="pm-about-section">
         <h2>Our mission</h2>
         <p>
-          ProMatch makes it easy for builders, designers, operators, and entrepreneurs to discover 
+          Tinder for Nerds makes it easy for builders, designers, operators, and entrepreneurs to discover 
           and collaborate with the right people. We use AI to cut through the noise and surface the 
           best matches based on what actually matters—skills, domain expertise, intent, and working style.
         </p>
@@ -65,12 +65,12 @@ export function AboutPage() {
         <h2>Our team</h2>
         <p>
           Built by makers and operators who've been through the chaos of finding the right collaborators. 
-          We're using ProMatch ourselves, every day.
+          We're using Tinder for Nerds ourselves, every day.
         </p>
       </section>
 
       <section className="pm-about-cta">
-        <h2>Join ProMatch</h2>
+        <h2>Join Tinder for Nerds</h2>
         <p>Start discovering better collaborations today</p>
         <Button variant="primary" size="lg">
           Get started free

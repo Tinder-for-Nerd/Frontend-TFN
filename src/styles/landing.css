@@ -251,6 +251,13 @@
   padding: 8px;
 }
 
+/* Nav CTA button — clean compact style */
+.pm-nav-cta { margin-left: 8px; }
+.pm-nav-cta a::after { display: none !important; }
+.pm-nav-glow { flex-shrink: 0; }
+.pm-nav-glow .pm-glow-btn-bg { display: none; }
+.pm-nav-glow .pm-glow-btn { padding: 10px 24px; font-size: 0.88rem; border-radius: 10px; white-space: nowrap; }
+
 /* ============================================================================
    ANIMATIONS & REVEALS
    ============================================================================ */

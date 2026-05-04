@@ -33,7 +33,7 @@ export function ContactPage() {
           
           <div className="pm-info-item">
             <h3>Email</h3>
-            <a href="mailto:hello@promatch.app">hello@promatch.app</a>
+            <a href="mailto:hello@tinderfornerds.app">hello@tinderfornerds.app</a>
           </div>
 
           <div className="pm-info-item">

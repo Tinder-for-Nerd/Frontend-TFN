@@ -4,7 +4,7 @@ import { InstagramReelsFeed } from './components/common';
 import { LandingPage, FeaturesPage, AboutPage, ContactPage } from './modules/public/pages';
 import { LoginPage } from './modules/auth/pages';
 import { FeedPage, ProfilePage, MessagesPage, ConnectionsPage, CalendarPage, SettingsPage, NotificationsPage, AnalyticsPage } from './modules/dashboard/pages';
-import './styles/promatch-dark.css';
+import './styles/tinderfornerds-dark.css';
 import './styles/instagram-feed.css';
 import './styles/messages.css';
 import './styles/premium-messages.css';
@@ -890,12 +890,12 @@ function Avatar({ name, initials, src, size = 'md', tone = 'violet', online = fa
 
 function Brand({ compact = false, className = '', href = '/' }) {
   return (
-    <Link className={cx('pm-brand', compact && 'is-compact', className)} to={href} aria-label="ProMatch home">
+    <Link className={cx('pm-brand', compact && 'is-compact', className)} to={href} aria-label="Tinder for Nerds home">
       <span className="pm-brand__mark" aria-hidden="true">
         PM
       </span>
       <span className="pm-brand__copy">
-        <strong>ProMatch</strong>
+        <strong>Tinder for Nerds</strong>
         <span>Ambitious precision</span>
       </span>
     </Link>
@@ -1256,7 +1256,7 @@ function PublicFooter() {
     <footer className="pm-public-footer">
       <div>
         <Brand compact />
-        <p>ProMatch connects ambitious builders, founders, designers, and experts who want to create real work together.</p>
+        <p>Tinder for Nerds connects ambitious builders, founders, designers, and experts who want to create real work together.</p>
       </div>
       <div>
         <strong>Product</strong>
@@ -1313,8 +1313,8 @@ function AuthPage({ mode }) {
   const isSignup = mode === 'signup';
 
   usePageMeta(
-    `ProMatch | ${isSignup ? 'Sign up' : 'Log in'}`,
-    'Log in or sign up to ProMatch and start finding co-founders, mentors, collaborators, and professionals faster.',
+    `Tinder for Nerds | ${isSignup ? 'Sign up' : 'Log in'}`,
+    'Log in or sign up to Tinder for Nerds and start finding co-founders, mentors, collaborators, and professionals faster.',
   );
 
   return (
@@ -1331,7 +1331,7 @@ function AuthPage({ mode }) {
         <div className="pm-auth-hero__content">
           <p className="pm-kicker">Your next chapter starts with the right person.</p>
           <h1>{isSignup ? 'Create a profile that serious people want to meet.' : 'Pick up where your network left off.'}</h1>
-          <p>ProMatch keeps the first step lightweight with Google and LinkedIn OAuth, then moves straight into a focused onboarding flow.</p>
+          <p>Tinder for Nerds keeps the first step lightweight with Google and LinkedIn OAuth, then moves straight into a focused onboarding flow.</p>
         </div>
         <article className="pm-card pm-auth-hero__quote">
           <p>“It reads like a premium recruiting tool, not a dating app.”</p>
@@ -1443,7 +1443,7 @@ function OnboardingPage() {
   const [socialType, setSocialType] = useState('LinkedIn');
   const [socialUrl, setSocialUrl] = useState('https://linkedin.com/in/');
 
-  usePageMeta('ProMatch | Onboarding', 'Complete the four-step ProMatch onboarding flow and prepare your profile for discovery.');
+  usePageMeta('Tinder for Nerds | Onboarding', 'Complete the four-step Tinder for Nerds onboarding flow and prepare your profile for discovery.');
 
   if (!isValidStep) {
     return <Navigate to="/onboarding/step-1" replace />;
@@ -1814,14 +1814,14 @@ function AppShell({ variant = 'student', title, subtitle, actions, children, cla
 }
 
 function StudentHomePage() {
-  usePageMeta('ProMatch | Student Home', 'Student dashboard overview with matches, activity, and profile growth signals.');
+  usePageMeta('Tinder for Nerds | Student Home', 'Student dashboard overview with matches, activity, and profile growth signals.');
 
   return (
     <AppShell variant="student" title="Good morning, Alex" subtitle="You have 3 new match suggestions and 1 pending connection request." actions={<Button to="/student/discover">View matches</Button>}>
       <section className="pm-banner">
         <div>
           <p className="pm-kicker">Welcome back</p>
-          <h1>Your ProMatch journey is moving.</h1>
+          <h1>Your Tinder for Nerds journey is moving.</h1>
           <p>Profile strength, fresh matches, and the next best action are all visible in one calm dashboard.</p>
         </div>
         <div className="pm-banner__actions">
@@ -1899,7 +1899,7 @@ function DiscoverPage({ variant }) {
   const SPRING_EASING = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 
   usePageMeta(
-    variant === 'pro' ? 'ProMatch | Pro Discover' : 'ProMatch | Student Discover',
+    variant === 'pro' ? 'Tinder for Nerds | Pro Discover' : 'Tinder for Nerds | Student Discover',
     'Swipe through AI-ranked discovery feed with instant loading and smooth transitions.',
   );
 
@@ -2093,7 +2093,7 @@ function DiscoverPage({ variant }) {
 function NetworkPage() {
   const [tab, setTab] = useState('all');
 
-  usePageMeta('ProMatch | Pro Network', 'Professional network management with connection cards, domain groups, and pipeline tracking.');
+  usePageMeta('Tinder for Nerds | Pro Network', 'Professional network management with connection cards, domain groups, and pipeline tracking.');
 
   return (
     <AppShell variant="pro" title="Network" subtitle="Manage the relationships that matter most." actions={<Button to="/pro/inbox" variant="secondary">Open inbox</Button>}>
@@ -2174,7 +2174,7 @@ function SessionsPage() {
   const [selectedSlot, setSelectedSlot] = useState(availabilityWeeks[0].slots[0]);
   const selectedDayInfo = availabilityWeeks.find((day) => day.date === selectedDay) || availabilityWeeks[0];
 
-  usePageMeta('ProMatch | Sessions', 'Student bookings and availability management for calls, feedback, and mentoring sessions.');
+  usePageMeta('Tinder for Nerds | Sessions', 'Student bookings and availability management for calls, feedback, and mentoring sessions.');
 
   return (
     <AppShell variant="student" title="Sessions" subtitle="Upcoming calls and your availability" actions={<Button to="/student/messages" variant="secondary">Back to messages</Button>}>
@@ -2222,7 +2222,7 @@ function EventsPage({ variant }) {
   const activeEvent = events.find((event) => event.id === eventId) || eventList[0] || events[0];
 
   usePageMeta(
-    variant === 'pro' ? 'ProMatch | Pro Events' : 'ProMatch | Student Events',
+    variant === 'pro' ? 'Tinder for Nerds | Pro Events' : 'Tinder for Nerds | Student Events',
     'Browse virtual and in-person events hosted by professionals and the community.',
   );
 
@@ -2288,12 +2288,12 @@ function EventsPage({ variant }) {
 }
 
 function StudentProgressPage() {
-  usePageMeta('ProMatch | Student Progress', 'Track profile quality, activity growth, skill gaps, and your network progress.');
+  usePageMeta('Tinder for Nerds | Student Progress', 'Track profile quality, activity growth, skill gaps, and your network progress.');
 
   return (
     <AppShell variant="student" title="My Progress" subtitle="See how your profile is growing over time" actions={<Button variant="secondary">Browse matches</Button>}>
       <section className="pm-panel pm-progress-hero">
-        <SectionHeader eyebrow="Your ProMatch journey" title="Here's how you're growing as a builder" description="Visible progress gives people more confidence when they discover your profile." />
+        <SectionHeader eyebrow="Your Tinder for Nerds journey" title="Here's how you're growing as a builder" description="Visible progress gives people more confidence when they discover your profile." />
         <div className="pm-progress-hero__grid">
           <div className="pm-progress-ring-card">
             <MatchArc value={73} size={180} stroke={12} />
@@ -2361,7 +2361,7 @@ function StudentProgressPage() {
 }
 
 function ProOverviewPage() {
-  usePageMeta('ProMatch | Pro Overview', 'Professional dashboard overview with pipeline, inbox, matches, and schedule.');
+  usePageMeta('Tinder for Nerds | Pro Overview', 'Professional dashboard overview with pipeline, inbox, matches, and schedule.');
 
   return (
     <AppShell variant="pro" title="Good morning, Priya" subtitle="Your professional pipeline looks active this week." actions={<Button variant="secondary">Share profile</Button>}>
@@ -2373,7 +2373,7 @@ function ProOverviewPage() {
         </div>
         <div className="pm-banner__actions">
           <Button to="/pro/discover" variant="secondary">
-            Invite to ProMatch
+            Invite to Tinder for Nerds
           </Button>
           <Button to="/pro/company">Share company</Button>
         </div>
@@ -2468,7 +2468,7 @@ function ProInboxPage() {
 function ProCalendarPage() {
   const [monthView, setMonthView] = useState('monthly');
 
-  usePageMeta('ProMatch | Calendar', 'Monthly and weekly calendar views for availability, sessions, and bookings.');
+  usePageMeta('Tinder for Nerds | Calendar', 'Monthly and weekly calendar views for availability, sessions, and bookings.');
 
   return (
     <AppShell variant="pro" title="Calendar" subtitle="Availability and bookings for professional users" actions={<Button variant="secondary">Share availability</Button>}>
@@ -2507,7 +2507,7 @@ function ProCalendarPage() {
 }
 
 function ProAnalyticsPage() {
-  usePageMeta('ProMatch | Analytics', 'Analytics, charts, and response metrics for professional users.');
+  usePageMeta('Tinder for Nerds | Analytics', 'Analytics, charts, and response metrics for professional users.');
 
   return (
     <AppShell variant="pro" title="Analytics" subtitle="Track the signals that shape your pipeline" actions={<Button variant="secondary">Export CSV</Button>}>
@@ -2572,7 +2572,7 @@ function ProAnalyticsPage() {
 }
 
 function ProCompanyPage() {
-  usePageMeta('ProMatch | Company', 'Create and edit a company profile with team, role, and skill requirements.');
+  usePageMeta('Tinder for Nerds | Company', 'Create and edit a company profile with team, role, and skill requirements.');
 
   return (
     <AppShell variant="pro" title="Company" subtitle="Your startup page and needs profile" actions={<Button variant="secondary">Edit mode</Button>}>
@@ -2631,7 +2631,7 @@ function ProCompanyPage() {
 function SettingsPageOld() {
   const [tab, setTab] = useState('Profile');
 
-  usePageMeta('ProMatch | Settings', 'Adjust profile, account, privacy, notifications, and billing settings.');
+  usePageMeta('Tinder for Nerds | Settings', 'Adjust profile, account, privacy, notifications, and billing settings.');
 
   const settingsContent = (
     <main id="main" className="pm-settings-layout">
@@ -2750,7 +2750,7 @@ function CallPage() {
   const { sessionId = 'sarah-chen' } = useParams();
   const profile = profiles[sessionId] || profiles.sarah;
 
-  usePageMeta('ProMatch | Call room', 'Join a clean video call room with meeting controls and session context.');
+  usePageMeta('Tinder for Nerds | Call room', 'Join a clean video call room with meeting controls and session context.');
 
   return (
     <div className="pm-call-page">
@@ -2961,6 +2961,6 @@ function AppRoutes() {
     </BrowserRouter>
   );
 }
-export default function ProMatchDarkApp() {
+export default function TinderForNerdsApp() {
   return <AppRoutes />;
 }
