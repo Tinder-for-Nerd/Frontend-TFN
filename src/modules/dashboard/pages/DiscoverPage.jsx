@@ -11,6 +11,7 @@ export function DiscoverPage({ variant }) {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState(0);
   const [dragDistance, setDragDistance] = useState(0);
+  const [requestedById, setRequestedById] = useState(() => ({}));
   const containerRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
 
@@ -176,7 +177,15 @@ export function DiscoverPage({ variant }) {
                   }}
                 >
                   <div style={{ width: '100%' }}>
-                    <MiniProfileCard profile={profile} extraLink={`/profile/${profile.username}`} />
+                    <MiniProfileCard
+                      profile={profile}
+                      extraLink={`/profile/${profile.username}`}
+                      ctaLabel={requestedById[profile.id] ? 'Requested' : 'Connect'}
+                      ctaDisabled={Boolean(requestedById[profile.id])}
+                      onCta={() =>
+                        setRequestedById((current) => ({ ...current, [profile.id]: true }))
+                      }
+                    />
                   </div>
                 </div>
               ))

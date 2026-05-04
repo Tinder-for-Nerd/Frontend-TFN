@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import { cx } from '../../utils/helpers';
-import { Avatar, Badge, Button, Icon } from '../ui';
+import { Avatar, Button, Icon } from '../ui';
 
 export function MiniProfileCard({ 
   profile, 
@@ -8,7 +7,9 @@ export function MiniProfileCard({
   ctaLabel = 'Connect', 
   secondaryLabel = 'Message', 
   extraLink = '/profile/me',
-  hideActions = false
+  hideActions = false,
+  onCta,
+  ctaDisabled = false,
 }) {
   return (
     <article className="pm-card" style={{ 
@@ -23,7 +24,18 @@ export function MiniProfileCard({
       boxSizing: 'border-box'
     }}>
       {/* 1. Identity Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', width: '100%' }}>
+      <Link
+        to={extraLink}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '16px',
+          width: '100%',
+          color: 'inherit',
+          textDecoration: 'none',
+        }}
+        aria-label={`Open ${profile?.name ?? 'profile'}`}
+      >
         <div style={{ position: 'relative', flexShrink: 0 }}>
           <Avatar 
             name={profile.name} 
@@ -72,7 +84,7 @@ export function MiniProfileCard({
           </span>
           <span style={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', opacity: 0.5 }}>Fit</span>
         </div>
-      </div>
+      </Link>
 
       {/* 2. Body Content */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -146,7 +158,25 @@ export function MiniProfileCard({
       {/* 3. Actions (Conditional) */}
       {!hideActions && (
         <div style={{ display: 'grid', gap: '12px', marginTop: '8px' }}>
-          <Button variant="primary" className="pm-btn-full">{ctaLabel}</Button>
+          {onCta ? (
+            <Button
+              variant="primary"
+              className="pm-btn-full"
+              onClick={onCta}
+              disabled={ctaDisabled}
+            >
+              {ctaLabel}
+            </Button>
+          ) : (
+            <Button
+              to={extraLink}
+              variant="primary"
+              className="pm-btn-full"
+              disabled={ctaDisabled}
+            >
+              {ctaLabel}
+            </Button>
+          )}
           <div style={{ display: 'flex', gap: '8px' }}>
             <Button variant="secondary" icon="messages" style={{ flex: 1 }} />
             <Button variant="secondary" icon="calendar" style={{ flex: 1 }} />
