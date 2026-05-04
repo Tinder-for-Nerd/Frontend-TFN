@@ -58,7 +58,7 @@ export function MiniProfileCard({
         <div style={{ position: 'relative', flexShrink: 0 }}>
           <Avatar 
             name={profile.name} 
-            src={profile.avatar_url}
+            src={profile.src || profile.avatar_url}
             initials={profile.avatar} 
             tone={profile.tone} 
             size="lg" 
