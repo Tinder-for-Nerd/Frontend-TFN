@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Avatar, Button, Icon } from '../ui';
 
 export function MiniProfileCard({ 
@@ -11,8 +11,37 @@ export function MiniProfileCard({
   onCta,
   ctaDisabled = false,
 }) {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    if (!extraLink) return;
+    navigate(extraLink);
+  };
+
+  const handleCardClick = (event) => {
+    // Don't hijack clicks on interactive elements inside the card.
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (target.closest('button, a, input, textarea, select, label')) return;
+    handleNavigate();
+  };
+
+  const handleCardKeyDown = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleNavigate();
+    }
+  };
+
   return (
-    <article className="pm-card" style={{ 
+    <article
+      className="pm-card"
+      role="link"
+      tabIndex={0}
+      onClick={handleCardClick}
+      onKeyDown={handleCardKeyDown}
+      aria-label={`Open ${profile?.name ?? 'profile'}`}
+      style={{
       display: 'flex', 
       flexDirection: 'column', 
       gap: '20px', 
@@ -22,20 +51,10 @@ export function MiniProfileCard({
       padding: '24px',
       width: '100%',
       boxSizing: 'border-box'
-    }}>
+    }}
+    >
       {/* 1. Identity Header */}
-      <Link
-        to={extraLink}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '16px',
-          width: '100%',
-          color: 'inherit',
-          textDecoration: 'none',
-        }}
-        aria-label={`Open ${profile?.name ?? 'profile'}`}
-      >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', width: '100%' }}>
         <div style={{ position: 'relative', flexShrink: 0 }}>
           <Avatar 
             name={profile.name} 
@@ -84,7 +103,7 @@ export function MiniProfileCard({
           </span>
           <span style={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', opacity: 0.5 }}>Fit</span>
         </div>
-      </Link>
+      </div>
 
       {/* 2. Body Content */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -162,7 +181,10 @@ export function MiniProfileCard({
             <Button
               variant="primary"
               className="pm-btn-full"
-              onClick={onCta}
+              onClick={(event) => {
+                event.stopPropagation();
+                onCta();
+              }}
               disabled={ctaDisabled}
             >
               {ctaLabel}
