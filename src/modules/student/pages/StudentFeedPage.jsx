@@ -8,6 +8,7 @@ export function StudentFeedPage() {
   const composerRef = useRef(null);
   const [query, setQuery] = useState('');
   const [newPostContent, setNewPostContent] = useState('');
+  const [activeCommentId, setActiveCommentId] = useState(null);
   const [posts, setPosts] = useState(() => [
     {
       id: 1,
@@ -73,6 +74,25 @@ export function StudentFeedPage() {
     setNewPostContent('');
   };
 
+  const trendingTopics = useMemo(
+    () => [
+      { label: 'React Server Components', meta: '1,284 mentions today' },
+      { label: 'Hackathon co-founders', meta: '928 mentions today' },
+      { label: 'Distributed systems', meta: '744 mentions today' },
+      { label: 'Figma to React', meta: '612 mentions today' },
+    ],
+    []
+  );
+
+  const peopleToFollow = useMemo(
+    () => [
+      { id: 'follow-sarah', person: profiles.sarah, note: 'Founder mentor · Product' },
+      { id: 'follow-raj', person: profiles.raj, note: 'Backend · Distributed systems' },
+      { id: 'follow-priya', person: profiles.priya, note: 'FinTech ML · Fraud detection' },
+    ],
+    []
+  );
+
   return (
     <AppShell
       variant="student"
@@ -101,87 +121,130 @@ export function StudentFeedPage() {
         </div>
       }
     >
-      <div className="pm-student-feed">
-        <section
-          ref={composerRef}
-          className="pm-student-feed__composer pm-card"
-          aria-label="Create post"
-        >
-          <div className="pm-student-feed__composer-head">
-            <Avatar
-              name={profiles.me.name}
-              src={profiles.me.src}
-              initials={profiles.me.avatar}
-              tone={profiles.me.tone}
-              size="md"
-            />
-            <div className="pm-student-feed__composer-meta">
-              <strong>Share an update</strong>
-              <span>Keep it short. Link work when possible.</span>
+      <div className="pm-li-feed">
+        <div className="pm-li-feed__main">
+          <section
+            ref={composerRef}
+            className="pm-li-composer pm-card"
+            aria-label="Create post"
+          >
+            <div className="pm-li-composer__row">
+              <Avatar
+                name={profiles.me.name}
+                src={profiles.me.src}
+                initials={profiles.me.avatar}
+                tone={profiles.me.tone}
+                size="md"
+              />
+              <textarea
+                className="pm-li-composer__input"
+                value={newPostContent}
+                onChange={(event) => setNewPostContent(event.target.value)}
+                placeholder="Start a post"
+              />
             </div>
+
+            <div className="pm-li-composer__bar">
+              <div className="pm-li-composer__tools" aria-label="Add to your post">
+                <button className="pm-li-tool" type="button">
+                  <Icon name="spark" size={18} />
+                  <span>Media</span>
+                </button>
+                <button className="pm-li-tool" type="button">
+                  <Icon name="events" size={18} />
+                  <span>Event</span>
+                </button>
+                <button className="pm-li-tool" type="button">
+                  <Icon name="connections" size={18} />
+                  <span>Link</span>
+                </button>
+              </div>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleCreatePost}
+                disabled={!newPostContent.trim()}
+              >
+                Post
+              </Button>
+            </div>
+          </section>
+
+          <div className="pm-li-sort" aria-label="Sort feed">
+            <span>Sort by:</span>
+            <button className="pm-li-sort__btn" type="button">
+              Top <Icon name="chevron-down" size={16} />
+            </button>
+            <span className="pm-li-sort__line" aria-hidden="true" />
           </div>
 
-          <textarea
-            className="pm-student-feed__textarea"
-            value={newPostContent}
-            onChange={(event) => setNewPostContent(event.target.value)}
-            placeholder="What are you building this week?"
-          />
+          <section className="pm-li-feed__list" aria-label="Network posts">
+            {filteredPosts.length === 0 ? (
+              <div className="pm-student-feed__empty pm-card">
+                <Badge tone="teal" variant="soft">
+                  No results
+                </Badge>
+                <h2>Nothing matched your search.</h2>
+                <p>Try searching for a name, skill, or topic.</p>
+              </div>
+            ) : (
+              filteredPosts.map((post) => (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  commenting={activeCommentId === post.id}
+                  onToggleComment={() =>
+                    setActiveCommentId((current) => (current === post.id ? null : post.id))
+                  }
+                />
+              ))
+            )}
+          </section>
+        </div>
 
-          <div className="pm-student-feed__composer-actions">
-            <div className="pm-student-feed__composer-tools" aria-label="Add attachment">
-              <button
-                className="pm-icon-button pm-student-feed__tool"
-                type="button"
-                aria-label="Add link"
-              >
-                <Icon name="connections" size={18} />
-              </button>
-              <button
-                className="pm-icon-button pm-student-feed__tool"
-                type="button"
-                aria-label="Add image"
-              >
-                <Icon name="spark" size={18} />
-              </button>
-              <button
-                className="pm-icon-button pm-student-feed__tool"
-                type="button"
-                aria-label="Add document"
-              >
-                <Icon name="events" size={18} />
-              </button>
+        <aside className="pm-li-feed__rail" aria-label="Right rail">
+          <section className="pm-li-rail-card pm-card">
+            <h2>Trending</h2>
+            <div className="pm-li-topic-list">
+              {trendingTopics.map((topic) => (
+                <button key={topic.label} className="pm-li-topic" type="button">
+                  <strong>{topic.label}</strong>
+                  <span>{topic.meta}</span>
+                </button>
+              ))}
             </div>
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={handleCreatePost}
-              disabled={!newPostContent.trim()}
-            >
-              Post
-            </Button>
-          </div>
-        </section>
+          </section>
 
-        <section className="pm-student-feed__list" aria-label="Network posts">
-          {filteredPosts.length === 0 ? (
-            <div className="pm-student-feed__empty pm-card">
-              <Badge tone="teal" variant="soft">
-                No results
-              </Badge>
-              <h2>Nothing matched your search.</h2>
-              <p>Try searching for a name, skill, or topic.</p>
+          <section className="pm-li-rail-card pm-card">
+            <h2>People you may know</h2>
+            <div className="pm-li-follow-list">
+              {peopleToFollow.map((item) => (
+                <div key={item.id} className="pm-li-follow">
+                  <Avatar
+                    name={item.person.name}
+                    src={item.person.src}
+                    initials={item.person.avatar}
+                    tone={item.person.tone}
+                    size="md"
+                  />
+                  <div className="pm-li-follow__meta">
+                    <strong>{item.person.name}</strong>
+                    <span>{item.note}</span>
+                  </div>
+                  <Button variant="secondary" size="sm">
+                    Follow
+                  </Button>
+                </div>
+              ))}
             </div>
-          ) : (
-            filteredPosts.map((post) => <PostCard key={post.id} post={post} />)
-          )}
-        </section>
+          </section>
+        </aside>
       </div>
     </AppShell>
   );
 }
 
-function PostCard({ post }) {
+function PostCard({ post, commenting, onToggleComment }) {
   const iconForType = (type) => {
     if (type === 'image') return 'spark';
     if (type === 'link') return 'connections';
@@ -189,9 +252,9 @@ function PostCard({ post }) {
   };
 
   return (
-    <article className="pm-student-post pm-card">
-      <header className="pm-student-post__head">
-        <div className="pm-student-post__identity">
+    <article className="pm-li-post pm-card">
+      <header className="pm-li-post__head">
+        <div className="pm-li-post__identity">
           <Avatar
             name={post.author.name}
             src={post.author.src}
@@ -199,8 +262,8 @@ function PostCard({ post }) {
             tone={post.author.tone}
             size="md"
           />
-          <div className="pm-student-post__meta">
-            <div className="pm-student-post__name-row">
+          <div className="pm-li-post__meta">
+            <div className="pm-li-post__name-row">
               <strong>{post.author.name}</strong>
               {post.trending ? (
                 <Badge tone="teal" variant="soft">
@@ -214,46 +277,83 @@ function PostCard({ post }) {
           </div>
         </div>
 
-        <button className="pm-icon-button pm-student-post__menu" type="button" aria-label="Post options">
+        <div className="pm-li-post__head-actions">
+          <button className="pm-li-follow-btn" type="button">
+            Follow
+          </button>
+          <button className="pm-icon-button pm-li-post__menu" type="button" aria-label="Post options">
           <Icon name="more" size={18} />
-        </button>
+          </button>
+        </div>
       </header>
 
-      <div className="pm-student-post__body">
+      <div className="pm-li-post__body">
         <p>{post.content}</p>
       </div>
 
       {post.attachments?.length ? (
-        <div className="pm-student-post__attachments">
+        <div className="pm-li-post__attachments">
           {post.attachments.map((attachment) => (
-            <a key={attachment.name} className="pm-student-attachment" href={attachment.url}>
-              <span className="pm-student-attachment__icon" aria-hidden="true">
+            <a key={attachment.name} className="pm-li-attachment" href={attachment.url}>
+              <span className="pm-li-attachment__icon" aria-hidden="true">
                 <Icon name={iconForType(attachment.type)} size={18} />
               </span>
-              <span className="pm-student-attachment__copy">
+              <span className="pm-li-attachment__copy">
                 <strong>{attachment.name}</strong>
                 <span>{attachment.type?.toUpperCase?.() ?? 'ATTACHMENT'}</span>
               </span>
-              <Icon name="chevron-right" size={18} className="pm-student-attachment__chev" />
+              <Icon name="chevron-right" size={18} className="pm-li-attachment__chev" />
             </a>
           ))}
         </div>
       ) : null}
 
-      <footer className="pm-student-post__footer">
-        <button className="pm-student-post__action" type="button" aria-label="Like">
-          <Icon name="spark" size={18} />
+      <div className="pm-li-post__reactions" aria-label="Reactions summary">
+        <div className="pm-li-post__reaction-left">
+          <span className="pm-li-reaction-pill" aria-hidden="true">
+            <Icon name="thumbs-up" size={14} />
+          </span>
           <span>{post.likes}</span>
+        </div>
+        <div className="pm-li-post__reaction-right">
+          <span>{post.comments} comments</span>
+        </div>
+      </div>
+
+      <footer className="pm-li-post__footer" aria-label="Post actions">
+        <button className="pm-li-action" type="button">
+          <Icon name="thumbs-up" size={18} />
+          <span>Like</span>
         </button>
-        <button className="pm-student-post__action" type="button" aria-label="Comment">
-          <Icon name="messages" size={18} />
-          <span>{post.comments}</span>
+        <button className="pm-li-action" type="button" onClick={onToggleComment}>
+          <Icon name="message-circle" size={18} />
+          <span>Comment</span>
         </button>
-        <button className="pm-student-post__action pm-student-post__action--end" type="button" aria-label="Share">
-          <Icon name="connections" size={18} />
+        <button className="pm-li-action" type="button">
+          <Icon name="repeat" size={18} />
+          <span>Repost</span>
+        </button>
+        <button className="pm-li-action" type="button">
+          <Icon name="send" size={18} />
+          <span>Send</span>
         </button>
       </footer>
+
+      {commenting ? (
+        <div className="pm-li-comment" aria-label="Write a comment">
+          <Avatar
+            name={profiles.me.name}
+            src={profiles.me.src}
+            initials={profiles.me.avatar}
+            tone={profiles.me.tone}
+            size="sm"
+          />
+          <input className="pm-li-comment__input" placeholder="Add a comment..." />
+          <button className="pm-icon-button" type="button" aria-label="Post comment">
+            <Icon name="send" size={18} />
+          </button>
+        </div>
+      ) : null}
     </article>
   );
 }
-

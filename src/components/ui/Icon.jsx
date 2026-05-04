@@ -213,6 +213,23 @@ export function Icon({ name, size = 18, className = '', ...props }) {
           <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-7.6 8.38 8.38 0 0 1 3.8.9L21 3.5Z" />
         </svg>
       );
+    case 'repeat':
+      return (
+        <svg {...common}>
+          <path d="M17 2l4 4-4 4" />
+          <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+          <path d="M7 22l-4-4 4-4" />
+          <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+        </svg>
+      );
+    case 'thumbs-up':
+      return (
+        <svg {...common}>
+          <path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+          <path d="M14 10V5a3 3 0 0 0-3-3l-1 7" />
+          <path d="M7 10h8a2 2 0 0 1 2 2l-1 7a2 2 0 0 1-2 2H7V10z" />
+        </svg>
+      );
     default:
       return null;
   }
