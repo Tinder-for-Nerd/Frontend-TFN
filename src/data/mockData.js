@@ -147,7 +147,6 @@ export const socialTypes = ['LinkedIn', 'GitHub', 'Portfolio', 'Twitter'];
 export const studentNav = [
   { label: 'Home', to: '/student/home', icon: 'home' },
   { label: 'Discover', to: '/student/discover', icon: 'spark' },
-  { label: 'Feed', to: '/student/feed', icon: 'events' },
   { label: 'Messages', to: '/student/messages', icon: 'messages', badge: '2' },
   { label: 'Events', to: '/student/events', icon: 'events' },
   { label: 'My Progress', to: '/student/progress', icon: 'chart' },
