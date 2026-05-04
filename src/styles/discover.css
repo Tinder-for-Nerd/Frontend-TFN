@@ -1,0 +1,69 @@
+/* Discover (swipe stack) */
+.pm-discover {
+  width: min(100%, 740px);
+  margin: 0 auto;
+  padding: 8px;
+}
+
+.pm-discover__stack {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  cursor: grab;
+  border-radius: var(--radius-xl);
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline-variant);
+  box-shadow: var(--shadow-ambient);
+}
+
+.pm-discover__stack.is-dragging {
+  cursor: grabbing;
+}
+
+.pm-discover__rail {
+  width: 100%;
+}
+
+.pm-discover__cell {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.pm-discover__card {
+  width: 100%;
+  /* Keep the “layered paper” look by letting the stack bg show at edges */
+  padding: 2px;
+}
+
+.pm-discover__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-weight: 800;
+}
+
+.pm-discover__snap {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 9999px;
+  border: 1px solid var(--outline-variant);
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--text-secondary);
+  font-weight: 900;
+  backdrop-filter: blur(12px);
+}
+
+.pm-discover__snap.is-ready {
+  background: rgba(14, 207, 191, 0.16);
+  border-color: rgba(14, 207, 191, 0.32);
+  color: var(--text-primary);
+}
+
