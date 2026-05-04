@@ -26,6 +26,24 @@
   font-size: 0.95rem;
 }
 
+.pm-student-feed__empty {
+  padding: 16px;
+  border-radius: 12px;
+  display: grid;
+  gap: 8px;
+  text-align: center;
+}
+
+.pm-student-feed__empty h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.pm-student-feed__empty p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
 .pm-li-feed {
   width: min(100%, 1100px);
   margin: 0 auto;

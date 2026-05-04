@@ -1,134 +1,97 @@
-import { useMemo } from 'react';
-import { cx } from '../../../utils/helpers';
+import { useMemo, useRef, useState } from 'react';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 import { AppShell } from '../../../components/layout';
-import { Avatar, Button, Icon, Badge } from '../../../components/ui';
-import {
-  StatCard,
-  SectionHeader,
-  MiniProfileCard,
-  ActivityItem,
-} from '../../../components/common';
+import { Avatar, Badge, Button, Icon } from '../../../components/ui';
 import { profiles } from '../../../constants/profiles';
 import '../../../styles/student-feed.css';
 
 export function StudentHomePage() {
-  usePageMeta(
-    'Tinder for Nerds | Student Dashboard',
-    'Student dashboard overview with matches, activity, and profile growth signals.'
-  );
+  usePageMeta('Tinder for Nerds | Home', 'Your home feed with updates from your network.');
 
-  const firstName = useMemo(() => profiles.me.name.split(' ')[0], []);
+  const composerRef = useRef(null);
+  const [query, setQuery] = useState('');
+  const [newPostContent, setNewPostContent] = useState('');
+  const [activeCommentId, setActiveCommentId] = useState(null);
+  const [posts, setPosts] = useState(() => [
+    {
+      id: 1,
+      author: profiles.sarah,
+      content:
+        'Just published a guide on modern React architecture: state management, routing, and performance optimization. Feedback welcome.',
+      timestamp: '2 hours ago',
+      attachments: [{ type: 'link', name: 'React Architecture Guide', url: '#' }],
+      likes: 24,
+      comments: 5,
+      trending: true,
+    },
+    {
+      id: 2,
+      author: profiles.raj,
+      content:
+        'Working on an open source project for distributed task scheduling. Looking for contributors interested in Python and Redis.',
+      timestamp: '5 hours ago',
+      attachments: [{ type: 'image', name: 'architecture.png', url: '#' }],
+      likes: 42,
+      comments: 12,
+      trending: false,
+    },
+    {
+      id: 3,
+      author: profiles.priya,
+      content:
+        'Slides from my talk on Machine Learning for FinTech: fraud detection and credit scoring models.',
+      timestamp: '1 day ago',
+      attachments: [{ type: 'document', name: 'ML_FinTech_Slides.pdf', url: '#' }],
+      likes: 89,
+      comments: 18,
+      trending: false,
+    },
+  ]);
 
-  const recommendedProfiles = useMemo(
-    () =>
-      [profiles.sarah, profiles.raj, profiles.mei, profiles.ethan].map((profile) => ({
-        ...profile,
-        verified: true,
-        status: 'Online',
-        domain: 'Product Strategy',
-      })),
-    []
-  );
+  const filteredPosts = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    if (!needle) return posts;
+    return posts.filter((post) => {
+      const author = post.author?.name?.toLowerCase?.() ?? '';
+      const content = post.content?.toLowerCase?.() ?? '';
+      return author.includes(needle) || content.includes(needle);
+    });
+  }, [posts, query]);
 
-  const stats = useMemo(
+  const handleCreatePost = () => {
+    const trimmed = newPostContent.trim();
+    if (!trimmed) return;
+
+    const newPost = {
+      id: Date.now(),
+      author: profiles.me,
+      content: trimmed,
+      timestamp: 'Just now',
+      attachments: [],
+      likes: 0,
+      comments: 0,
+      trending: false,
+    };
+
+    setPosts((existing) => [newPost, ...existing]);
+    setNewPostContent('');
+  };
+
+  const trendingTopics = useMemo(
     () => [
-      {
-        value: '73%',
-        label: 'Profile strength',
-        detail: 'Add 2 more skills to reach 85%.',
-        ring: 73,
-        trend: 5,
-        accent: 'teal',
-      },
-      {
-        value: '12',
-        label: 'Matches today',
-        detail: 'Top 10% of candidates in AI/ML.',
-        spark: [18, 32, 44, 38, 58, 64, 72],
-        trend: 12,
-        accent: 'violet',
-      },
-      {
-        value: '5',
-        label: 'New messages',
-        detail: 'Response time: < 2 hours.',
-        trend: -2,
-        accent: 'amber',
-      },
-      {
-        value: '2',
-        label: 'Upcoming events',
-        detail: 'AI Founders Meetup starts in 2h.',
-        accent: 'rose',
-      },
+      { label: 'React Server Components', meta: '1,284 mentions today' },
+      { label: 'Hackathon co-founders', meta: '928 mentions today' },
+      { label: 'Distributed systems', meta: '744 mentions today' },
+      { label: 'Figma to React', meta: '612 mentions today' },
     ],
     []
   );
 
-  const activityFeed = useMemo(
+  const peopleToFollow = useMemo(
     () => [
-      {
-        icon: 'connections',
-        title: 'Sarah Chen accepted your request',
-        meta: 'Just now',
-        unread: true,
-      },
-      {
-        icon: 'messages',
-        title: 'New message from Priya K.',
-        meta: '5h ago',
-        unread: true,
-      },
-      {
-        icon: 'events',
-        title: 'Event starting: AI Design Sync',
-        meta: '2h ago',
-      },
-      {
-        icon: 'chart',
-        title: 'Your profile appeared in 45 searches',
-        meta: 'This week',
-      },
-    ],
-    []
-  );
-
-  const homeFeed = useMemo(
-    () => [
-      {
-        id: 'home-1',
-        author: profiles.sarah,
-        content:
-          'Just published a guide on modern React architecture: state management, routing, and performance optimization. Feedback welcome.',
-        timestamp: '2 hours ago',
-        attachments: [{ type: 'link', name: 'React Architecture Guide', url: '#' }],
-        likes: 24,
-        comments: 5,
-        trending: true,
-      },
-      {
-        id: 'home-2',
-        author: profiles.raj,
-        content:
-          'Working on an open source project for distributed task scheduling. Looking for contributors interested in Python and Redis.',
-        timestamp: '5 hours ago',
-        attachments: [{ type: 'image', name: 'architecture.png', url: '#' }],
-        likes: 42,
-        comments: 12,
-        trending: false,
-      },
-      {
-        id: 'home-3',
-        author: profiles.priya,
-        content:
-          'Slides from my talk on Machine Learning for FinTech: fraud detection and credit scoring models.',
-        timestamp: '1 day ago',
-        attachments: [{ type: 'document', name: 'ML_FinTech_Slides.pdf', url: '#' }],
-        likes: 89,
-        comments: 18,
-        trending: false,
-      },
+      { id: 'follow-sarah', person: profiles.sarah, note: 'Founder mentor · Product' },
+      { id: 'follow-raj', person: profiles.raj, note: 'Backend · Distributed systems' },
+      { id: 'follow-priya', person: profiles.priya, note: 'FinTech ML · Fraud detection' },
     ],
     []
   );
@@ -136,227 +99,266 @@ export function StudentHomePage() {
   return (
     <AppShell
       variant="student"
-      title={`Good morning, ${firstName}`}
-      subtitle="Your momentum is high. You have 3 new match suggestions based on your recent skill updates."
+      title="Home"
+      subtitle="Updates from your network. Share progress, ask for help, and spot collaborators."
+      actions={
+        <div className="pm-student-feed__actions">
+          <div className="pm-student-feed__search" role="search">
+            <Icon name="search" size={16} />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search posts..."
+              type="search"
+            />
+          </div>
+          <Button
+            variant="primary"
+            icon="plus"
+            onClick={() =>
+              composerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
+          >
+            New post
+          </Button>
+        </div>
+      }
     >
-      <MomentumBanner />
-      <StatsSection stats={stats} />
+      <div className="pm-li-feed">
+        <div className="pm-li-feed__main">
+          <section ref={composerRef} className="pm-li-composer pm-card" aria-label="Create post">
+            <div className="pm-li-composer__row">
+              <Avatar
+                name={profiles.me.name}
+                src={profiles.me.src}
+                initials={profiles.me.avatar}
+                tone={profiles.me.tone}
+                size="md"
+              />
+              <textarea
+                className="pm-li-composer__input"
+                value={newPostContent}
+                onChange={(event) => setNewPostContent(event.target.value)}
+                placeholder="Start a post"
+              />
+            </div>
 
-      <section className="pm-two-column pm-two-column--asym">
-        <RecommendedMatches profiles={recommendedProfiles} />
-        <SidebarPanels activityFeed={activityFeed} />
-      </section>
+            <div className="pm-li-composer__bar">
+              <div className="pm-li-composer__tools" aria-label="Add to your post">
+                <button className="pm-li-tool" type="button">
+                  <Icon name="spark" size={18} />
+                  <span>Media</span>
+                </button>
+                <button className="pm-li-tool" type="button">
+                  <Icon name="events" size={18} />
+                  <span>Event</span>
+                </button>
+                <button className="pm-li-tool" type="button">
+                  <Icon name="connections" size={18} />
+                  <span>Link</span>
+                </button>
+              </div>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleCreatePost}
+                disabled={!newPostContent.trim()}
+              >
+                Post
+              </Button>
+            </div>
+          </section>
 
-      <HomeFeedSection posts={homeFeed} />
+          <div className="pm-li-sort" aria-label="Sort feed">
+            <span>Sort by:</span>
+            <button className="pm-li-sort__btn" type="button">
+              Top <Icon name="chevron-down" size={16} />
+            </button>
+            <span className="pm-li-sort__line" aria-hidden="true" />
+          </div>
+
+          <section className="pm-li-feed__list" aria-label="Network posts">
+            {filteredPosts.length === 0 ? (
+              <div className="pm-student-feed__empty pm-card">
+                <Badge tone="teal" variant="soft">
+                  No results
+                </Badge>
+                <h2>Nothing matched your search.</h2>
+                <p>Try searching for a name, skill, or topic.</p>
+              </div>
+            ) : (
+              filteredPosts.map((post) => (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  commenting={activeCommentId === post.id}
+                  onToggleComment={() =>
+                    setActiveCommentId((existing) =>
+                      existing === post.id ? null : post.id
+                    )
+                  }
+                />
+              ))
+            )}
+          </section>
+        </div>
+
+        <aside className="pm-li-feed__rail" aria-label="Right rail">
+          <section className="pm-li-rail-card pm-card">
+            <h2>Trending</h2>
+            <div className="pm-li-topic-list">
+              {trendingTopics.map((topic) => (
+                <button key={topic.label} className="pm-li-topic" type="button">
+                  <strong>{topic.label}</strong>
+                  <span>{topic.meta}</span>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <section className="pm-li-rail-card pm-card">
+            <h2>People you may know</h2>
+            <div className="pm-li-follow-list">
+              {peopleToFollow.map((item) => (
+                <div key={item.id} className="pm-li-follow">
+                  <Avatar
+                    name={item.person.name}
+                    src={item.person.src}
+                    initials={item.person.avatar}
+                    tone={item.person.tone}
+                    size="md"
+                  />
+                  <div className="pm-li-follow__meta">
+                    <strong>{item.person.name}</strong>
+                    <span>{item.note}</span>
+                  </div>
+                  <Button variant="secondary" size="sm">
+                    Follow
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </section>
+        </aside>
+      </div>
     </AppShell>
   );
 }
 
+function PostCard({ post, commenting, onToggleComment }) {
+  const iconForType = (type) => {
+    if (type === 'image') return 'spark';
+    if (type === 'link') return 'connections';
+    return 'events';
+  };
 
-
-function MomentumBanner() {
   return (
-    <section className="pm-momentum-banner">
-      <div className="pm-momentum-banner__content">
-        <Badge tone="teal" variant="solid" className="pm-momentum-badge">
-          Action Required
-        </Badge>
-
-        <h1>Complete your bio to get ranked for founder roles.</h1>
-        <p>
-          Profiles with a bio are 4.5x more likely to receive connection requests
-          from mentors.
-        </p>
-
-        <div className="pm-momentum-banner__actions">
-          <Button to="/student/profile/edit" variant="primary">
-            Add bio now
-          </Button>
-          <Button variant="ghost">Maybe later</Button>
-        </div>
-      </div>
-
-      <div className="pm-momentum-banner__visual" aria-hidden="true">
-        <Icon
-          name="chart"
-          size={120}
-          style={{ opacity: 0.1, transform: 'rotate(-10deg)' }}
-        />
-      </div>
-    </section>
-  );
-}
-
-function StatsSection({ stats }) {
-  return (
-    <section className="pm-stat-grid">
-      {stats.map((stat) => (
-        <StatCard
-          key={stat.label}
-          value={stat.value}
-          label={stat.label}
-          detail={stat.detail}
-          ring={stat.ring}
-          spark={stat.spark}
-          trend={stat.trend}
-          accent={stat.accent}
-        />
-      ))}
-    </section>
-  );
-}
-
-function RecommendedMatches({ profiles: recommendedProfiles }) {
-  return (
-    <div className="pm-panel">
-      <SectionHeader
-        eyebrow="Matches"
-        title="Highly recommended"
-        description="AI-ranked candidates that match your current Product focus."
-        actions={
-          <Button to="/student/discover" variant="ghost">
-            Explore all
-          </Button>
-        }
-      />
-
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '16px',
-        }}
-      >
-        {recommendedProfiles.map((profile) => (
-          <MiniProfileCard
-            key={profile.id}
-            profile={profile}
-            compact
-            ctaLabel="Connect"
-            extraLink={`/profile/${profile.username}`}
+    <article className="pm-li-post pm-card">
+      <header className="pm-li-post__head">
+        <div className="pm-li-post__identity">
+          <Avatar
+            name={post.author.name}
+            src={post.author.src}
+            initials={post.author.avatar}
+            tone={post.author.tone}
+            size="md"
           />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function SidebarPanels({ activityFeed }) {
-  return (
-    <div className="pm-sidebar-content">
-      <div className="pm-panel pm-nudge-panel">
-        <SectionHeader eyebrow="Smart nudge" title="Behavioral insight" />
-        <div className="pm-nudge-card">
-          <Icon name="spark" size={24} className="pm-nudge-icon" />
-          <div>
-            <p>
-              <strong>Refine your search</strong>
-            </p>
-            <span>
-              You&apos;ve viewed 3 Frontend profiles today. Should we prioritize
-              Frontend matches in your feed?
-            </span>
-            <div className="pm-nudge-actions">
-              <Button size="xs" variant="primary">
-                Yes, prioritize
-              </Button>
-              <Button size="xs" variant="ghost">
-                No, keep current
-              </Button>
+          <div className="pm-li-post__meta">
+            <div className="pm-li-post__name-row">
+              <strong>{post.author.name}</strong>
+              {post.trending ? (
+                <Badge tone="teal" variant="soft">
+                  Trending
+                </Badge>
+              ) : null}
             </div>
+            <span>
+              {(post.author.title || post.author.role) ?? 'Member'} · {post.timestamp}
+            </span>
           </div>
         </div>
+
+        <div className="pm-li-post__head-actions">
+          <button className="pm-li-follow-btn" type="button">
+            Follow
+          </button>
+          <button
+            className="pm-icon-button pm-li-post__menu"
+            type="button"
+            aria-label="Post options"
+          >
+            <Icon name="more" size={18} />
+          </button>
+        </div>
+      </header>
+
+      <div className="pm-li-post__body">
+        <p>{post.content}</p>
       </div>
 
-      <div className="pm-panel">
-        <SectionHeader
-          eyebrow="Activity"
-          title="Real-time feed"
-          description="Keep track of your momentum."
-        />
-        <div className="pm-activity-list">
-          {activityFeed.map((item) => (
-            <ActivityItem
-              key={`${item.title}-${item.meta}`}
-              icon={item.icon}
-              title={item.title}
-              meta={item.meta}
-              unread={item.unread}
-            />
+      {post.attachments?.length ? (
+        <div className="pm-li-post__attachments">
+          {post.attachments.map((attachment) => (
+            <a key={attachment.name} className="pm-li-attachment" href={attachment.url}>
+              <span className="pm-li-attachment__icon" aria-hidden="true">
+                <Icon name={iconForType(attachment.type)} size={18} />
+              </span>
+              <span className="pm-li-attachment__copy">
+                <strong>{attachment.name}</strong>
+                <span>{attachment.type?.toUpperCase?.() ?? 'ATTACHMENT'}</span>
+              </span>
+              <Icon name="chevron-right" size={18} className="pm-li-attachment__chev" />
+            </a>
           ))}
         </div>
+      ) : null}
+
+      <div className="pm-li-post__reactions" aria-label="Reactions summary">
+        <div className="pm-li-post__reaction-left">
+          <span className="pm-li-reaction-pill" aria-hidden="true">
+            <Icon name="thumbs-up" size={14} />
+          </span>
+          <span>{post.likes}</span>
+        </div>
+        <div className="pm-li-post__reaction-right">
+          <span>{post.comments} comments</span>
+        </div>
       </div>
-    </div>
-  );
-}
 
-function HomeFeedSection({ posts }) {
-  return (
-    <section className="pm-panel">
-      <SectionHeader
-        eyebrow="Feed"
-        title="Latest from your network"
-        description="Short updates from builders you may want to collaborate with."
-        actions={
-          <Button to="/student/feed" variant="ghost">
-            Open feed
-          </Button>
-        }
-      />
+      <footer className="pm-li-post__footer" aria-label="Post actions">
+        <button className="pm-li-action" type="button">
+          <Icon name="thumbs-up" size={18} />
+          <span>Like</span>
+        </button>
+        <button className="pm-li-action" type="button" onClick={onToggleComment}>
+          <Icon name="message-circle" size={18} />
+          <span>Comment</span>
+        </button>
+        <button className="pm-li-action" type="button">
+          <Icon name="repeat" size={18} />
+          <span>Repost</span>
+        </button>
+        <button className="pm-li-action" type="button">
+          <Icon name="send" size={18} />
+          <span>Send</span>
+        </button>
+      </footer>
 
-      <div className="pm-student-feed__list">
-        {posts.map((post) => (
-          <article key={post.id} className="pm-student-post pm-card">
-            <header className="pm-student-post__head">
-              <div className="pm-student-post__identity">
-                <div>
-                  <Avatar
-                    name={post.author.name}
-                    src={post.author.src}
-                    initials={post.author.avatar}
-                    tone={post.author.tone}
-                    size="md"
-                  />
-                </div>
-                <div className="pm-student-post__meta">
-                  <div className="pm-student-post__name-row">
-                    <strong>{post.author.name}</strong>
-                    {post.trending ? (
-                      <Badge tone="teal" variant="soft">
-                        Trending
-                      </Badge>
-                    ) : null}
-                  </div>
-                  <span>
-                    {(post.author.title || post.author.role) ?? 'Member'} · {post.timestamp}
-                  </span>
-                </div>
-              </div>
-              <button className="pm-icon-button pm-student-post__menu" type="button" aria-label="Post options">
-                <Icon name="more" size={18} />
-              </button>
-            </header>
-
-            <div className="pm-student-post__body">
-              <p>{post.content}</p>
-            </div>
-
-            <footer className="pm-student-post__footer">
-              <button className="pm-student-post__action" type="button" aria-label="Like">
-                <Icon name="spark" size={18} />
-                <span>{post.likes}</span>
-              </button>
-              <button className="pm-student-post__action" type="button" aria-label="Comment">
-                <Icon name="messages" size={18} />
-                <span>{post.comments}</span>
-              </button>
-              <button className="pm-student-post__action pm-student-post__action--end" type="button" aria-label="Open feed">
-                <Icon name="chevron-right" size={18} />
-              </button>
-            </footer>
-          </article>
-        ))}
-      </div>
-    </section>
+      {commenting ? (
+        <div className="pm-li-comment" aria-label="Write a comment">
+          <Avatar
+            name={profiles.me.name}
+            src={profiles.me.src}
+            initials={profiles.me.avatar}
+            tone={profiles.me.tone}
+            size="sm"
+          />
+          <input className="pm-li-comment__input" placeholder="Add a comment..." />
+          <button className="pm-icon-button" type="button" aria-label="Post comment">
+            <Icon name="send" size={18} />
+          </button>
+        </div>
+      ) : null}
+    </article>
   );
 }
