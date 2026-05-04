@@ -1,0 +1,195 @@
+/* Mini profile card (Academic Luminary) */
+.pm-mini-profile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pm-mini-profile__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  width: 100%;
+}
+
+.pm-mini-profile__avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.pm-mini-profile__verified {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+  color: var(--on-primary);
+  border: 2px solid var(--surface-container-low);
+}
+
+.pm-mini-profile__who {
+  flex: 1;
+  min-width: 0;
+}
+
+.pm-mini-profile__name-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.pm-mini-profile__name {
+  font-size: 1.25rem;
+  font-weight: 900;
+  margin: 0;
+  color: var(--on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pm-mini-profile__online {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #10b981;
+  flex-shrink: 0;
+}
+
+.pm-mini-profile__title {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  color: var(--on-surface-variant);
+  opacity: 0.85;
+}
+
+.pm-mini-profile__fit {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.pm-mini-profile__fit-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 1100;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.pm-mini-profile__fit-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  opacity: 0.6;
+  letter-spacing: 0.08em;
+}
+
+.pm-mini-profile__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.pm-mini-profile__headline {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--on-surface);
+}
+
+.pm-mini-profile__why {
+  padding: 16px;
+  background: var(--surface-container-lowest);
+  border-radius: 16px;
+  display: flex;
+  gap: 12px;
+  border: 1px solid var(--outline-variant);
+}
+
+.pm-mini-profile__why-icon {
+  color: var(--primary);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.pm-mini-profile__why p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--on-surface);
+}
+
+.pm-mini-profile__why strong {
+  color: var(--primary);
+}
+
+.pm-mini-profile__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pm-mini-profile__skill {
+  padding: 6px 12px;
+  background: var(--surface-container-high);
+  color: var(--on-surface);
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  border: 1px solid var(--outline-variant);
+}
+
+.pm-mini-profile__skill-more {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--on-surface-variant);
+  align-self: center;
+}
+
+.pm-mini-profile__mutuals {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  color: var(--on-surface-variant);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.pm-mini-profile__actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.pm-mini-profile__row-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.pm-mini-profile .pm-avatar-stack-item {
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  border: 2px solid var(--surface-container-low);
+  background-color: var(--surface-container-high);
+  background-size: cover;
+  background-position: center;
+}
+
+.pm-mini-profile .pm-avatar-stack-item + .pm-avatar-stack-item {
+  margin-left: -8px;
+}
+

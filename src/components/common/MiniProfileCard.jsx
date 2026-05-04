@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Button, Icon } from '../ui';
+import '../../styles/mini-profile-card.css';
 
 export function MiniProfileCard({ 
   profile, 
@@ -35,27 +36,16 @@ export function MiniProfileCard({
 
   return (
     <article
-      className="pm-card"
+      className="pm-card pm-mini-profile"
       role="link"
       tabIndex={0}
       onClick={handleCardClick}
       onKeyDown={handleCardKeyDown}
       aria-label={`Open ${profile?.name ?? 'profile'}`}
-      style={{
-      display: 'flex', 
-      flexDirection: 'column', 
-      gap: '20px', 
-      background: 'var(--surface-container-low)',
-      border: '1px solid var(--outline-variant)',
-      borderRadius: '24px',
-      padding: '24px',
-      width: '100%',
-      boxSizing: 'border-box'
-    }}
     >
       {/* 1. Identity Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', width: '100%' }}>
-        <div style={{ position: 'relative', flexShrink: 0 }}>
+      <div className="pm-mini-profile__head">
+        <div className="pm-mini-profile__avatar-wrap">
           <Avatar 
             name={profile.name} 
             src={profile.src || profile.avatar_url}
@@ -64,119 +54,77 @@ export function MiniProfileCard({
             size="lg" 
           />
           {profile.verified && (
-            <div style={{ 
-              position: 'absolute', 
-              bottom: '-2px', 
-              right: '-2px', 
-              background: 'var(--primary)', 
-              color: 'white', 
-              borderRadius: '50%', 
-              width: '18px', 
-              height: '18px', 
-              display: 'grid', 
-              placeItems: 'center', 
-              border: '2px solid var(--surface-container-low)',
-              zIndex: 2
-            }}>
+            <div className="pm-mini-profile__verified">
               <Icon name="spark" size={10} />
             </div>
           )}
         </div>
         
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: 'var(--on-surface)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <div className="pm-mini-profile__who">
+          <div className="pm-mini-profile__name-row">
+            <h3 className="pm-mini-profile__name">
               {profile.name}
             </h3>
             {profile.status === 'Online' && (
-              <div style={{ width: '8px', height: '8px', background: '#10b981', borderRadius: '50%', flexShrink: 0 }} />
+              <div className="pm-mini-profile__online" aria-label="Online" />
             )}
           </div>
-          <p style={{ margin: '4px 0 0', fontSize: '0.9rem', color: 'var(--on-surface-variant)', opacity: 0.8 }}>
-            {profile.title}
-          </p>
+          <p className="pm-mini-profile__title">{profile.title}</p>
         </div>
 
-        <div style={{ textAlign: 'right', flexShrink: 0 }}>
-          <span style={{ display: 'block', fontSize: '1.5rem', fontWeight: 900, color: 'var(--primary)', lineHeight: 1 }}>
+        <div className="pm-mini-profile__fit">
+          <span className="pm-mini-profile__fit-value">
             {profile.match}%
           </span>
-          <span style={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', opacity: 0.5 }}>Fit</span>
+          <span className="pm-mini-profile__fit-label">Fit</span>
         </div>
       </div>
 
       {/* 2. Body Content */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <p style={{ margin: 0, fontSize: '1rem', fontWeight: 500, lineHeight: 1.5, color: 'var(--on-surface)' }}>
-          {profile.headline}
-        </p>
+      <div className="pm-mini-profile__body">
+        <p className="pm-mini-profile__headline">{profile.headline}</p>
         
-        <div style={{ 
-          padding: '16px', 
-          background: 'var(--surface-container-lowest)', 
-          borderRadius: '16px', 
-          display: 'flex', 
-          gap: '12px',
-          border: '1px solid var(--outline-variant)'
-        }}>
-          <Icon name="spark" size={16} style={{ color: 'var(--primary)', marginTop: '2px', flexShrink: 0 }} />
-          <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.6, color: 'var(--on-surface)' }}>
-            <strong style={{ color: 'var(--primary)' }}>Why this match?</strong> Both focused on {profile.skills[0]} and {profile.domain || 'Tech'}.
+        <div className="pm-mini-profile__why">
+          <Icon name="spark" size={16} className="pm-mini-profile__why-icon" />
+          <p>
+            <strong>Why this match?</strong> Both focused on {profile.skills[0]} and {profile.domain || 'Tech'}.
             {profile.match > 90 ? " Exceptional alignment with your recent goals." : " Strong overlap in core competencies."}
           </p>
         </div>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        <div className="pm-mini-profile__skills">
           {profile.skills.slice(0, 3).map((skill) => (
-            <span key={skill} style={{ 
-              padding: '4px 12px', 
-              background: 'var(--surface-container-high)', 
-              color: 'var(--on-surface)', 
-              borderRadius: '20px', 
-              fontSize: '0.75rem', 
-              fontWeight: 600,
-              border: '1px solid var(--outline-variant)',
-              position: 'static' // FORCE STATIC
-            }}>
+            <span key={skill} className="pm-mini-profile__skill">
               {skill}
             </span>
           ))}
           {profile.skills.length > 3 && (
-            <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--on-surface-variant)', alignSelf: 'center' }}>
+            <span className="pm-mini-profile__skill-more">
               +{profile.skills.length - 3}
             </span>
           )}
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
+        <div className="pm-mini-profile__mutuals">
           <div className="pm-avatar-stack">
             {[1, 2, 3].map(i => (
               <div 
                 key={i} 
                 className="pm-avatar-stack-item" 
-                style={{ 
-                  background: `var(--surface-container-high)`, 
+                style={{
                   zIndex: 4 - i,
                   backgroundImage: `url(https://i.pravatar.cc/100?u=${profile.id + i})`,
-                  backgroundSize: 'cover',
-                  width: '24px',
-                  height: '24px',
-                  borderRadius: '50%',
-                  border: '2px solid var(--surface-container-low)',
-                  marginLeft: i > 1 ? '-8px' : '0'
-                }} 
+                }}
               />
             ))}
           </div>
-          <span style={{ fontSize: '0.8rem', color: 'var(--on-surface-variant)', fontWeight: 500 }}>
-            12 mutual connections
-          </span>
+          <span>12 mutual connections</span>
         </div>
       </div>
 
       {/* 3. Actions (Conditional) */}
       {!hideActions && (
-        <div style={{ display: 'grid', gap: '12px', marginTop: '8px' }}>
+        <div className="pm-mini-profile__actions">
           {onCta ? (
             <Button
               variant="primary"
@@ -199,7 +147,7 @@ export function MiniProfileCard({
               {ctaLabel}
             </Button>
           )}
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div className="pm-mini-profile__row-actions">
             <Button variant="secondary" icon="messages" style={{ flex: 1 }} />
             <Button variant="secondary" icon="calendar" style={{ flex: 1 }} />
             <Button to={extraLink} variant="ghost" style={{ flex: 1 }}>
