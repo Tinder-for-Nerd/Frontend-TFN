@@ -25,15 +25,23 @@ export function ProfilePage() {
 
   const isMe = (profile?.username ?? 'me') === 'me';
 
-  const profileActions = (
-    <Button
-      variant="secondary"
-      size="sm"
-      onClick={() => setIsEditing(!isEditing)}
-      disabled={!isMe}
-    >
+  const profileActions = isMe ? (
+    <Button variant="secondary" size="sm" onClick={() => setIsEditing(!isEditing)}>
       {isEditing ? 'Save changes' : 'Edit profile'}
     </Button>
+  ) : (
+    <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+      <Button
+        to={`/student/sessions?with=${encodeURIComponent(profile?.username ?? username)}`}
+        variant="primary"
+        size="sm"
+      >
+        Schedule meeting
+      </Button>
+      <Button to="/student/messages" variant="secondary" size="sm">
+        Message
+      </Button>
+    </div>
   );
 
   return (
@@ -41,7 +49,7 @@ export function ProfilePage() {
       variant="student"
       title={profile?.name ?? 'Profile'}
       subtitle={isMe ? 'Manage how you appear to potential collaborators.' : 'Profile details'}
-      actions={isMe ? profileActions : null}
+      actions={profileActions}
     >
       <div className="pm-profile-page">
         <header className="pm-profile-header">

@@ -23,7 +23,7 @@ import {
   CreateOpportunityPage,
   CallPage
 } from './modules/dashboard/pages';
-import { StudentHomePage, StudentProgressPage, StudentFeedPage } from './modules/student/pages';
+import { StudentHomePage, StudentProgressPage, StudentFeedPage, StudentBillingPage } from './modules/student/pages';
 import { 
   ProOverviewPage, 
   NetworkPage, 
@@ -101,6 +101,7 @@ export default function App() {
           <Route path="/student/messages" element={<P><MessagesPage variant="student" /></P>} />
           <Route path="/student/messages/:threadId" element={<P><MessagesPage variant="student" /></P>} />
           <Route path="/student/sessions" element={<P><SessionsPage /></P>} />
+          <Route path="/student/billing" element={<P><StudentBillingPage /></P>} />
           <Route path="/student/events" element={<P><EventsPage variant="student" /></P>} />
           <Route path="/student/events/host" element={<P><HostEventPage variant="student" /></P>} />
           <Route path="/student/events/create-opportunity" element={<P><CreateOpportunityPage variant="student" /></P>} />
