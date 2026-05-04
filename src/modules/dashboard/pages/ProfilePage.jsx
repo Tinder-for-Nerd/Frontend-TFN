@@ -256,14 +256,6 @@ export function ProfilePage() {
                     ))}
                   </div>
                 </section>
-
-                <section className="pm-gh-card" aria-label="Contributions">
-                  <header className="pm-gh-card__head">
-                    <h2>Contributions</h2>
-                    <span className="pm-gh-muted">Last 12 months</span>
-                  </header>
-                  <ContributionHeatmap seed={profile?.username ?? 'me'} />
-                </section>
               </div>
             ) : null}
 
@@ -349,27 +341,5 @@ export function ProfilePage() {
         </div>
       </div>
     </AppShell>
-  );
-}
-
-function ContributionHeatmap({ seed }) {
-  const cells = useMemo(() => {
-    let value = 7;
-    const result = [];
-    for (let i = 0; i < 7 * 18; i += 1) {
-      // tiny deterministic-ish generator so each user looks consistent
-      value = (value * 1103515245 + (seed?.charCodeAt?.(i % seed.length) ?? 13) + 12345) % 2147483647;
-      const level = value % 5;
-      result.push(level);
-    }
-    return result;
-  }, [seed]);
-
-  return (
-    <div className="pm-gh-heatmap" role="img" aria-label="Contributions heatmap">
-      {cells.map((level, idx) => (
-        <span key={idx} className={`pm-gh-heat pm-gh-heat--${level}`} />
-      ))}
-    </div>
   );
 }
