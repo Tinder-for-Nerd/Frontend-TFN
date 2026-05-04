@@ -255,6 +255,12 @@ export function ProfilePage() {
                       </span>
                     ))}
                   </div>
+                  <div className="pm-gh-inline-meta" aria-label="Organization">
+                    <Icon name="company" size={16} />
+                    <span>
+                      <strong>Organization:</strong> {workingFor || '—'}
+                    </span>
+                  </div>
                 </section>
               </div>
             ) : null}
