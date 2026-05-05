@@ -209,6 +209,15 @@ export function AppShell({
             </button>
 
             <div className="pm-topbar__actions">
+              <button
+                className="pm-topbar__action pm-topbar__action--search"
+                type="button"
+                onClick={() => setPaletteOpen(true)}
+                aria-label="Search"
+              >
+                <Icon name="search" />
+              </button>
+
               <Link
                 className="pm-topbar__action"
                 to={variant === 'pro' ? '/pro/network' : '/student/connections'}

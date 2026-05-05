@@ -6583,6 +6583,23 @@ h3 {
     padding: var(--space-3) var(--space-4);
   }
 
+  /* Make header behave like a compact app bar */
+  .pm-topbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "title actions";
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pm-topbar__title {
+    grid-area: title;
+  }
+
+  .pm-topbar__actions {
+    grid-area: actions;
+  }
+
   .pm-stat-grid {
     grid-template-columns: 1fr;
   }
@@ -6642,6 +6659,11 @@ h3 {
     display: none;
   }
 
+  /* The big search pill is too wide on phones; we use icon-search in actions instead */
+  .pm-search-trigger {
+    display: none;
+  }
+
   .pm-momentum-banner__actions,
   .pm-main__actions > div {
     width: 100%;
@@ -6668,9 +6690,9 @@ h3 {
   }
 }
 
-@media (max-width: 420px) {
-  /* Ultra small phones: prioritize title + profile menu */
-  .pm-topbar__action {
+@media (max-width: 520px) {
+  /* Small phones: prioritize title + notifications + profile menu */
+  .pm-topbar__action:not(.pm-topbar__action--search) {
     display: none;
   }
 
