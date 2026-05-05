@@ -396,6 +396,12 @@ export function EventsPage({ variant = 'student' }) {
 
         @media (max-width: 640px) {
           .pm-events-shell .pm-topbar__actions {
+            display: flex;
+            gap: 8px;
+          }
+
+          .pm-events-shell .pm-topbar__action--search,
+          .pm-events-shell .pm-topbar__bell {
             display: none;
           }
 
