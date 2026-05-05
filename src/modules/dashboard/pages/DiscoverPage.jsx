@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 import { AppShell } from '../../../components/layout';
 import { MiniProfileCard } from '../../../components/common';
@@ -12,18 +12,33 @@ export function DiscoverPage({ variant }) {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState(0);
   const [dragDistance, setDragDistance] = useState(0);
+  const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
+  const [viewportHeight, setViewportHeight] = useState(() => window.innerHeight);
   const containerRef = useRef(null);
 
   const profilesSource = variant === 'pro' ? proDiscoverProfiles : studentDiscoverProfiles;
   const profileBase = variant === 'pro' ? '/pro/profile' : '/profile';
   const SNAP_THRESHOLD = 0.3;
-  const CONTAINER_HEIGHT = 600; // Max height; actual height is clamped by CSS for no-page-scroll
   const SPRING_EASING = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+  const isMobile = viewportWidth <= 640;
+  const CONTAINER_HEIGHT = isMobile
+    ? Math.min(600, Math.max(520, viewportHeight - 152))
+    : 600;
 
   usePageMeta(
     variant === 'pro' ? 'Tinder for Nerds | Pro Discover' : 'Tinder for Nerds | Student Discover',
     'Swipe through AI-ranked discovery feed with instant loading and smooth transitions.',
   );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+      setViewportHeight(window.innerHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleTouchStart = (e) => {
     setIsDragging(true);
@@ -98,7 +113,7 @@ export function DiscoverPage({ variant }) {
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
           className={`pm-discover__stack ${isDragging ? 'is-dragging' : ''}`}
-          style={{ height: `min(${CONTAINER_HEIGHT}px, calc(100dvh - 152px))` }}
+          style={{ height: `${CONTAINER_HEIGHT}px` }}
         >
           <div
             className="pm-discover__rail"
