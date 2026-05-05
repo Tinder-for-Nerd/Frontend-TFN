@@ -6699,12 +6699,6 @@ h3 {
   }
 }
 
-/* Discover is full-screen and hides the bottom nav; keep the hamburger visible there. */
-@media (max-width: 640px) {
-  .pm-app-shell--discover.pm-app-shell--student .pm-topbar__menu {
-    display: flex;
-  }
-}
 
 @media (max-width: 520px) {
   /* Small phones: prioritize title + notifications + profile menu */
