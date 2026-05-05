@@ -5,6 +5,16 @@
   padding: 8px;
 }
 
+.pm-app-shell--discover .pm-main {
+  /* Make Discover feel like a full-screen module: no page scroll. */
+  overflow: hidden;
+}
+
+.pm-app-shell--discover .pm-discover {
+  /* Fill the available main area so the stack can clamp to viewport. */
+  height: 100%;
+}
+
 .pm-discover__stack {
   overflow: hidden;
   position: relative;

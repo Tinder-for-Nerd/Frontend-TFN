@@ -17,7 +17,7 @@ export function DiscoverPage({ variant }) {
   const profilesSource = variant === 'pro' ? proDiscoverProfiles : studentDiscoverProfiles;
   const profileBase = variant === 'pro' ? '/pro/profile' : '/profile';
   const SNAP_THRESHOLD = 0.3;
-  const CONTAINER_HEIGHT = 600; // Fixed container height
+  const CONTAINER_HEIGHT = 600; // Max height; actual height is clamped by CSS for no-page-scroll
   const SPRING_EASING = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 
   usePageMeta(
@@ -85,6 +85,7 @@ export function DiscoverPage({ variant }) {
       variant={variant}
       title="Discover"
       subtitle="Swipe to explore"
+      className="pm-app-shell--discover"
     >
       <div className="pm-discover">
         <div
@@ -97,7 +98,7 @@ export function DiscoverPage({ variant }) {
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
           className={`pm-discover__stack ${isDragging ? 'is-dragging' : ''}`}
-          style={{ height: `${CONTAINER_HEIGHT}px` }}
+          style={{ height: `min(${CONTAINER_HEIGHT}px, calc(100dvh - 220px))` }}
         >
           <div
             className="pm-discover__rail"
