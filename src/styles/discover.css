@@ -33,6 +33,16 @@
   box-sizing: border-box;
 }
 
+@media (max-width: 640px) {
+  .pm-discover {
+    padding: 0;
+  }
+
+  .pm-discover__cell {
+    padding: 12px;
+  }
+}
+
 .pm-discover__card {
   width: 100%;
   /* Keep the “layered paper” look by letting the stack bg show at edges */
@@ -66,4 +76,3 @@
   border-color: rgba(14, 207, 191, 0.32);
   color: var(--text-primary);
 }
-

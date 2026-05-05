@@ -193,3 +193,17 @@
   margin-left: -8px;
 }
 
+@media (max-width: 640px) {
+  .pm-mini-profile {
+    padding: var(--space-lg);
+    gap: var(--space-md);
+  }
+
+  .pm-mini-profile__head {
+    gap: var(--space-sm);
+  }
+
+  .pm-mini-profile__headline {
+    font-size: 0.95rem;
+  }
+}

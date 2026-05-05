@@ -6431,7 +6431,7 @@ h3 {
 .pm-main {
   width: min(100%, 1440px);
   margin-inline: auto;
-  padding: 28px clamp(16px, 3vw, 36px) 88px;
+  padding: 28px clamp(16px, 3vw, 36px) calc(88px + env(safe-area-inset-bottom));
 }
 
 .pm-main__actions {
@@ -6590,6 +6590,6 @@ h3 {
 
   .pm-fab {
     right: 16px;
-    bottom: 18px;
+    bottom: calc(18px + env(safe-area-inset-bottom));
   }
 }
