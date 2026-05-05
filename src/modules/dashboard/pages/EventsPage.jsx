@@ -61,6 +61,7 @@ export function EventsPage({ variant = 'student' }) {
       variant={variant} 
       title="Events" 
       subtitle={variant === 'pro' ? 'Community and founder events' : 'Student and community events'} 
+      className="pm-events-shell"
       actions={
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
           <Button variant="secondary" to={`/${variant}/events/organizer`}>
@@ -391,6 +392,113 @@ export function EventsPage({ variant = 'student' }) {
           gap: 10px;
           font-size: 12px;
           color: var(--on-surface-variant);
+        }
+
+        @media (max-width: 640px) {
+          .pm-events-shell .pm-topbar__actions {
+            display: none;
+          }
+
+          .pm-events-shell .pm-main {
+            padding-top: 18px;
+          }
+
+          .pm-events-container {
+            gap: 20px;
+          }
+
+          .pm-events-shell .pm-main__actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            width: 100%;
+          }
+
+          .pm-events-shell .pm-main__actions > * {
+            width: 100%;
+            justify-content: center;
+          }
+
+          .pm-featured-event-hero {
+            padding: 24px 18px;
+            border-radius: 24px;
+          }
+
+          .pm-featured-content h1 {
+            font-size: clamp(2rem, 7vw, 2.75rem);
+            line-height: 1.04;
+            margin: 14px 0 12px;
+          }
+
+          .pm-featured-content p {
+            font-size: 1rem;
+            line-height: 1.55;
+            margin-bottom: 22px;
+          }
+
+          .pm-event-hero-meta {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 22px;
+          }
+
+          .pm-hero-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+          }
+
+          .pm-rsvp-btn,
+          .pm-calendar-btn {
+            width: 100%;
+            min-width: 0;
+            padding-left: 18px;
+            padding-right: 18px;
+            font-size: 14px;
+          }
+
+          .pm-tabs {
+            gap: 12px;
+            padding-bottom: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+          }
+
+          .pm-tabs::-webkit-scrollbar {
+            display: none;
+          }
+
+          .pm-tabs button {
+            flex: 0 0 auto;
+            padding: 8px 0 12px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+          }
+
+          .pm-event-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+
+          .pm-event-card__content {
+            padding: 18px;
+          }
+
+          .pm-event-card__footer {
+            margin-top: 10px;
+            padding-top: 14px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+          }
+
+          .pm-event-card__footer .pm-button,
+          .pm-event-card__footer a,
+          .pm-event-card__footer button {
+            width: 100%;
+            justify-content: center;
+          }
         }
       `}</style>
     </AppShell>
