@@ -72,6 +72,67 @@
 
   .pm-discover__card .pm-mini-profile {
     min-height: 0;
+    padding: 16px;
+    gap: 14px;
+  }
+
+  .pm-discover__card .pm-mini-profile__head {
+    gap: 12px;
+  }
+
+  .pm-discover__card .pm-mini-profile__name {
+    font-size: 1.05rem;
+  }
+
+  .pm-discover__card .pm-mini-profile__fit-value {
+    font-size: 1.15rem;
+  }
+
+  .pm-discover__card .pm-mini-profile__title,
+  .pm-discover__card .pm-mini-profile__headline,
+  .pm-discover__card .pm-mini-profile__why p,
+  .pm-discover__card .pm-mini-profile__mutuals {
+    font-size: 0.9rem;
+  }
+
+  .pm-discover__card .pm-mini-profile__body {
+    gap: 12px;
+  }
+
+  .pm-discover__card .pm-mini-profile__why {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .pm-discover__card .pm-mini-profile__skills {
+    gap: 6px;
+  }
+
+  .pm-discover__card .pm-mini-profile__skill {
+    padding: 5px 10px;
+    font-size: 0.74rem;
+  }
+
+  .pm-discover__card .pm-mini-profile__mutuals {
+    gap: 10px;
+    margin-top: 0;
+  }
+
+  .pm-discover__card .pm-mini-profile__actions {
+    gap: 10px;
+    margin-top: 0;
+  }
+
+  .pm-discover__card .pm-mini-profile__row-actions {
+    gap: 6px;
+  }
+
+  .pm-discover__card .pm-button {
+    min-height: 40px;
+  }
+
+  .pm-discover__card .pm-mini-profile__row-actions .pm-button {
+    min-height: 38px;
   }
 }
 
