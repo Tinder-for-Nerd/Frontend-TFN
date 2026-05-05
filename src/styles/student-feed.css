@@ -468,19 +468,174 @@
 }
 
 @media (max-width: 640px) {
+  .pm-li-feed {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .pm-li-feed__main {
+    gap: 10px;
+  }
+
   .pm-student-feed__actions {
     width: 100%;
     justify-content: space-between;
+    gap: 8px;
   }
+
   .pm-student-feed__search {
     min-width: 0;
     flex: 1;
+    height: 40px;
+    padding: 0 12px;
   }
+
+  .pm-li-composer {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .pm-li-composer__row {
+    gap: 10px;
+  }
+
+  .pm-li-composer__input {
+    min-height: 50px;
+    padding: 10px 12px;
+    border-radius: 16px;
+  }
+
+  .pm-li-composer__bar {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .pm-li-composer__tools {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pm-li-tool {
+    padding: 8px;
+    min-width: 40px;
+    justify-content: center;
+  }
+
+  .pm-li-sort {
+    padding: 2px 0;
+    font-size: 0.78rem;
+  }
+
+  .pm-li-post {
+    padding: 12px;
+  }
+
+  .pm-li-post__head {
+    gap: 10px;
+  }
+
+  .pm-li-post__identity {
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .pm-li-post__name-row {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .pm-li-post__meta span {
+    font-size: 0.8rem;
+  }
+
+  .pm-li-follow-btn {
+    display: none;
+  }
+
+  .pm-li-post__body {
+    margin-top: 8px;
+  }
+
+  .pm-li-post__body p {
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .pm-li-attachment {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .pm-li-attachment__icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .pm-li-post__reactions {
+    margin-top: 10px;
+    padding-top: 8px;
+    font-size: 0.8rem;
+    flex-wrap: wrap;
+  }
+
   .pm-li-post__footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
+
+  .pm-li-action {
+    min-height: 42px;
+    padding: 10px 6px;
+  }
+
   .pm-li-tool span,
   .pm-li-action span {
     display: none;
+  }
+
+  .pm-li-comment {
+    gap: 8px;
+  }
+
+  .pm-li-comment__input {
+    height: 38px;
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .pm-li-feed {
+    gap: 8px;
+  }
+
+  .pm-li-composer,
+  .pm-li-post,
+  .pm-li-rail-card {
+    padding: 10px;
+  }
+
+  .pm-li-post__head {
+    align-items: flex-start;
+  }
+
+  .pm-li-post__identity {
+    min-width: 0;
+  }
+
+  .pm-li-post__meta {
+    min-width: 0;
+  }
+
+  .pm-li-post__name-row strong {
+    max-width: 100%;
+  }
+
+  .pm-li-post__reaction-right {
+    width: 100%;
+  }
+
+  .pm-li-post__footer {
+    gap: 6px;
   }
 }
