@@ -15,6 +15,24 @@
   height: 100%;
 }
 
+@media (max-width: 640px) {
+  .pm-app-shell--discover .pm-topbar {
+    padding: 10px 14px;
+  }
+
+  .pm-app-shell--discover .pm-topbar__actions {
+    display: none;
+  }
+
+  .pm-app-shell--discover .pm-topbar__title {
+    gap: 0;
+  }
+
+  .pm-app-shell--discover .pm-topbar__title .pm-kicker {
+    font-size: 0.92rem;
+  }
+}
+
 .pm-discover__stack {
   overflow: hidden;
   position: relative;
@@ -50,6 +68,10 @@
 
   .pm-discover__cell {
     padding: 12px;
+  }
+
+  .pm-discover__card .pm-mini-profile {
+    min-height: 0;
   }
 }
 
