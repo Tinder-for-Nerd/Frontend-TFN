@@ -57,22 +57,7 @@
   font-weight: 800;
 }
 
-.pm-discover__snap {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 12px;
-  padding: 6px 10px;
-  border-radius: 9999px;
-  border: 1px solid var(--outline-variant);
-  background: rgba(255, 255, 255, 0.78);
-  color: var(--text-secondary);
-  font-weight: 900;
-  backdrop-filter: blur(12px);
-}
-
-.pm-discover__snap.is-ready {
-  background: rgba(14, 207, 191, 0.16);
-  border-color: rgba(14, 207, 191, 0.32);
-  color: var(--text-primary);
+/* Disable scroll-jacking: allow natural page scroll. */
+.pm-discover__stack {
+  touch-action: pan-y;
 }

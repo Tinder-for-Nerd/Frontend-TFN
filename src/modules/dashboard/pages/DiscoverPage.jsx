@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 import { AppShell } from '../../../components/layout';
 import { MiniProfileCard } from '../../../components/common';
@@ -13,7 +13,6 @@ export function DiscoverPage({ variant }) {
   const [dragStart, setDragStart] = useState(0);
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef(null);
-  const scrollTimeoutRef = useRef(null);
 
   const profilesSource = variant === 'pro' ? proDiscoverProfiles : studentDiscoverProfiles;
   const profileBase = variant === 'pro' ? '/pro/profile' : '/profile';
@@ -81,52 +80,6 @@ export function DiscoverPage({ variant }) {
     setDragDistance(0);
   };
 
-  const handleWheel = (e) => {
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    
-    // Check if mouse is over the container
-    const isOverContainer = e.clientY >= rect.top && e.clientY <= rect.bottom;
-    if (!isOverContainer) return;
-    
-    // Prevent default scroll behavior
-    e.preventDefault();
-    
-    // Clear any pending scroll timeouts
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
-
-    // Determine scroll direction (deltaY positive = scrolling down)
-    const direction = e.deltaY > 0 ? 1 : -1;
-    
-    // Calculate new index
-    const newIndex = Math.max(0, Math.min(profilesSource.length - 1, currentIndex + direction));
-    
-    // Update state
-    setCurrentIndex(newIndex);
-    setTranslateY(-(newIndex * CONTAINER_HEIGHT));
-    
-    // Debounce scroll to prevent too rapid scrolling
-    scrollTimeoutRef.current = setTimeout(() => {
-      scrollTimeoutRef.current = null;
-    }, 300);
-  };
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    // Add wheel listener with passive: false to allow preventDefault
-    container.addEventListener('wheel', handleWheel, { passive: false });
-    
-    return () => {
-      container.removeEventListener('wheel', handleWheel);
-    };
-  }, [currentIndex, profilesSource, CONTAINER_HEIGHT]);
-
-  const snapProgress = Math.abs(dragDistance) / (CONTAINER_HEIGHT * SNAP_THRESHOLD);
-
   return (
     <AppShell
       variant={variant}
@@ -175,14 +128,6 @@ export function DiscoverPage({ variant }) {
               </div>
             )}
           </div>
-
-          {isDragging && (
-            <div
-              className={`pm-discover__snap ${snapProgress > 1 ? 'is-ready' : ''}`}
-            >
-              {Math.round(snapProgress * 100)}%
-            </div>
-          )}
         </div>
 
 
