@@ -10,11 +10,6 @@
   overflow: hidden;
 }
 
-.pm-app-shell--discover .pm-bottom-nav {
-  /* Discover should be full-screen; hide bottom nav so the CTA isn't clipped. */
-  display: none !important;
-}
-
 .pm-app-shell--discover .pm-discover {
   /* Fill the available main area so the stack can clamp to viewport. */
   height: 100%;
