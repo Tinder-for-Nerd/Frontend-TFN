@@ -98,7 +98,7 @@ export function DiscoverPage({ variant }) {
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
           className={`pm-discover__stack ${isDragging ? 'is-dragging' : ''}`}
-          style={{ height: `min(${CONTAINER_HEIGHT}px, calc(100dvh - 220px))` }}
+          style={{ height: `min(${CONTAINER_HEIGHT}px, calc(100dvh - 160px))` }}
         >
           <div
             className="pm-discover__rail"
