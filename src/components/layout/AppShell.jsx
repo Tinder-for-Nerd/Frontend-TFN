@@ -88,6 +88,7 @@ export function AppShell({
     <div
       className={cx(
         'pm-app-shell',
+        `pm-app-shell--${variant}`,
         collapsed && 'is-collapsed',
         mobileOpen && 'is-drawer-open',
         className

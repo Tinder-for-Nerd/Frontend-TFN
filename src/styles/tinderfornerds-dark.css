@@ -6596,6 +6596,15 @@ h3 {
     grid-area: title;
   }
 
+  /* Student mobile uses bottom nav, so the hamburger menu is redundant. */
+  .pm-app-shell--student .pm-topbar__menu {
+    display: none;
+  }
+
+  .pm-app-shell--student .pm-topbar__title {
+    gap: 10px;
+  }
+
   .pm-topbar__actions {
     grid-area: actions;
   }
