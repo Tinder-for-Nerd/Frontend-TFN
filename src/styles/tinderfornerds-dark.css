@@ -6617,6 +6617,27 @@ h3 {
     min-width: 0;
   }
 
+  .pm-topbar__title {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .pm-topbar__title .pm-kicker {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pm-topbar__actions {
+    flex-shrink: 0;
+    gap: 8px;
+  }
+
+  .pm-search-trigger {
+    padding: 8px 10px;
+    min-width: 42px;
+  }
+
   .pm-topbar__title span {
     display: none;
   }
@@ -6644,5 +6665,16 @@ h3 {
   /* Give content more room above bottom nav */
   .pm-main {
     padding-bottom: calc(112px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 420px) {
+  /* Ultra small phones: prioritize title + profile menu */
+  .pm-topbar__action {
+    display: none;
+  }
+
+  .pm-topbar__actions {
+    gap: 6px;
   }
 }
