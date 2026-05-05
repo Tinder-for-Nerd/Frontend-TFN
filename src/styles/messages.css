@@ -8,7 +8,7 @@
 .pm-messages-shell .pm-main {
   padding: 0 !important;
   max-width: none !important;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -20,10 +20,11 @@
 
 .wa-layout {
   display: flex;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   overflow: hidden;
   background: var(--surface-container-high);
+  min-height: 0;
 }
 
 /* ─── Sidebar (Thread Panel) ──────────────────────────────────────────────── */
@@ -35,6 +36,7 @@
   flex-direction: column;
   background: var(--bg-surface);
   border-right: 1px solid var(--border-subtle);
+  min-height: 0;
 }
 
 .wa-sidebar__head {
@@ -336,6 +338,8 @@
   background: var(--bg-base);
   overflow: hidden;
   position: relative;
+  min-width: 0;
+  min-height: 0;
 }
 
 /* Subtle chat wallpaper pattern */
@@ -360,6 +364,10 @@
   border-bottom: 1px solid var(--border-subtle);
   z-index: 10;
   min-height: 56px;
+}
+
+.wa-chat__back {
+  display: none;
 }
 
 .wa-chat__contact {
@@ -668,12 +676,73 @@
    ============================================================================ */
 
 @media (max-width: 900px) {
+  .pm-app-shell--student.pm-messages-shell .wa-layout {
+    box-sizing: border-box;
+    padding-bottom: calc(88px + env(safe-area-inset-bottom));
+  }
+
   .wa-sidebar {
     width: 100%;
     min-width: 100%;
   }
+
   .wa-chat {
     display: none;
+  }
+
+  .wa-layout.is-mobile-thread-open .wa-sidebar {
+    display: none;
+  }
+
+  .wa-layout.is-mobile-thread-open .wa-chat {
+    display: flex;
+  }
+
+  .wa-chat__head {
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  .wa-chat__back {
+    display: inline-grid;
+  }
+
+  .wa-chat__contact {
+    min-width: 0;
+    flex: 1;
+    padding-left: 0;
+  }
+
+  .wa-chat__contact-info {
+    min-width: 0;
+  }
+
+  .wa-chat__contact-name,
+  .wa-chat__contact-status {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .wa-chat__head-actions {
+    gap: 0;
+  }
+
+  .wa-chat__head-actions .wa-icon-btn:nth-child(3),
+  .wa-chat__head-actions .wa-icon-btn:nth-child(4) {
+    display: none;
+  }
+
+  .wa-messages__inner {
+    padding: 14px 14px 12px;
+  }
+
+  .wa-bubble {
+    max-width: 82%;
+  }
+
+  .wa-composer {
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
   }
 }
 

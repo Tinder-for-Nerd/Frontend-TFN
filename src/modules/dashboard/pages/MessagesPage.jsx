@@ -183,6 +183,8 @@ export function MessagesPage({ variant = 'student' }) {
 
   const canSend = message.trim().length > 0;
   const msgCount = activeThread?.messages?.length ?? 0;
+  const hasSelectedThread = Boolean(threadId && activeThread);
+  const inboxPath = variant === 'pro' ? '/pro/inbox' : '/student/messages';
 
   return (
     <AppShell
@@ -192,7 +194,12 @@ export function MessagesPage({ variant = 'student' }) {
       hideTopbar
       className="pm-messages-shell"
     >
-      <div className="wa-layout">
+      <div
+        className={cx(
+          'wa-layout',
+          hasSelectedThread && 'is-mobile-thread-open'
+        )}
+      >
         {/* ── Thread sidebar ── */}
         <aside className="wa-sidebar" aria-label="Conversations">
           {/* Sidebar header */}
@@ -262,6 +269,15 @@ export function MessagesPage({ variant = 'student' }) {
             <>
               {/* Chat header */}
               <header className="wa-chat__head">
+                <button
+                  className="wa-icon-btn wa-chat__back"
+                  type="button"
+                  aria-label="Back to conversations"
+                  onClick={() => navigate(inboxPath)}
+                >
+                  <Icon name="chevron-left" size={20} />
+                </button>
+
                 <button
                   className="wa-chat__contact"
                   aria-label={`View ${activeThread.person.name}'s profile`}
