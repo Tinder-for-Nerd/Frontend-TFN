@@ -35,6 +35,18 @@ export function AppShell({
     };
   }, [navItems]);
 
+  const bottomNav = useMemo(() => {
+    if (variant !== 'student') return [];
+    const pick = new Map(
+      ['Home', 'Discover', 'Messages', 'Events', 'Settings'].map((label) => [label, true])
+    );
+    const items = navItems.filter((item) => pick.has(item.label));
+    // Ensure stable order
+    const order = ['Home', 'Discover', 'Messages', 'Events', 'Settings'];
+    items.sort((a, b) => order.indexOf(a.label) - order.indexOf(b.label));
+    return items;
+  }, [navItems, variant]);
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
@@ -279,15 +291,31 @@ export function AppShell({
         </main>
       </div>
 
-      <button
-        className="pm-fab"
-        type="button"
-        onClick={() => navigate('/student/messages')}
-        title="Quick message"
-        aria-label="New message"
-      >
-        <Icon name="messages" size={24} />
-      </button>
+      {variant === 'student' ? (
+        <nav className="pm-bottom-nav" aria-label="Student navigation">
+          {bottomNav.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) => cx('pm-bottom-nav__item', isActive && 'is-active')}
+              onClick={() => setMobileOpen(false)}
+            >
+              <Icon name={item.icon} />
+              <span>{item.label}</span>
+            </NavLink>
+          ))}
+        </nav>
+      ) : (
+        <button
+          className="pm-fab"
+          type="button"
+          onClick={() => navigate('/student/messages')}
+          title="Quick message"
+          aria-label="New message"
+        >
+          <Icon name="messages" size={24} />
+        </button>
+      )}
 
       {mobileOpen ? (
         <button

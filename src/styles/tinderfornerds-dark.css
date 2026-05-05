@@ -6434,6 +6434,49 @@ h3 {
   padding: 28px clamp(16px, 3vw, 36px) calc(88px + env(safe-area-inset-bottom));
 }
 
+/* Bottom navigation (mobile, student dashboard) */
+.pm-bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  display: none;
+  gap: 6px;
+  padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+  background: rgba(249, 251, 255, 0.78);
+  border-top: 1px solid rgba(17, 26, 62, 0.08);
+  backdrop-filter: blur(18px) saturate(160%);
+}
+
+.pm-bottom-nav__item {
+  flex: 1;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 10px 8px;
+  border-radius: 14px;
+  color: var(--text-secondary);
+  font-weight: 900;
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.pm-bottom-nav__item svg {
+  width: 18px;
+  height: 18px;
+}
+
+.pm-bottom-nav__item.is-active {
+  color: var(--text-primary);
+  background: rgba(0, 68, 201, 0.08);
+  border: 1px solid rgba(0, 68, 201, 0.14);
+}
+
+.pm-bottom-nav__item:hover {
+  color: var(--text-primary);
+}
+
 .pm-main__actions {
   align-items: center;
   gap: 10px;
@@ -6591,5 +6634,15 @@ h3 {
   .pm-fab {
     right: 16px;
     bottom: calc(18px + env(safe-area-inset-bottom));
+  }
+
+  /* Enable student bottom nav on phones */
+  .pm-bottom-nav {
+    display: flex;
+  }
+
+  /* Give content more room above bottom nav */
+  .pm-main {
+    padding-bottom: calc(112px + env(safe-area-inset-bottom));
   }
 }
