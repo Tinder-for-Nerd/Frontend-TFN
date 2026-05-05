@@ -236,7 +236,10 @@ export function AppShell({
                   <Link to="/profile/me" onClick={() => setProfileMenuOpen(false)}>
                     View profile
                   </Link>
-                  <Link to="/settings" onClick={() => setProfileMenuOpen(false)}>
+                  <Link
+                    to={variant === 'pro' ? '/pro/settings' : '/student/settings'}
+                    onClick={() => setProfileMenuOpen(false)}
+                  >
                     Settings
                   </Link>
                   <hr className="pm-divider" />

@@ -109,6 +109,7 @@ export default function App() {
           <Route path="/student/events/create-opportunity" element={<P><CreateOpportunityPage variant="student" /></P>} />
           <Route path="/student/events/:eventId" element={<P><EventDetailPage variant="student" /></P>} />
           <Route path="/student/progress" element={<P><StudentProgressPage /></P>} />
+          <Route path="/student/settings" element={<P><SettingsPage variant="student" /></P>} />
 
           {/* Protected: Pro Domain */}
           <Route path="/pro" element={<Navigate to="/pro/overview" replace />} />
@@ -126,10 +127,11 @@ export default function App() {
           <Route path="/pro/analytics" element={<P><ProAnalyticsPage /></P>} />
           <Route path="/pro/company" element={<P><ProCompanyPage /></P>} />
           <Route path="/pro/profile/:username" element={<P><ProfilePage variant="pro" /></P>} />
+          <Route path="/pro/settings" element={<P><SettingsPage variant="pro" /></P>} />
 
           {/* Protected: Shared */}
           <Route path="/profile/:username" element={<P><ProfilePage variant="student" /></P>} />
-          <Route path="/settings" element={<P><SettingsPage /></P>} />
+          <Route path="/settings" element={<Navigate to="/student/settings" replace />} />
           <Route path="/notifications" element={<P><NotificationsPage /></P>} />
           <Route path="/call/:sessionId" element={<P><CallPage /></P>} />
 

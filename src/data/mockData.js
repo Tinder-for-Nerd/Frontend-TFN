@@ -150,7 +150,7 @@ export const studentNav = [
   { label: 'Messages', to: '/student/messages', icon: 'messages', badge: '2' },
   { label: 'Events', to: '/student/events', icon: 'events' },
   { label: 'My Progress', to: '/student/progress', icon: 'chart' },
-  { label: 'Settings', to: '/settings', icon: 'settings' },
+  { label: 'Settings', to: '/student/settings', icon: 'settings' },
 ];
 
 export const proNav = [
@@ -161,7 +161,7 @@ export const proNav = [
   { label: 'Events', to: '/pro/events', icon: 'events' },
   { label: 'Analytics', to: '/pro/analytics', icon: 'chart' },
   { label: 'My Company', to: '/pro/company', icon: 'company' },
-  { label: 'Settings', to: '/settings', icon: 'settings' },
+  { label: 'Settings', to: '/pro/settings', icon: 'settings' },
 ];
 
 // Command palette
