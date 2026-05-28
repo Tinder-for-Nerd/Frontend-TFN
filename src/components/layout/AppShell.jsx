@@ -66,15 +66,17 @@ export function AppShell({
   }, []);
 
   useEffect(() => {
-    const originalOverflow = window.getComputedStyle(document.body).overflow;
-    const shouldLockScroll = mobileOpen || paletteOpen;
-
-    if (shouldLockScroll) {
-      document.body.style.overflow = 'hidden';
+    if (mobileOpen || paletteOpen) {
+      document.body.classList.add('pm-scroll-locked');
+      document.documentElement.classList.add('pm-scroll-locked');
+    } else {
+      document.body.classList.remove('pm-scroll-locked');
+      document.documentElement.classList.remove('pm-scroll-locked');
     }
 
     return () => {
-      document.body.style.overflow = originalOverflow;
+      document.body.classList.remove('pm-scroll-locked');
+      document.documentElement.classList.remove('pm-scroll-locked');
     };
   }, [mobileOpen, paletteOpen]);
 

@@ -1,6 +1,8 @@
-import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
+
 
 // Modular Page Imports
 import { LandingPage, FeaturesPage, AboutPage, ContactPage } from './modules/public/pages';
@@ -65,10 +67,34 @@ function LegacyProfileRoute() {
   return <Navigate to={`/profile/${userId || 'me'}`} replace />;
 }
 
+function ScrollLockSafeguard() {
+  const location = useLocation();
+
+  useEffect(() => {
+    // 1. Clear any inline style scroll locks on body/html
+    if (document.body.style.overflow === 'hidden') {
+      document.body.style.overflow = '';
+    }
+    if (document.documentElement.style.overflow === 'hidden') {
+      document.documentElement.style.overflow = '';
+    }
+
+    // 2. Clear discover scroll lock classes if we are not on a discover route
+    const isDiscover = location.pathname.includes('/discover');
+    if (!isDiscover) {
+      document.documentElement.classList.remove('pm-discover-page-active', 'pm-scroll-locked');
+      document.body.classList.remove('pm-discover-page-active', 'pm-scroll-locked');
+    }
+  }, [location.pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <ScrollLockSafeguard />
         <Routes>
           {/* Public pages — accessible without login */}
           <Route path="/" element={<LandingPage />} />

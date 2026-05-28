@@ -1,13 +1,55 @@
+/* Lock scroll of body and html when discover page is active */
+html.pm-discover-page-active,
+body.pm-discover-page-active {
+  overflow: hidden !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Viewport-locked discover shell wrapper */
+.pm-app-shell--discover {
+  height: 100vh !important;
+  height: 100dvh !important;
+  overflow: hidden !important;
+}
+
+.pm-app-shell--discover .pm-app-shell__content {
+  height: 100vh !important;
+  height: 100dvh !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.pm-app-shell--discover .pm-main {
+  flex: 1 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 16px !important;
+  box-sizing: border-box !important;
+}
+
 /* Discover (swipe stack) */
 .pm-discover {
   width: min(100%, 740px);
-  margin: 0 auto;
+  margin: auto auto !important;
   padding: 8px;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  box-sizing: border-box;
 }
 
 .pm-app-shell--discover .pm-discover {
   /* Fill the available main area so the stack can clamp to viewport. */
-  height: 100%;
+  flex: 1 !important;
+  min-height: 0 !important;
+  height: auto !important;
 }
 
 @media (max-width: 640px) {
@@ -156,7 +198,8 @@
   font-weight: 800;
 }
 
-/* Disable scroll-jacking: allow natural page scroll. */
+/* Lock stack touch-action to none to allow full custom drag snap physics without browser interference */
 .pm-discover__stack {
-  touch-action: pan-y;
+  touch-action: none;
 }
+

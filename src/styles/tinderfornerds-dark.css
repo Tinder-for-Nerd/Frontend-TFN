@@ -1,9 +1,4 @@
-/* ============================================================================
-   ACADEMIC LUMINARY DESIGN SYSTEM — v3.0
-   Editorial Hierarchy · Tonal Layering · Institutional Authority
-   ============================================================================ */
-
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fustat:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* ============================================================================
    DESIGN TOKENS
@@ -12,35 +7,35 @@
 :root {
   color-scheme: light;
 
-  /* ── Core Palette (Academic Luminary) ── */
-  --primary:           #0044C9; /* Kinetic Action Blue */
-  --primary-container: #0059FF; /* Gradient endpoint for luminous soul */
+  /* ── Core Palette (Academic Luminary / Liquid Glass) ── */
+  --primary:           #0084FF; /* Electric Brand Blue CTA */
+  --primary-container: #319AFF; /* Glowing Action Blue */
   --on-primary:        #FFFFFF;
   
-  --secondary-fixed:   #111A3E; /* Institutional Authority (Deep Blue) */
+  --secondary-fixed:   #111A3E; /* Institutional Deep Blue */
   --on-secondary-fixed:#FFFFFF;
   
-  --tertiary:          #A70125; /* Editorial Metadata / Tag Highlight */
+  --tertiary:          #FF801E; /* Star Rating / Accent Orange */
   --on-tertiary:       #FFFFFF;
   
-  /* ── Surface Hierarchy (The Layered Paper Philosophy) ── */
-  --surface:                    #F7F9FF; /* Level 0: The Base */
-  --surface-container-low:      #F1F4F9; /* Level 1: Subtle Inset */
-  --surface-container-lowest:   #FFFFFF; /* Level 2: Active Cards / High Contrast */
-  --surface-container-high:     #E1E5F0; /* Level -1: Deep Sinks / Sidebar */
+  /* ── Surface Hierarchy (The Liquid Glass Philosophy) ── */
+  --surface:                    #FFFFFF; /* Pure White Base */
+  --surface-container-low:      rgba(255, 255, 255, 0.45); /* Glass layer 1 */
+  --surface-container-lowest:   rgba(255, 255, 255, 0.55); /* Glass layer 2 */
+  --surface-container-high:     rgba(255, 255, 255, 0.35); /* Glass layer -1 */
   
   --on-surface:                 #111A3E;
   --on-surface-variant:         #44475E;
-  --outline-variant:            rgba(195, 197, 217, 0.2); /* The Ghost Border Fallback */
+  --outline-variant:            rgba(0, 0, 0, 0.08); /* Micro-stroke */
 
   /* ── Semantic status colors ── */
   --success:        #15803d;
   --warning:        #b45309;
   --error:          #BA1A1A; /* Critical Alert only */
   
-  /* ── Typography (Editorial Voice) ── */
-  --font-display: 'Plus Jakarta Sans', sans-serif; /* The Editorial Voice */
-  --font-body:    'Inter', sans-serif;             /* The Functional Voice */
+  /* ── Typography (Liquid Glass Editorial Voice) ── */
+  --font-display: 'Fustat', sans-serif; /* Fustat bold for headlines & brand */
+  --font-body:    'Inter', sans-serif;  /* Inter normal/medium for body & UI */
   --font-mono:    'JetBrains Mono', monospace;
 
   --text-display-lg: clamp(2.5rem, 5vw, 3.5rem);
@@ -135,31 +130,6 @@ body.pm-light-theme {
   min-height: 100vh;
   min-height: 100dvh;
   color: var(--on-surface);
-  background: var(--surface);
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  line-height: 1.6;
-  color-scheme: light;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Ambient background glows — soft blue institutional light */
-body.pm-light-theme::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse 60% 40% at 8% 2%,   rgba(0, 68, 201, 0.04) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 35% at 94% 6%,  rgba(17, 26, 62, 0.03) 0%, transparent 55%),
-    radial-gradient(ellipse 40% 30% at 50% 100%, rgba(0, 68, 201, 0.03) 0%, transparent 60%);
-  z-index: -1;
-}
-
-/* Subtle grid texture */
-body.pm-light-theme::after {
   content: '';
   position: fixed;
   inset: 0;
@@ -6323,11 +6293,32 @@ code {
    ============================================================================ */
 
 body.pm-light-theme {
-  background:
-    linear-gradient(180deg, #f9fbff 0%, #f2f6ff 48%, #f8fafc 100%);
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: var(--on-surface);
+  background: var(--surface);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color-scheme: light;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-body.pm-light-theme::before,
+/* Ambient background glows — soft blue institutional light */
+body.pm-light-theme::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 0% 0%, rgba(96, 177, 255, 0.16) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 45% at 20% 10%, rgba(49, 154, 255, 0.12) 0%, transparent 50%);
+  z-index: -1;
+}
+
+/* Subtle grid texture */
 body.pm-light-theme::after {
   opacity: 0.35;
 }
@@ -6710,3 +6701,10 @@ h3 {
     gap: 6px;
   }
 }
+
+/* Scroll locking class for drawers/command-palette */
+body.pm-scroll-locked,
+html.pm-scroll-locked {
+  overflow: hidden !important;
+}
+

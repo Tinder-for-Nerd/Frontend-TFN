@@ -1,8 +1,8 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 import { AppShell } from '../../../components/layout';
 import { MiniProfileCard } from '../../../components/common';
-import { Button, Badge } from '../../../components/ui';
+import { Button, Badge, Icon } from '../../../components/ui';
 import { studentDiscoverProfiles, proDiscoverProfiles } from '../../../data/mockData';
 import '../../../styles/discover.css';
 
@@ -12,12 +12,16 @@ export function DiscoverPage({ variant }) {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState(0);
   const [dragDistance, setDragDistance] = useState(0);
+  const [touchPhase, setTouchPhase] = useState('IDLE'); // IDLE, TOUCH_START, TOUCH_MOVE, SNAP_ANIMATING, SPRING_ANIMATING, SNAP_DOWN, SNAP_UP
+  const [snapProgress, setSnapProgress] = useState(0); // 0 to 100 % to threshold
   const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
   const [viewportHeight, setViewportHeight] = useState(() => window.innerHeight);
   const containerRef = useRef(null);
+  const lastScrollTime = useRef(0);
 
   const profilesSource = variant === 'pro' ? proDiscoverProfiles : studentDiscoverProfiles;
   const profileBase = variant === 'pro' ? '/pro/profile' : '/profile';
+  
   const SNAP_THRESHOLD = 0.3;
   const SPRING_EASING = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
   const isMobile = viewportWidth <= 640;
@@ -30,20 +34,57 @@ export function DiscoverPage({ variant }) {
     'Swipe through AI-ranked discovery feed with instant loading and smooth transitions.',
   );
 
+  // Programmatically manage body/html scroll lock for reliable SPA navigation without hard refreshes
   useEffect(() => {
-    const handleResize = () => {
-      setViewportWidth(window.innerWidth);
-      setViewportHeight(window.innerHeight);
-    };
+    document.documentElement.classList.add('pm-discover-page-active');
+    document.body.classList.add('pm-discover-page-active');
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      document.documentElement.classList.remove('pm-discover-page-active');
+      document.body.classList.remove('pm-discover-page-active');
+    };
   }, []);
 
+  // Sync translation offset when resizing or changing active card index
+  useEffect(() => {
+    if (!isDragging) {
+      setTranslateY(-(currentIndex * CONTAINER_HEIGHT));
+    }
+  }, [currentIndex, CONTAINER_HEIGHT, isDragging]);
+
+  // Keyboard snapping (Arrow Keys navigation)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const newIndex = Math.min(profilesSource.length - 1, currentIndex + 1);
+        if (newIndex !== currentIndex) {
+          setTouchPhase('SNAP_DOWN');
+          setCurrentIndex(newIndex);
+          setTimeout(() => setTouchPhase('IDLE'), 400);
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const newIndex = Math.max(0, currentIndex - 1);
+        if (newIndex !== currentIndex) {
+          setTouchPhase('SNAP_UP');
+          setCurrentIndex(newIndex);
+          setTimeout(() => setTouchPhase('IDLE'), 400);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentIndex, profilesSource, CONTAINER_HEIGHT]);
+
+  // Touch handlers (drag smooth tracking without jumps)
   const handleTouchStart = (e) => {
     setIsDragging(true);
+    setTouchPhase('TOUCH_START');
     setDragStart(e.touches[0].clientY);
     setDragDistance(0);
+    setSnapProgress(0);
   };
 
   const handleTouchMove = (e) => {
@@ -51,48 +92,98 @@ export function DiscoverPage({ variant }) {
     const currentY = e.touches[0].clientY;
     const distance = dragStart - currentY;
     setDragDistance(distance);
-    setTranslateY(-distance);
+    setTouchPhase('TOUCH_MOVE');
+
+    const baseOffset = -(currentIndex * CONTAINER_HEIGHT);
+    setTranslateY(baseOffset - distance);
+
+    const threshold = CONTAINER_HEIGHT * SNAP_THRESHOLD;
+    const progress = Math.min(100, Math.round((Math.abs(distance) / threshold) * 100));
+    setSnapProgress(progress);
   };
 
   const handleTouchEnd = () => {
+    if (!isDragging) return;
     setIsDragging(false);
     const threshold = CONTAINER_HEIGHT * SNAP_THRESHOLD;
+    
     if (Math.abs(dragDistance) > threshold) {
       const direction = dragDistance > 0 ? 1 : -1;
       const newIndex = Math.max(0, Math.min(profilesSource.length - 1, currentIndex + direction));
+      setTouchPhase(newIndex !== currentIndex ? 'SNAP_ANIMATING' : 'SPRING_ANIMATING');
       setCurrentIndex(newIndex);
-      setTranslateY(-(newIndex * CONTAINER_HEIGHT));
     } else {
+      setTouchPhase('SPRING_ANIMATING');
       setTranslateY(-(currentIndex * CONTAINER_HEIGHT));
     }
+    
     setDragDistance(0);
+    setSnapProgress(0);
+    setTimeout(() => setTouchPhase('IDLE'), 400);
   };
 
+  // Mouse drag handlers (identical scroll physics for desktop)
   const handleMouseDown = (e) => {
+    // Only capture left click
+    if (e.button !== 0) return;
     setIsDragging(true);
+    setTouchPhase('TOUCH_START');
     setDragStart(e.clientY);
     setDragDistance(0);
+    setSnapProgress(0);
   };
 
   const handleMouseMove = (e) => {
     if (!isDragging) return;
     const distance = dragStart - e.clientY;
     setDragDistance(distance);
-    setTranslateY(-distance);
+    setTouchPhase('TOUCH_MOVE');
+
+    const baseOffset = -(currentIndex * CONTAINER_HEIGHT);
+    setTranslateY(baseOffset - distance);
+
+    const threshold = CONTAINER_HEIGHT * SNAP_THRESHOLD;
+    const progress = Math.min(100, Math.round((Math.abs(distance) / threshold) * 100));
+    setSnapProgress(progress);
   };
 
   const handleMouseUp = () => {
+    if (!isDragging) return;
     setIsDragging(false);
     const threshold = CONTAINER_HEIGHT * SNAP_THRESHOLD;
+
     if (Math.abs(dragDistance) > threshold) {
       const direction = dragDistance > 0 ? 1 : -1;
       const newIndex = Math.max(0, Math.min(profilesSource.length - 1, currentIndex + direction));
+      setTouchPhase(newIndex !== currentIndex ? 'SNAP_ANIMATING' : 'SPRING_ANIMATING');
       setCurrentIndex(newIndex);
-      setTranslateY(-(newIndex * CONTAINER_HEIGHT));
     } else {
+      setTouchPhase('SPRING_ANIMATING');
       setTranslateY(-(currentIndex * CONTAINER_HEIGHT));
     }
+
     setDragDistance(0);
+    setSnapProgress(0);
+    setTimeout(() => setTouchPhase('IDLE'), 400);
+  };
+
+  // Mouse wheel scroll snapping support
+  const handleWheel = (e) => {
+    const now = Date.now();
+    if (now - lastScrollTime.current < 800) return; // Debounce fast swipes
+
+    const deltaY = e.deltaY;
+    if (Math.abs(deltaY) < 15) return; // Ignore micro-scrolls
+
+    const direction = deltaY > 0 ? 1 : -1;
+    const newIndex = Math.max(0, Math.min(profilesSource.length - 1, currentIndex + direction));
+
+    if (newIndex !== currentIndex) {
+      lastScrollTime.current = now;
+      setTouchPhase(direction > 0 ? 'SNAP_DOWN' : 'SNAP_UP');
+      setCurrentIndex(newIndex);
+      setTimeout(() => setTouchPhase('IDLE'), 400);
+    }
   };
 
   return (
@@ -112,6 +203,7 @@ export function DiscoverPage({ variant }) {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
+          onWheel={handleWheel}
           className={`pm-discover__stack ${isDragging ? 'is-dragging' : ''}`}
           style={{ height: `${CONTAINER_HEIGHT}px` }}
         >
@@ -145,8 +237,6 @@ export function DiscoverPage({ variant }) {
             )}
           </div>
         </div>
-
-
       </div>
     </AppShell>
   );

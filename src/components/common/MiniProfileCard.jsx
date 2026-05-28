@@ -14,6 +14,11 @@ export function MiniProfileCard({
 }) {
   const navigate = useNavigate();
 
+  const isPro = extraLink?.includes?.('/pro/');
+  const messageLink = isPro
+    ? `/pro/inbox/${profile.username || profile.id}`
+    : `/student/messages/${profile.username || profile.id}`;
+
   const handleNavigate = () => {
     if (!extraLink) return;
     navigate(extraLink);
@@ -148,8 +153,13 @@ export function MiniProfileCard({
             </Button>
           )}
           <div className="pm-mini-profile__row-actions">
-            <Button variant="secondary" icon="messages" style={{ flex: 1 }} />
-            <Button variant="secondary" icon="calendar" style={{ flex: 1 }} />
+            <Button 
+              to={messageLink}
+              variant="secondary" 
+              icon="messages" 
+              style={{ flex: 1 }} 
+              aria-label="Send message"
+            />
             <Button to={extraLink} variant="ghost" style={{ flex: 1 }}>
               <Icon name="chevron-right" />
             </Button>

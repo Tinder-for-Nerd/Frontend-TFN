@@ -1,17 +1,22 @@
-import { useMemo, useRef, useState } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 import { AppShell } from '../../../components/layout';
-import { Avatar, Badge, Button, Icon } from '../../../components/ui';
+import { Button, Badge, Icon, Avatar } from '../../../components/ui';
 import { profiles } from '../../../constants/profiles';
+import { cx } from '../../../utils/helpers';
 import '../../../styles/student-feed.css';
 
 export function StudentHomePage() {
-  usePageMeta('Tinder for Nerds | Home', 'Your home feed with updates from your network.');
+  usePageMeta(
+    'Tinder for Nerds | Student Home', 
+    'Student home feed with updates from your network. Share progress, ask for help, and spot collaborators.'
+  );
 
   const composerRef = useRef(null);
   const [query, setQuery] = useState('');
   const [newPostContent, setNewPostContent] = useState('');
   const [activeCommentId, setActiveCommentId] = useState(null);
+  
   const [posts, setPosts] = useState(() => [
     {
       id: 1,
@@ -77,6 +82,10 @@ export function StudentHomePage() {
     setNewPostContent('');
   };
 
+  const handleDeletePost = (id) => {
+    setPosts((existing) => existing.filter((post) => post.id !== id));
+  };
+
   const trendingTopics = useMemo(
     () => [
       { label: 'React Server Components', meta: '1,284 mentions today' },
@@ -126,6 +135,7 @@ export function StudentHomePage() {
     >
       <div className="pm-li-feed">
         <div className="pm-li-feed__main">
+          {/* Post Composer */}
           <section ref={composerRef} className="pm-li-composer pm-card" aria-label="Create post">
             <div className="pm-li-composer__row">
               <Avatar
@@ -169,6 +179,7 @@ export function StudentHomePage() {
             </div>
           </section>
 
+          {/* Sort bar */}
           <div className="pm-li-sort" aria-label="Sort feed">
             <span>Sort by:</span>
             <button className="pm-li-sort__btn" type="button">
@@ -177,6 +188,7 @@ export function StudentHomePage() {
             <span className="pm-li-sort__line" aria-hidden="true" />
           </div>
 
+          {/* Posts List */}
           <section className="pm-li-feed__list" aria-label="Network posts">
             {filteredPosts.length === 0 ? (
               <div className="pm-student-feed__empty pm-card">
@@ -191,6 +203,7 @@ export function StudentHomePage() {
                 <PostCard
                   key={post.id}
                   post={post}
+                  onDelete={handleDeletePost}
                   commenting={activeCommentId === post.id}
                   onToggleComment={() =>
                     setActiveCommentId((existing) =>
@@ -203,6 +216,7 @@ export function StudentHomePage() {
           </section>
         </div>
 
+        {/* Sidebar rail */}
         <aside className="pm-li-feed__rail" aria-label="Right rail">
           <section className="pm-li-rail-card pm-card">
             <h2>Trending</h2>
@@ -245,7 +259,9 @@ export function StudentHomePage() {
   );
 }
 
-function PostCard({ post, commenting, onToggleComment }) {
+function PostCard({ post, commenting, onToggleComment, onDelete }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const iconForType = (type) => {
     if (type === 'image') return 'spark';
     if (type === 'link') return 'connections';
@@ -282,13 +298,44 @@ function PostCard({ post, commenting, onToggleComment }) {
           <button className="pm-li-follow-btn" type="button">
             Follow
           </button>
-          <button
-            className="pm-icon-button pm-li-post__menu"
-            type="button"
-            aria-label="Post options"
-          >
-            <Icon name="more" size={18} />
-          </button>
+          <div className="pm-li-post__menu-wrap" style={{ position: 'relative' }}>
+            <button
+              className="pm-icon-button pm-li-post__menu"
+              type="button"
+              aria-label="Post options"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <Icon name="more" size={18} />
+            </button>
+            
+            {menuOpen && (
+              <div className="pm-post-menu-dropdown">
+                {post.author.id === 'me' ? (
+                  <button 
+                    onClick={() => {
+                      onDelete(post.id);
+                      setMenuOpen(false);
+                    }}
+                    className="pm-post-menu-item is-danger"
+                  >
+                    <Icon name="close" size={14} />
+                    <span>Delete post</span>
+                  </button>
+                ) : (
+                  <>
+                    <button onClick={() => setMenuOpen(false)} className="pm-post-menu-item">
+                      <Icon name="bell" size={14} />
+                      <span>Mute author</span>
+                    </button>
+                    <button onClick={() => setMenuOpen(false)} className="pm-post-menu-item">
+                      <Icon name="close" size={14} />
+                      <span>Report post</span>
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </header>
 

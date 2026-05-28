@@ -125,6 +125,9 @@ export function MessagesPage({ variant = 'student' }) {
   const inputRef = useRef(null);
 
   const threads = variant === 'student' ? studentThreads : proThreads;
+  const [dynamicThreads, setDynamicThreads] = useState(() => {
+    return [...threads];
+  });
   const meta = PAGE_META[variant] ?? PAGE_META.student;
 
   const [activeThread, setActiveThread] = useState(null);
@@ -136,9 +139,46 @@ export function MessagesPage({ variant = 'student' }) {
 
   // Sync active thread with URL param
   useEffect(() => {
-    const match = threads.find((t) => t.id === threadId);
-    setActiveThread(match ?? threads[0] ?? null);
-  }, [threadId, threads]);
+    if (!threadId) {
+      if (dynamicThreads.length > 0) {
+        setActiveThread(dynamicThreads[0]);
+      }
+      return;
+    }
+
+    const match = dynamicThreads.find((t) => t.id === threadId);
+    if (match) {
+      setActiveThread(match);
+    } else {
+      // Look up profile dynamically in profiles map to create a new thread
+      const profileMatch = Object.values(profiles).find(
+        (p) => p.id === threadId || p.username === threadId
+      );
+
+      if (profileMatch) {
+        const newThread = {
+          id: threadId,
+          person: {
+            name: profileMatch.name,
+            avatar_url: profileMatch.src || profileMatch.avatar_url,
+            avatar: profileMatch.avatar,
+            tone: profileMatch.tone,
+          },
+          status: 'Online',
+          unread: 0,
+          last: 'Start a new conversation',
+          time: 'Now',
+          messages: [],
+        };
+        setDynamicThreads((existing) => [newThread, ...existing]);
+        setActiveThread(newThread);
+      } else {
+        if (dynamicThreads.length > 0) {
+          setActiveThread(dynamicThreads[0]);
+        }
+      }
+    }
+  }, [threadId, dynamicThreads]);
 
   // Auto-scroll to latest message
   useEffect(() => {
@@ -155,11 +195,38 @@ export function MessagesPage({ variant = 'student' }) {
   const handleSendMessage = useCallback(
     (e) => {
       e?.preventDefault();
-      if (!message.trim()) return;
+      if (!message.trim() || !activeThread) return;
+
+      const newMsg = {
+        id: Date.now(),
+        from: 'me',
+        body: message,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+
+      setDynamicThreads((prevThreads) =>
+        prevThreads.map((t) => {
+          if (t.id === activeThread.id) {
+            return {
+              ...t,
+              last: message,
+              time: 'Now',
+              messages: [...(t.messages || []), newMsg],
+            };
+          }
+          return t;
+        })
+      );
+
       setMessage('');
+      setTimeout(() => {
+        if (scrollRef.current) {
+          scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+      }, 50);
       inputRef.current?.focus();
     },
-    [message]
+    [message, activeThread]
   );
 
   const handleKeyDown = useCallback(
@@ -172,7 +239,7 @@ export function MessagesPage({ variant = 'student' }) {
     [handleSendMessage]
   );
 
-  const filteredThreads = threads.filter((t) => {
+  const filteredThreads = dynamicThreads.filter((t) => {
     const query = searchQuery.toLowerCase();
     const matchesSearch =
       t.person.name.toLowerCase().includes(query) ||
