@@ -110,6 +110,64 @@
   --space-16: 64px;
 }
 
+body.pm-dark-theme {
+  color-scheme: dark;
+
+  --primary:           #63B3FF;
+  --primary-container: #0B72E7;
+  --on-primary:        #07111F;
+
+  --secondary-fixed:   #E5ECFF;
+  --on-secondary-fixed:#07111F;
+
+  --tertiary:          #FFB36B;
+  --on-tertiary:       #1A0E04;
+
+  --surface:                    #070D19;
+  --surface-container-low:      rgba(15, 23, 42, 0.72);
+  --surface-container-lowest:   rgba(12, 19, 35, 0.86);
+  --surface-container-high:     rgba(24, 35, 58, 0.78);
+  --surface-container-highest:  #1B2742;
+
+  --on-surface:                 #F4F7FF;
+  --on-surface-variant:         #B9C2D8;
+  --outline-variant:            rgba(190, 207, 255, 0.14);
+
+  --success:        #6EE7A8;
+  --warning:        #FBBF63;
+  --error:          #FF8A8A;
+
+  --shadow-ambient: 0 18px 42px rgba(0, 0, 0, 0.28);
+  --shadow-glass:   0 12px 36px rgba(0, 0, 0, 0.34);
+
+  --primary-rgb: 99, 179, 255;
+  --brand-teal: #34D9C8;
+  --brand-teal-dim: #25B8AA;
+  --brand-teal-subtle: rgba(52, 217, 200, 0.12);
+  --brand-teal-glow: rgba(52, 217, 200, 0.22);
+  --brand-violet: #A79CFF;
+  --brand-violet-dim: #8B7DFF;
+  --brand-violet-subtle: rgba(167, 156, 255, 0.14);
+  --border-default: rgba(209, 219, 255, 0.16);
+  --border-subtle: rgba(209, 219, 255, 0.1);
+  --border-strong: rgba(209, 219, 255, 0.26);
+  --border-brand: rgba(52, 217, 200, 0.32);
+  --border-violet: rgba(167, 156, 255, 0.28);
+  --bg-base: var(--surface);
+  --bg-primary: var(--surface);
+  --bg-surface: var(--surface-container-lowest);
+  --bg-elevated: var(--surface-container-high);
+  --text-primary: var(--on-surface);
+  --text-secondary: var(--on-surface-variant);
+  --text-tertiary: rgba(185, 194, 216, 0.72);
+  --text-inverse: #07111F;
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.26);
+  --shadow-md: 0 16px 34px rgba(0, 0, 0, 0.32);
+  --shadow-lg: 0 28px 58px rgba(0, 0, 0, 0.38);
+  --shadow-modal: 0 36px 80px rgba(0, 0, 0, 0.48);
+}
+
 /* ============================================================================
    RESET & BASE
    ============================================================================ */
@@ -141,6 +199,46 @@ body.pm-light-theme {
   opacity: 0.07;
   mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.6) 8%, rgba(0,0,0,0.6) 92%, transparent 100%);
   z-index: -5;
+}
+
+body.pm-dark-theme {
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: var(--on-surface);
+  background:
+    radial-gradient(ellipse 72% 52% at 16% -10%, rgba(49, 154, 255, 0.18), transparent 62%),
+    radial-gradient(ellipse 58% 46% at 92% 4%, rgba(52, 217, 200, 0.12), transparent 58%),
+    linear-gradient(180deg, #070d19 0%, #0a1222 48%, #070d19 100%);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color-scheme: dark;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body.pm-dark-theme::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(190, 207, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(190, 207, 255, 0.055) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.28;
+  mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.75) 10%, rgba(0,0,0,0.75) 90%, transparent 100%);
+  z-index: -5;
+}
+
+body.pm-dark-theme,
+body.pm-dark-theme button,
+body.pm-dark-theme input,
+body.pm-dark-theme textarea,
+body.pm-dark-theme select {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
@@ -6707,4 +6805,3 @@ body.pm-scroll-locked,
 html.pm-scroll-locked {
   overflow: hidden !important;
 }
-
