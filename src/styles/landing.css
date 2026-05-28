@@ -9,6 +9,7 @@
     #ffffff;
   font-family: var(--font-body);
   position: relative;
+  isolation: isolate;
 }
 
 .taskly-page::before {
@@ -22,6 +23,46 @@
   background-size: 48px 48px;
   opacity: 0.28;
   mask-image: linear-gradient(180deg, rgba(0,0,0,0.65), transparent 72%);
+}
+
+.taskly-background-art {
+  position: absolute;
+  top: 96px;
+  right: max(-220px, -12vw);
+  width: min(980px, 72vw);
+  height: min(720px, 58vw);
+  z-index: 0;
+  border-radius: 48px;
+  overflow: hidden;
+  opacity: 0.34;
+  filter: saturate(1.22) hue-rotate(-8deg);
+  transform: rotate(-4deg);
+  pointer-events: auto;
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.92), transparent 72%);
+}
+
+.taskly-nav,
+.taskly-hero,
+.taskly-partners,
+.taskly-feature-band,
+.taskly-pricing-band {
+  position: relative;
+  z-index: 1;
+}
+
+.taskly-background-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.86) 70%),
+    radial-gradient(circle at 24% 20%, rgba(0,132,255,0.28), transparent 42%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.taskly-background-art__canvas canvas {
+  filter: blur(0.2px) contrast(1.08) brightness(1.08);
 }
 
 .taskly-nav {
@@ -249,8 +290,87 @@
   font-weight: 800;
 }
 
+.taskly-visual {
+  min-height: 620px;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.taskly-visual__image {
+  position: absolute;
+  left: 0;
+  bottom: 20px;
+  width: min(520px, 44vw);
+  aspect-ratio: 1.18;
+  overflow: hidden;
+  border-radius: 34px;
+  background: rgba(255, 255, 255, 0.42);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    inset 0 4px 4px rgba(255, 255, 255, 0.35),
+    0 28px 80px rgba(17, 26, 62, 0.13);
+  backdrop-filter: blur(24px) saturate(165%);
+  -webkit-backdrop-filter: blur(24px) saturate(165%);
+}
+
+.taskly-visual__image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.78)),
+    radial-gradient(circle at 24% 18%, rgba(0, 132, 255, 0.24), transparent 44%);
+  pointer-events: none;
+}
+
+.taskly-visual__distortion {
+  position: absolute !important;
+  inset: 0;
+}
+
+.taskly-visual__distortion canvas {
+  filter: saturate(1.24) contrast(1.04) brightness(1.08);
+}
+
+.taskly-visual__caption {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  z-index: 3;
+  display: grid;
+  gap: 4px;
+  padding: 16px;
+  border-radius: 22px;
+  color: #111a3e;
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 4px 4px rgba(255,255,255,0.35);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.taskly-visual__caption strong {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.taskly-visual__caption span {
+  color: #44475e;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
 .taskly-orb {
-  min-height: 560px;
+  position: absolute;
+  right: -6%;
+  top: 2%;
+  width: min(760px, 62vw);
+  aspect-ratio: 1;
   display: grid;
   place-items: center;
   overflow: visible;
@@ -258,9 +378,9 @@
 }
 
 .taskly-orb video {
-  width: min(760px, 65vw);
+  width: 100%;
   max-width: none;
-  transform: scale(1.25) translateX(2%);
+  transform: scale(1.24);
   mix-blend-mode: screen;
   filter: hue-rotate(-55deg) saturate(250%) brightness(1.2) contrast(1.1);
 }
@@ -425,12 +545,32 @@
     padding-left: 0;
   }
 
-  .taskly-orb {
-    min-height: 420px;
+  .taskly-background-art {
+    top: 420px;
+    right: -320px;
+    width: 760px;
+    height: 520px;
+  }
+
+  .taskly-visual {
+    min-height: 520px;
+  }
+
+  .taskly-visual__image {
+    width: min(560px, 92vw);
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .taskly-orb video {
-    width: min(680px, 96vw);
+    width: 100%;
+  }
+
+  .taskly-orb {
+    width: min(620px, 96vw);
+    right: 50%;
+    top: 0;
+    transform: translateX(50%);
   }
 
   .taskly-feature-grid {
@@ -533,8 +673,31 @@
     min-height: 48px;
   }
 
+  .taskly-background-art {
+    display: none;
+  }
+
+  .taskly-visual {
+    min-height: 410px;
+  }
+
+  .taskly-visual__image {
+    bottom: 8px;
+    aspect-ratio: 0.98;
+    border-radius: 26px;
+  }
+
   .taskly-orb {
-    min-height: 300px;
+    width: min(480px, 112vw);
+    top: -20px;
+    opacity: 0.92;
+  }
+
+  .taskly-visual__caption {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    padding: 14px;
   }
 
   .taskly-feature-band,

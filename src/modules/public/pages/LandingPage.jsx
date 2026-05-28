@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, ChevronRight, Menu, Star, X } from 'lucide-react';
+import GridDistortion from '../../../components/ui/GridDistortion';
+import lightTechBg from '../../../assets/light-tech-background.png';
 import '../../../styles/landing.css';
 
 const ORB_VIDEO_URL = 'https://future.co/images/homepage/glassy-orb/orb-purple.webm';
@@ -77,6 +79,17 @@ export function LandingPage() {
 
   return (
     <div className="taskly-page">
+      <div className="taskly-background-art" aria-hidden="true">
+        <GridDistortion
+          imageSrc={lightTechBg}
+          grid={12}
+          mouse={0.08}
+          strength={0.12}
+          relaxation={0.92}
+          className="taskly-background-art__canvas"
+        />
+      </div>
+
       <header className={`taskly-nav ${isScrolled ? 'is-scrolled' : ''}`}>
         <div className="taskly-nav__inner">
           <a
@@ -149,15 +162,31 @@ export function LandingPage() {
             </div>
           </div>
 
-          <div className="taskly-orb" aria-label="Interactive liquid glass orb preview">
-            <video
-              src={ORB_VIDEO_URL}
-              autoPlay
-              loop
-              muted
-              playsInline
-              aria-hidden="true"
-            />
+          <div className="taskly-visual" aria-label="Interactive Tinder for Nerds visual preview">
+            <div className="taskly-visual__image">
+              <GridDistortion
+                imageSrc={lightTechBg}
+                grid={10}
+                mouse={0.12}
+                strength={0.16}
+                relaxation={0.9}
+                className="taskly-visual__distortion"
+              />
+              <div className="taskly-visual__caption">
+                <strong>Skill-first discovery</strong>
+                <span>Profiles, chats, events, and meetings in one glass workspace.</span>
+              </div>
+            </div>
+
+            <div className="taskly-orb" aria-hidden="true">
+              <video
+                src={ORB_VIDEO_URL}
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            </div>
           </div>
         </section>
       </main>
