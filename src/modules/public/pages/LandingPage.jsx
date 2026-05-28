@@ -8,26 +8,26 @@ const ORB_VIDEO_URL = 'https://future.co/images/homepage/glassy-orb/orb-purple.w
 const navItems = [
   { label: 'Home', href: '#home' },
   { label: 'Features', href: '#features' },
-  { label: 'Company', href: '/about', route: true },
-  { label: 'Pricing', href: '#pricing' },
+  { label: 'Community', href: '/about', route: true },
+  { label: 'Beta Access', href: '#pricing' },
 ];
 
 const featureCards = [
   {
-    title: 'Plan without friction',
-    body: 'Turn goals, people, and deadlines into a calm workspace your team can scan in seconds.',
+    title: 'Find builders who match your intent',
+    body: 'Discover students, mentors, founders, and professionals using skills, goals, availability, and collaboration fit.',
   },
   {
-    title: 'Collaborate in context',
-    body: 'Keep messages, sessions, discovery, and project movement connected across student and pro workspaces.',
+    title: 'Move from profile to conversation',
+    body: 'Open a profile, connect, chat, and schedule meetings without losing the context that made the match interesting.',
   },
   {
-    title: 'Move from idea to meeting',
-    body: 'Book conversations, organize events, and keep relationship momentum in one polished flow.',
+    title: 'Build through events and sessions',
+    body: 'Join community events, host meetups, organize attendees, and keep every meeting tied to real networking momentum.',
   },
 ];
 
-const partnerLogos = ['Aster', 'Nexa', 'Lumen', 'Orbit', 'Helio'];
+const partnerLogos = ['HackLabs', 'FinPulse', 'DesignHub', 'BuildOS', 'Mentorly'];
 
 function scrollToSection(id) {
   const element = document.querySelector(id);
@@ -93,7 +93,7 @@ export function LandingPage() {
               closeMenu();
             }}
           >
-            Taskly
+            Tinder for Nerds
           </a>
 
           <nav className={`taskly-nav__links ${mobileMenuOpen ? 'is-open' : ''}`} aria-label="Primary navigation">
@@ -101,13 +101,13 @@ export function LandingPage() {
               <NavLinkItem key={item.label} item={item} onNavigate={closeMenu} />
             ))}
             <Link className="taskly-nav__enter" to="/student/home" onClick={closeMenu}>
-              Enter App
+              Enter Beta
             </Link>
           </nav>
 
           <div className="taskly-nav__actions">
             <Link className="taskly-signup" to="/signup">
-              <span>Sign Up</span>
+              <span>Join Beta</span>
               <ChevronRight size={16} />
             </Link>
             <button
@@ -125,30 +125,30 @@ export function LandingPage() {
       <main id="home" className="taskly-hero">
         <section className="taskly-hero__inner">
           <div className="taskly-hero__copy">
-            <div className="taskly-rating" aria-label="Rated 4.9 out of 5 by 2700 plus customers">
+            <div className="taskly-rating" aria-label="Rated 4.9 out of 5 by 2700 plus builders">
               <span className="taskly-rating__stars" aria-hidden="true">
                 {Array.from({ length: 5 }).map((_, index) => (
                   <Star key={index} size={15} fill="currentColor" />
                 ))}
               </span>
-              <span>Rated 4.9/5 by 2700+ customers</span>
+              <span>Rated 4.9/5 by 2700+ builders</span>
             </div>
 
-            <h1>Work smarter, achieve faster</h1>
+            <h1>Find your next nerd-powered connection</h1>
             <p className="taskly-hero__subtitle">
-              Effortlessly manage your projects, collaborate with your team, and achieve your goals with our intuitive task management tool.
+              Meet collaborators, mentors, founders, and technical partners through skill-first discovery, real profiles, chat, events, and bookable meetings.
             </p>
 
             <div className="taskly-hero__actions">
               <Link className="taskly-primary-cta" to="/student/home">
-                <span>Get Started Now</span>
+                <span>Enter Student Beta</span>
                 <span className="taskly-primary-cta__icon" aria-hidden="true">
                   <ArrowUpRight size={18} />
                 </span>
               </Link>
 
               <Link className="taskly-workspace-link" to="/pro/overview">
-                Professional workspace
+                Professional dashboard
                 <ArrowUpRight size={16} />
               </Link>
             </div>
@@ -167,8 +167,8 @@ export function LandingPage() {
         </section>
       </main>
 
-      <section className="taskly-partners" aria-label="Trusted by top-tier product companies">
-        <p>Trusted by Top-tier product companies</p>
+      <section className="taskly-partners" aria-label="Trusted by builders, mentors, and product communities">
+        <p>Trusted by builders, mentors, and product communities</p>
         <div className="taskly-partners__track">
           {partnerLogos.map((name) => (
             <PartnerLogo key={name} name={name} />
@@ -179,7 +179,7 @@ export function LandingPage() {
       <section id="features" className="taskly-feature-band">
         <div className="taskly-section-head">
           <span>Features</span>
-          <h2>Liquid Glass workflows for every workspace</h2>
+          <h2>Everything you need to discover, connect, and meet</h2>
         </div>
         <div className="taskly-feature-grid">
           {featureCards.map((feature) => (
@@ -194,7 +194,7 @@ export function LandingPage() {
       <section id="pricing" className="taskly-pricing-band">
         <div className="taskly-pricing-card">
           <span>Beta access</span>
-          <h2>Enter the workspace that matches your role.</h2>
+          <h2>Choose the workspace built for how you network.</h2>
           <div className="taskly-pricing-card__actions">
             <Link to="/student/home">Student dashboard</Link>
             <Link to="/pro/overview">Professional dashboard</Link>
