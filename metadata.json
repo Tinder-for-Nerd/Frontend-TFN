@@ -1,6 +1,0 @@
-{
-  "name": "ProMatch",
-  "description": "A professional networking platform combining swipes and Topmate Booking management.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
