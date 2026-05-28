@@ -4,8 +4,10 @@ import { cx } from '../../utils/helpers';
 import { Icon, Avatar } from '../ui';
 import { Brand } from '../common/Brand';
 import { CommandPalette } from '../common/CommandPalette';
+import GridDistortion from '../ui/GridDistortion';
 import { proNav, studentNav } from '../../data/mockData';
 import { profiles } from '../../constants/profiles';
+import lightTechBg from '../../assets/light-tech-background.png';
 
 export function AppShell({
   children,
@@ -96,6 +98,19 @@ export function AppShell({
         className
       )}
     >
+      {variant === 'student' ? (
+        <div className="pm-student-shell-art" aria-hidden="true">
+          <GridDistortion
+            imageSrc={lightTechBg}
+            grid={12}
+            mouse={0.07}
+            strength={0.1}
+            relaxation={0.92}
+            className="pm-student-shell-art__canvas"
+          />
+        </div>
+      ) : null}
+
       <a className="pm-skip-link" href="#main">
         Skip to content
       </a>

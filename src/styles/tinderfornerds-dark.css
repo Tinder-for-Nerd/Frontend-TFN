@@ -6434,6 +6434,71 @@ h3 {
   background: transparent;
 }
 
+.pm-app-shell--student {
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+}
+
+.pm-student-shell-art {
+  position: fixed;
+  top: 92px;
+  right: max(-260px, -14vw);
+  width: min(980px, 74vw);
+  height: min(720px, 58vw);
+  z-index: -1;
+  overflow: hidden;
+  border-radius: 52px;
+  opacity: 0.28;
+  filter: saturate(1.18) hue-rotate(-8deg);
+  transform: rotate(-5deg);
+  pointer-events: auto;
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9), transparent 72%);
+}
+
+.pm-student-shell-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.9) 72%),
+    radial-gradient(circle at 24% 20%, rgba(0,132,255,0.24), transparent 44%);
+  mix-blend-mode: screen;
+}
+
+.pm-student-shell-art__canvas canvas {
+  filter: blur(0.2px) contrast(1.08) brightness(1.08);
+}
+
+.pm-app-shell--student .pm-sidebar,
+.pm-app-shell--student .pm-app-shell__content,
+.pm-app-shell--student .pm-bottom-nav,
+.pm-app-shell--student .pm-app-shell__backdrop {
+  position: relative;
+  z-index: 1;
+}
+
+.pm-app-shell--student .pm-main {
+  position: relative;
+  z-index: 1;
+}
+
+.pm-app-shell--student .pm-main::before {
+  content: '';
+  position: fixed;
+  left: min(340px, 24vw);
+  top: 18px;
+  width: 420px;
+  height: 260px;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at center, rgba(96, 177, 255, 0.2), transparent 68%),
+    radial-gradient(ellipse at 42% 38%, rgba(49, 154, 255, 0.14), transparent 62%);
+  filter: blur(8px);
+}
+
 .pm-sidebar {
   border-right: 1px solid rgba(17, 26, 62, 0.08);
   background: rgba(248, 251, 255, 0.65);
@@ -6692,6 +6757,14 @@ body.pm-light-theme .pm-connection-row:hover {
 }
 
 @media (max-width: 920px) {
+  .pm-student-shell-art {
+    top: 360px;
+    right: -360px;
+    width: 760px;
+    height: 520px;
+    opacity: 0.18;
+  }
+
   .pm-main {
     padding-top: 18px;
   }
@@ -6703,6 +6776,11 @@ body.pm-light-theme .pm-connection-row:hover {
 }
 
 @media (max-width: 640px) {
+  .pm-student-shell-art,
+  .pm-app-shell--student .pm-main::before {
+    display: none;
+  }
+
   .pm-main {
     width: 100%;
     padding: var(--space-3);
