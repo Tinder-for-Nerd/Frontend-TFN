@@ -20,7 +20,7 @@ import './styles/about.css';
 import './styles/contact.css';
 
 // Apply the theme class to body before first paint
-document.body.classList.add('pm-dark-theme');
+document.body.classList.add('pm-light-theme');
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

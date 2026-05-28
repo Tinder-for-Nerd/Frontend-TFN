@@ -188,17 +188,14 @@ body.pm-light-theme {
   min-height: 100vh;
   min-height: 100dvh;
   color: var(--on-surface);
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
-  background-size: 48px 48px;
-  opacity: 0.07;
-  mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.6) 8%, rgba(0,0,0,0.6) 92%, transparent 100%);
-  z-index: -5;
+  background: var(--surface);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color-scheme: light;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body.pm-dark-theme {
@@ -6606,6 +6603,50 @@ h3 {
 .pm-button {
   min-height: 42px;
   border-radius: 10px;
+}
+
+body.pm-light-theme .pm-card,
+body.pm-light-theme .pm-panel,
+body.pm-light-theme .pm-stat-card,
+body.pm-light-theme .pm-feature-card,
+body.pm-light-theme .pm-step-card,
+body.pm-light-theme .pm-pricing-card,
+body.pm-light-theme .pm-match-card,
+body.pm-light-theme .pm-session-card,
+body.pm-light-theme .pm-event-card,
+body.pm-light-theme .pm-notification-row,
+body.pm-light-theme .pm-connection-row,
+body.pm-light-theme .pm-sidebar,
+body.pm-light-theme .pm-topbar,
+body.pm-light-theme .pm-bottom-nav,
+body.pm-light-theme .pm-command-palette,
+body.pm-light-theme .wa-sidebar,
+body.pm-light-theme .wa-chat__head,
+body.pm-light-theme .wa-composer {
+  background: rgba(255, 255, 255, 0.45);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow:
+    inset 0 4px 4px rgba(255, 255, 255, 0.35),
+    0 18px 46px rgba(17, 26, 62, 0.08);
+  backdrop-filter: blur(24px) saturate(165%);
+  -webkit-backdrop-filter: blur(24px) saturate(165%);
+}
+
+body.pm-light-theme .pm-card:hover,
+body.pm-light-theme .pm-panel:hover,
+body.pm-light-theme .pm-stat-card:hover,
+body.pm-light-theme .pm-feature-card:hover,
+body.pm-light-theme .pm-step-card:hover,
+body.pm-light-theme .pm-pricing-card:hover,
+body.pm-light-theme .pm-match-card:hover,
+body.pm-light-theme .pm-session-card:hover,
+body.pm-light-theme .pm-event-card:hover,
+body.pm-light-theme .pm-notification-row:hover,
+body.pm-light-theme .pm-connection-row:hover {
+  border-color: rgba(0, 132, 255, 0.18);
+  box-shadow:
+    inset 0 4px 4px rgba(255, 255, 255, 0.42),
+    0 24px 62px rgba(17, 26, 62, 0.12);
 }
 
 .pm-button--ghost {
