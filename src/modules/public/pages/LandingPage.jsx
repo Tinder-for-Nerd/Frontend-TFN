@@ -27,21 +27,16 @@ const featureCards = [
   },
 ];
 
-const partnerLogos = ['HackLabs', 'FinPulse', 'DesignHub', 'BuildOS', 'Mentorly'];
+const communityStats = [
+  { value: '2,700+', label: 'builders exploring matches' },
+  { value: '4.9/5', label: 'early beta satisfaction' },
+  { value: '38', label: 'student and pro communities' },
+  { value: '1:1', label: 'meetings from profile discovery' },
+];
 
 function scrollToSection(id) {
   const element = document.querySelector(id);
   element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function PartnerLogo({ name }) {
-  return (
-    <svg className="taskly-partner-logo" viewBox="0 0 160 44" role="img" aria-label={name}>
-      <circle cx="22" cy="22" r="12" />
-      <path d="M44 16h70M44 28h92" />
-      <text x="52" y="27">{name}</text>
-    </svg>
-  );
 }
 
 function NavLinkItem({ item, onNavigate }) {
@@ -167,11 +162,14 @@ export function LandingPage() {
         </section>
       </main>
 
-      <section className="taskly-partners" aria-label="Trusted by builders, mentors, and product communities">
-        <p>Trusted by builders, mentors, and product communities</p>
+      <section className="taskly-partners" aria-label="Tinder for Nerds beta community proof">
+        <p>Built for high-intent student and professional networking</p>
         <div className="taskly-partners__track">
-          {partnerLogos.map((name) => (
-            <PartnerLogo key={name} name={name} />
+          {communityStats.map((stat) => (
+            <article className="taskly-community-stat" key={stat.label}>
+              <strong>{stat.value}</strong>
+              <span>{stat.label}</span>
+            </article>
           ))}
         </div>
       </section>
