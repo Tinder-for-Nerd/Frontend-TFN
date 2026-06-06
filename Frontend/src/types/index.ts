@@ -190,6 +190,40 @@ export interface DashboardAnalytics {
   profileVisits: { month: string; visits: number }[];
 }
 
+// === Profile Customization Types ===
+
+export interface ReadmeWidget {
+  id: string;
+  type: 'stats' | 'skills' | 'projects' | 'github' | 'leetcode' | 'kaggle' | 'achievements' | 'about' | 'techStack' | 'certifications' | 'contributions' | 'custom';
+  title: string;
+  visible: boolean;
+}
+
+export interface GitHubReadmeData {
+  markdown: string;
+  widgets: ReadmeWidget[];
+  theme: number;
+}
+
+export interface LinkedInSection {
+  id: string;
+  type: 'experience' | 'education' | 'skills' | 'certifications' | 'projects' | 'recommendations' | 'custom';
+  title: string;
+  visible: boolean;
+}
+
+export interface LinkedInCustomData {
+  sections: LinkedInSection[];
+  bannerColor: string;
+  headline: string;
+  openToWork: boolean;
+}
+
+export interface ProfileCustomization {
+  githubReadme: GitHubReadmeData;
+  linkedin: LinkedInCustomData;
+}
+
 export interface SettingsData {
   account: {
     name: string;
@@ -218,4 +252,75 @@ export interface SettingsData {
     twoFactor: boolean;
     sessionTimeout: number;
   };
+}
+
+// === Instagram-style Feed Types ===
+
+export interface FeedUser {
+  id: string;
+  name: string;
+  username: string;
+  avatar: string;
+  isVerified: boolean;
+  isPrivate: boolean;
+  bio: string;
+  followersCount: number;
+  followingCount: number;
+  postsCount: number;
+  isFollowing?: boolean;
+  hasFollowRequested?: boolean;
+}
+
+export interface FeedComment {
+  id: string;
+  user: FeedUser;
+  text: string;
+  timestamp: string;
+  likesCount: number;
+  isLiked: boolean;
+  replies: FeedComment[];
+}
+
+export interface FeedPost {
+  id: string;
+  user: FeedUser;
+  images: string[];
+  video?: string;
+  caption: string;
+  hashtags: string[];
+  mentions: string[];
+  timestamp: string;
+  likesCount: number;
+  commentsCount: number;
+  viewCount?: number;
+  isLiked: boolean;
+  isSaved: boolean;
+  isReposted: boolean;
+  comments: FeedComment[];
+}
+
+export interface FeedStory {
+  id: string;
+  user: FeedUser;
+  image: string;
+  video?: string;
+  timestamp: string;
+  viewed: boolean;
+}
+
+export interface FeedCollection {
+  id: string;
+  name: string;
+  posts: string[];
+  coverImage?: string;
+}
+
+export interface SuggestedUser {
+  user: FeedUser;
+  reason: string;
+}
+
+export interface TrendingHashtag {
+  tag: string;
+  postsCount: number;
 }

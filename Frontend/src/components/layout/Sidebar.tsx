@@ -1,16 +1,17 @@
 import { NavLink } from 'react-router-dom';
 import { cn } from '../../lib/utils';
 import {
-  Compass,
-  MessageSquare,
   Calendar,
   CalendarRange,
   Bell,
   User,
   Settings,
-  BarChart3,
   Shield,
   X,
+  Rss,
+  Flame,
+  Send,
+  LayoutDashboard,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -21,8 +22,10 @@ interface SidebarProps {
 
 const navItems = {
   student: [
-    { icon: Compass, label: 'Discover', path: '/discover' },
-    { icon: MessageSquare, label: 'Messages', path: '/messages' },
+    { icon: Rss, label: 'Feed', path: '/feed' },
+    { icon: Flame, label: 'Explore', path: '/explore' },
+    { icon: Send, label: 'Direct Messages', path: '/messages' },
+    { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
     { icon: Calendar, label: 'Sessions', path: '/sessions' },
     { icon: CalendarRange, label: 'Events', path: '/events' },
     { icon: Bell, label: 'Notifications', path: '/notifications' },
@@ -30,19 +33,22 @@ const navItems = {
     { icon: Settings, label: 'Settings', path: '/settings' },
   ],
   professional: [
-    { icon: Compass, label: 'Discover', path: '/discover' },
-    { icon: MessageSquare, label: 'Messages', path: '/messages' },
+    { icon: Rss, label: 'Feed', path: '/feed' },
+    { icon: Flame, label: 'Explore', path: '/explore' },
+    { icon: Send, label: 'Direct Messages', path: '/messages' },
+    { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
     { icon: Calendar, label: 'Sessions', path: '/sessions' },
     { icon: CalendarRange, label: 'Events', path: '/events' },
     { icon: Bell, label: 'Notifications', path: '/notifications' },
     { icon: User, label: 'Profile', path: '/profile' },
-    { icon: BarChart3, label: 'Dashboard', path: '/dashboard' },
     { icon: Settings, label: 'Settings', path: '/settings' },
   ],
   admin: [
     { icon: Shield, label: 'Admin', path: '/admin' },
-    { icon: Compass, label: 'Discover', path: '/discover' },
-    { icon: MessageSquare, label: 'Messages', path: '/messages' },
+    { icon: Rss, label: 'Feed', path: '/feed' },
+    { icon: Flame, label: 'Explore', path: '/explore' },
+    { icon: Send, label: 'Direct Messages', path: '/messages' },
+    { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
     { icon: Calendar, label: 'Sessions', path: '/sessions' },
     { icon: CalendarRange, label: 'Events', path: '/events' },
     { icon: Bell, label: 'Notifications', path: '/notifications' },

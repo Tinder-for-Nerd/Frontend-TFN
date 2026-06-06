@@ -5,7 +5,9 @@ import { useEffect } from 'react';
 import { useAuthStore } from './store/authStore';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import LoginPage from './pages/LoginPage';
-import DiscoverPage from './pages/DiscoverPage';
+import FeedPage from './pages/FeedPage';
+import ExplorePage from './pages/ExplorePage';
+import SearchPage from './pages/SearchPage';
 import MessagesPage from './pages/MessagesPage';
 import SessionsPage from './pages/SessionsPage';
 import EventsPage from './pages/EventsPage';
@@ -46,7 +48,10 @@ function AppRoutes() {
           </AuthGuard>
         }
       >
-        <Route path="/discover" element={<DiscoverPage />} />
+        <Route path="/discover" element={<FeedPage />} />
+        <Route path="/feed" element={<FeedPage />} />
+        <Route path="/explore" element={<ExplorePage />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route path="/messages" element={<MessagesPage />} />
         <Route path="/sessions" element={<SessionsPage />} />
         <Route path="/events" element={<EventsPage />} />
