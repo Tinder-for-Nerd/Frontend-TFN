@@ -1,3 +1,19 @@
+/* Settings page — scroll-safe layout */
+.pm-settings-shell .pm-main {
+  overflow: visible;
+  min-height: auto;
+  height: auto;
+  max-height: none;
+  padding-bottom: calc(96px + env(safe-area-inset-bottom));
+}
+
+.pm-settings-shell .pm-settings-page {
+  min-height: auto;
+  isolation: auto;
+  position: static;
+  padding-bottom: 48px;
+}
+
 /* Settings Page */
 .pm-settings-page {
   width: min(100%, 980px);
@@ -151,8 +167,10 @@
 
 .pm-settings-section--danger {
   gap: var(--space-4);
+  scroll-margin-bottom: 32px;
 }
 
+.pm-settings-section--danger .pm-button,
 .pm-settings-section--danger button {
   width: 100%;
   min-height: 44px;

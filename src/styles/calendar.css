@@ -117,16 +117,16 @@
 }
 
 .pm-cal__cell:hover {
-  background: rgba(0, 68, 201, 0.04);
+  background: rgba(0, 132, 255, 0.04);
 }
 
 .pm-cal__cell.is-selected {
-  background: rgba(0, 68, 201, 0.07);
+  background: rgba(0, 132, 255, 0.07);
 }
 
 .pm-cal__cell.is-today .pm-cal__day {
-  background: rgba(14, 207, 191, 0.16);
-  border: 1px solid rgba(14, 207, 191, 0.35);
+  background: rgba(0, 132, 255, 0.16);
+  border: 1px solid rgba(0, 132, 255, 0.35);
   color: var(--text-primary);
 }
 
@@ -151,7 +151,7 @@
   width: 8px;
   height: 8px;
   border-radius: 9999px;
-  background: rgba(0, 68, 201, 0.5);
+  background: rgba(0, 132, 255, 0.5);
 }
 
 .pm-cal__cell-badges {
@@ -174,8 +174,8 @@
 }
 
 .pm-cal__pill--event {
-  border-color: rgba(14, 207, 191, 0.28);
-  background: rgba(14, 207, 191, 0.12);
+  border-color: rgba(0, 132, 255, 0.28);
+  background: rgba(0, 132, 255, 0.12);
   color: var(--text-primary);
 }
 
@@ -255,8 +255,8 @@
 }
 
 .pm-cal-item:hover {
-  background: rgba(0, 68, 201, 0.04);
-  border-color: rgba(0, 68, 201, 0.12);
+  background: rgba(0, 132, 255, 0.04);
+  border-color: rgba(0, 132, 255, 0.12);
 }
 
 .pm-cal-item__left {

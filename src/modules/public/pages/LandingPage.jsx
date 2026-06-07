@@ -1,18 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, ChevronRight, Menu, Star, X } from 'lucide-react';
+import { ArrowUpRight, Star } from 'lucide-react';
 import GridDistortion from '../../../components/ui/GridDistortion';
 import lightTechBg from '../../../assets/light-tech-background.png';
 import '../../../styles/landing.css';
 
 const ORB_VIDEO_URL = 'https://future.co/images/homepage/glassy-orb/orb-purple.webm';
-
-const navItems = [
-  { label: 'Home', href: '#home' },
-  { label: 'Features', href: '#features' },
-  { label: 'Community', href: '/about', route: true },
-  { label: 'Beta Access', href: '#pricing' },
-];
 
 const featureCards = [
   {
@@ -36,47 +28,7 @@ const communityStats = [
   { value: '1:1', label: 'meetings from profile discovery' },
 ];
 
-function scrollToSection(id) {
-  const element = document.querySelector(id);
-  element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function NavLinkItem({ item, onNavigate }) {
-  if (item.route) {
-    return (
-      <Link to={item.href} onClick={onNavigate}>
-        {item.label}
-      </Link>
-    );
-  }
-
-  return (
-    <a
-      href={item.href}
-      onClick={(event) => {
-        event.preventDefault();
-        scrollToSection(item.href);
-        onNavigate();
-      }}
-    >
-      {item.label}
-    </a>
-  );
-}
-
 export function LandingPage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 24);
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const closeMenu = useCallback(() => setMobileMenuOpen(false), []);
-
   return (
     <div className="taskly-page">
       <div className="taskly-background-art" aria-hidden="true">
@@ -89,46 +41,6 @@ export function LandingPage() {
           className="taskly-background-art__canvas"
         />
       </div>
-
-      <header className={`taskly-nav ${isScrolled ? 'is-scrolled' : ''}`}>
-        <div className="taskly-nav__inner">
-          <a
-            className="taskly-brand"
-            href="#home"
-            onClick={(event) => {
-              event.preventDefault();
-              scrollToSection('#home');
-              closeMenu();
-            }}
-          >
-            Tinder for Nerds
-          </a>
-
-          <nav className={`taskly-nav__links ${mobileMenuOpen ? 'is-open' : ''}`} aria-label="Primary navigation">
-            {navItems.map((item) => (
-              <NavLinkItem key={item.label} item={item} onNavigate={closeMenu} />
-            ))}
-            <Link className="taskly-nav__enter" to="/student/home" onClick={closeMenu}>
-              Enter Beta
-            </Link>
-          </nav>
-
-          <div className="taskly-nav__actions">
-            <Link className="taskly-signup" to="/signup">
-              <span>Join Beta</span>
-              <ChevronRight size={16} />
-            </Link>
-            <button
-              className="taskly-menu"
-              type="button"
-              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-              onClick={() => setMobileMenuOpen((value) => !value)}
-            >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </div>
-        </div>
-      </header>
 
       <main id="home" className="taskly-hero">
         <section className="taskly-hero__inner">
@@ -163,6 +75,17 @@ export function LandingPage() {
           </div>
 
           <div className="taskly-visual" aria-label="Interactive Tinder for Nerds visual preview">
+            <div className="taskly-orb" aria-hidden="true">
+              <video
+                src={ORB_VIDEO_URL}
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+              />
+            </div>
+
             <div className="taskly-visual__image">
               <GridDistortion
                 imageSrc={lightTechBg}
@@ -176,16 +99,6 @@ export function LandingPage() {
                 <strong>Skill-first discovery</strong>
                 <span>Profiles, chats, events, and meetings in one glass workspace.</span>
               </div>
-            </div>
-
-            <div className="taskly-orb" aria-hidden="true">
-              <video
-                src={ORB_VIDEO_URL}
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
             </div>
           </div>
         </section>

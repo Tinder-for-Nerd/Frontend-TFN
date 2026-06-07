@@ -1,242 +1,232 @@
-import { useEffect, useState, useRef, useMemo } from 'react';
-import { usePageMeta } from '../../../hooks/usePageMeta';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import {
+  Bookmark,
+  Check,
+  ChevronDown,
+  Eye,
+  Share2,
+  Star,
+  UserPlus,
+} from 'lucide-react';
 import { AppShell } from '../../../components/layout';
-import { MiniProfileCard } from '../../../components/common';
-import { Button, Badge, Icon } from '../../../components/ui';
+import { usePageMeta } from '../../../hooks/usePageMeta';
 import { studentDiscoverProfiles, proDiscoverProfiles } from '../../../data/mockData';
 import '../../../styles/discover.css';
 
-export function DiscoverPage({ variant }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [translateY, setTranslateY] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState(0);
-  const [dragDistance, setDragDistance] = useState(0);
-  const [touchPhase, setTouchPhase] = useState('IDLE'); // IDLE, TOUCH_START, TOUCH_MOVE, SNAP_ANIMATING, SPRING_ANIMATING, SNAP_DOWN, SNAP_UP
-  const [snapProgress, setSnapProgress] = useState(0); // 0 to 100 % to threshold
-  const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
-  const [viewportHeight, setViewportHeight] = useState(() => window.innerHeight);
-  const containerRef = useRef(null);
-  const lastScrollTime = useRef(0);
+const DISCOVER_HERO_IMAGES = {
+  'sarah-chen':
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuAoQsTnJIwgXT82h5a69umEvR7HIrpy482IPVd1i6Lg0DKgQ9tU8Vr7aaGRADnE3sFDKpCjIUvsLtLi7PLKoWaqv4JKAh9Ln8qQpzkmZ0l4x_PbEes2Lfmayr5kOjmP4Q2QZp8yZnl5FbDGTabGgspuKSYEb8VZiA7Lk_Riev7lgJXactor1bcxFnes0PHo-Zgt4M_qqScmL3_CRk-7TwoWgM6EaDAJI9fhWXov8SUBtKdfZqm-kmbuEudVu79JmskjC3knCGoQTRU',
+  'raj-patel':
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuC7nCvaUZxHMcf_ekpIzkMUCu0pPyW9OQCoPlL6D0vYNWdf6lddcWYtamarXHcwpL5qGVbsOX9GOUAs12j3IfIE5tcmguzcYPGSL7-XWRhQ3qbF4WcigebhXdmi4I5tVyMPY9dLvPkLQNe0S5Gz4o2YCpIcVHaKVfJeDkhs8OzU40WfTKfULItmxa7OO7gMEEJeQcNmF4eRMS75I2ow1sgLYzdniwXLRLkjkBRuezWkTDFKbG7dhfUrHBwDUK8jkgjNtGHiDJF8FsM',
+  'nora-khan':
+    'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80',
+  'priya-sharma':
+    'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=1200&q=80',
+  'liam-oconnor':
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80',
+};
 
-  const profilesSource = variant === 'pro' ? proDiscoverProfiles : studentDiscoverProfiles;
-  const profileBase = variant === 'pro' ? '/pro/profile' : '/profile';
-  
-  const SNAP_THRESHOLD = 0.3;
-  const SPRING_EASING = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-  const isMobile = viewportWidth <= 640;
-  const CONTAINER_HEIGHT = isMobile
-    ? Math.min(600, Math.max(520, viewportHeight - 152))
-    : 600;
+const FALLBACK_HERO_IMAGES = [
+  'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1200&q=80',
+];
 
-  usePageMeta(
-    variant === 'pro' ? 'Tinder for Nerds | Pro Discover' : 'Tinder for Nerds | Student Discover',
-    'Swipe through AI-ranked discovery feed with instant loading and smooth transitions.',
+function getHeroImage(profile, index) {
+  return (
+    DISCOVER_HERO_IMAGES[profile.username] ||
+    profile.src ||
+    FALLBACK_HERO_IMAGES[index % FALLBACK_HERO_IMAGES.length]
+  );
+}
+
+function ReelAction({
+  label,
+  icon: IconComponent,
+  primary = false,
+  sent = false,
+  filled = false,
+  onClick,
+  to,
+}) {
+  const className = [
+    'reel-action',
+    primary && 'reel-action--primary',
+    sent && 'reel-action--sent',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const content = (
+    <>
+      <span className="reel-action__icon">
+        <IconComponent size={20} fill={filled ? 'currentColor' : 'none'} />
+      </span>
+      <span className="reel-action__label">{label}</span>
+    </>
   );
 
-  // Programmatically manage body/html scroll lock for reliable SPA navigation without hard refreshes
-  useEffect(() => {
-    document.documentElement.classList.add('pm-discover-page-active');
-    document.body.classList.add('pm-discover-page-active');
+  if (to) {
+    return (
+      <Link to={to} className={className}>
+        {content}
+      </Link>
+    );
+  }
 
-    return () => {
-      document.documentElement.classList.remove('pm-discover-page-active');
-      document.body.classList.remove('pm-discover-page-active');
+  return (
+    <button type="button" className={className} onClick={onClick} disabled={sent && primary}>
+      {content}
+    </button>
+  );
+}
+
+export function DiscoverPage({ variant = 'student' }) {
+  const profilesSource = variant === 'pro' ? proDiscoverProfiles : studentDiscoverProfiles;
+  const profileBase = variant === 'pro' ? '/pro/profile' : '/profile';
+
+  const [savedIds, setSavedIds] = useState(() => new Set());
+  const [connectedIds, setConnectedIds] = useState(() => new Set());
+  const [activeIndex, setActiveIndex] = useState(0);
+  const reelsRef = useRef(null);
+  const reelRefs = useRef([]);
+
+  usePageMeta(
+    variant === 'pro' ? 'ProMatch | Pro Discover' : 'ProMatch | Discover Matches',
+    'Swipe through skill-first matches with vertical reel discovery.',
+  );
+
+  useEffect(() => {
+    const container = reelsRef.current;
+    if (!container) return undefined;
+
+    const handleScroll = () => {
+      const { scrollTop, clientHeight } = container;
+      const index = Math.round(scrollTop / clientHeight);
+      setActiveIndex(Math.max(0, Math.min(profilesSource.length - 1, index)));
     };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [profilesSource.length]);
+
+  const scrollToReel = useCallback((index) => {
+    const container = reelsRef.current;
+    if (!container) return;
+    container.scrollTo({ top: index * container.clientHeight, behavior: 'smooth' });
+    setActiveIndex(index);
   }, []);
 
-  // Sync translation offset when resizing or changing active card index
-  useEffect(() => {
-    if (!isDragging) {
-      setTranslateY(-(currentIndex * CONTAINER_HEIGHT));
-    }
-  }, [currentIndex, CONTAINER_HEIGHT, isDragging]);
+  const toggleSave = useCallback((profileId) => {
+    setSavedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(profileId)) next.delete(profileId);
+      else next.add(profileId);
+      return next;
+    });
+  }, []);
 
-  // Keyboard snapping (Arrow Keys navigation)
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        const newIndex = Math.min(profilesSource.length - 1, currentIndex + 1);
-        if (newIndex !== currentIndex) {
-          setTouchPhase('SNAP_DOWN');
-          setCurrentIndex(newIndex);
-          setTimeout(() => setTouchPhase('IDLE'), 400);
-        }
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        const newIndex = Math.max(0, currentIndex - 1);
-        if (newIndex !== currentIndex) {
-          setTouchPhase('SNAP_UP');
-          setCurrentIndex(newIndex);
-          setTimeout(() => setTouchPhase('IDLE'), 400);
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentIndex, profilesSource, CONTAINER_HEIGHT]);
-
-  // Touch handlers (drag smooth tracking without jumps)
-  const handleTouchStart = (e) => {
-    setIsDragging(true);
-    setTouchPhase('TOUCH_START');
-    setDragStart(e.touches[0].clientY);
-    setDragDistance(0);
-    setSnapProgress(0);
-  };
-
-  const handleTouchMove = (e) => {
-    if (!isDragging) return;
-    const currentY = e.touches[0].clientY;
-    const distance = dragStart - currentY;
-    setDragDistance(distance);
-    setTouchPhase('TOUCH_MOVE');
-
-    const baseOffset = -(currentIndex * CONTAINER_HEIGHT);
-    setTranslateY(baseOffset - distance);
-
-    const threshold = CONTAINER_HEIGHT * SNAP_THRESHOLD;
-    const progress = Math.min(100, Math.round((Math.abs(distance) / threshold) * 100));
-    setSnapProgress(progress);
-  };
-
-  const handleTouchEnd = () => {
-    if (!isDragging) return;
-    setIsDragging(false);
-    const threshold = CONTAINER_HEIGHT * SNAP_THRESHOLD;
-    
-    if (Math.abs(dragDistance) > threshold) {
-      const direction = dragDistance > 0 ? 1 : -1;
-      const newIndex = Math.max(0, Math.min(profilesSource.length - 1, currentIndex + direction));
-      setTouchPhase(newIndex !== currentIndex ? 'SNAP_ANIMATING' : 'SPRING_ANIMATING');
-      setCurrentIndex(newIndex);
-    } else {
-      setTouchPhase('SPRING_ANIMATING');
-      setTranslateY(-(currentIndex * CONTAINER_HEIGHT));
-    }
-    
-    setDragDistance(0);
-    setSnapProgress(0);
-    setTimeout(() => setTouchPhase('IDLE'), 400);
-  };
-
-  // Mouse drag handlers (identical scroll physics for desktop)
-  const handleMouseDown = (e) => {
-    // Only capture left click
-    if (e.button !== 0) return;
-    setIsDragging(true);
-    setTouchPhase('TOUCH_START');
-    setDragStart(e.clientY);
-    setDragDistance(0);
-    setSnapProgress(0);
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    const distance = dragStart - e.clientY;
-    setDragDistance(distance);
-    setTouchPhase('TOUCH_MOVE');
-
-    const baseOffset = -(currentIndex * CONTAINER_HEIGHT);
-    setTranslateY(baseOffset - distance);
-
-    const threshold = CONTAINER_HEIGHT * SNAP_THRESHOLD;
-    const progress = Math.min(100, Math.round((Math.abs(distance) / threshold) * 100));
-    setSnapProgress(progress);
-  };
-
-  const handleMouseUp = () => {
-    if (!isDragging) return;
-    setIsDragging(false);
-    const threshold = CONTAINER_HEIGHT * SNAP_THRESHOLD;
-
-    if (Math.abs(dragDistance) > threshold) {
-      const direction = dragDistance > 0 ? 1 : -1;
-      const newIndex = Math.max(0, Math.min(profilesSource.length - 1, currentIndex + direction));
-      setTouchPhase(newIndex !== currentIndex ? 'SNAP_ANIMATING' : 'SPRING_ANIMATING');
-      setCurrentIndex(newIndex);
-    } else {
-      setTouchPhase('SPRING_ANIMATING');
-      setTranslateY(-(currentIndex * CONTAINER_HEIGHT));
-    }
-
-    setDragDistance(0);
-    setSnapProgress(0);
-    setTimeout(() => setTouchPhase('IDLE'), 400);
-  };
-
-  // Mouse wheel scroll snapping support
-  const handleWheel = (e) => {
-    const now = Date.now();
-    if (now - lastScrollTime.current < 800) return; // Debounce fast swipes
-
-    const deltaY = e.deltaY;
-    if (Math.abs(deltaY) < 15) return; // Ignore micro-scrolls
-
-    const direction = deltaY > 0 ? 1 : -1;
-    const newIndex = Math.max(0, Math.min(profilesSource.length - 1, currentIndex + direction));
-
-    if (newIndex !== currentIndex) {
-      lastScrollTime.current = now;
-      setTouchPhase(direction > 0 ? 'SNAP_DOWN' : 'SNAP_UP');
-      setCurrentIndex(newIndex);
-      setTimeout(() => setTouchPhase('IDLE'), 400);
-    }
-  };
+  const handleConnect = useCallback((profileId) => {
+    setConnectedIds((prev) => new Set(prev).add(profileId));
+  }, []);
 
   return (
     <AppShell
       variant={variant}
-      title="Discover"
-      subtitle="Swipe to explore"
-      className="pm-app-shell--discover"
+      hideTopbar
+      className="pm-app-shell--discover-page"
     >
-      <div className="pm-discover">
-        <div
-          ref={containerRef}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          onWheel={handleWheel}
-          className={`pm-discover__stack ${isDragging ? 'is-dragging' : ''}`}
-          style={{ height: `${CONTAINER_HEIGHT}px` }}
-        >
-          <div
-            className="pm-discover__rail"
-            style={{
-              transform: `translateY(${translateY}px)`,
-              transition: isDragging ? 'none' : `transform 0.4s ${SPRING_EASING}`,
-              height: `${(profilesSource?.length || 1) * CONTAINER_HEIGHT}px`,
-            }}
-          >
-            {profilesSource && profilesSource.length > 0 ? (
-              profilesSource.map((profile, index) => (
-                <div
-                  key={profile.id}
-                  className="pm-discover__cell"
-                  style={{ height: `${CONTAINER_HEIGHT}px` }}
-                >
-                  <div className="pm-discover__card">
-                    <MiniProfileCard
-                      profile={profile}
-                      extraLink={`${profileBase}/${profile.username}`}
+      <div className="discover">
+        <div ref={reelsRef} className="discover__reels no-scrollbar">
+          {profilesSource.map((profile, index) => {
+            const isSaved = savedIds.has(profile.id);
+            const isConnected = connectedIds.has(profile.id);
+            const profileUrl = `${profileBase}/${profile.username}`;
+
+            return (
+              <section
+                key={profile.id}
+                className="reel"
+                ref={(node) => {
+                  reelRefs.current[index] = node;
+                }}
+              >
+                <div className="reel__media">
+                  <img
+                    src={getHeroImage(profile, index)}
+                    alt=""
+                    className="reel__image"
+                  />
+                </div>
+                <div className="reel__vignette" aria-hidden="true" />
+
+                <div className="reel__content">
+                  <div className="reel__info">
+                    <div className="reel__score">
+                      <Star size={12} fill="currentColor" />
+                      <span>{profile.match} Skill Score</span>
+                    </div>
+
+                    <div className="reel__name-row">
+                      <h2 className="reel__name">{profile.name}</h2>
+                      <span className="reel__intent">{profile.intent}</span>
+                    </div>
+
+                    <p className="reel__title">{profile.title}</p>
+                    <p className="reel__bio">{profile.headline || profile.bio}</p>
+
+                    <ul className="reel__tags">
+                      {profile.skills.slice(0, 3).map((skill) => (
+                        <li key={skill} className="reel__tag">
+                          #{skill.replace(/\s+/g, '')}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="reel__actions">
+                    <ReelAction
+                      label={isConnected ? 'Sent' : 'Connect'}
+                      icon={isConnected ? Check : UserPlus}
+                      primary
+                      sent={isConnected}
+                      onClick={() => handleConnect(profile.id)}
+                    />
+                    <ReelAction label="Profile" icon={Eye} to={profileUrl} />
+                    <ReelAction label="Share" icon={Share2} />
+                    <ReelAction
+                      label="Save"
+                      icon={Bookmark}
+                      filled={isSaved}
+                      onClick={() => toggleSave(profile.id)}
                     />
                   </div>
                 </div>
-              ))
-            ) : (
-              <div className="pm-discover__empty" style={{ height: `${CONTAINER_HEIGHT}px` }}>
-                No profiles available
-              </div>
-            )}
-          </div>
+              </section>
+            );
+          })}
         </div>
+
+        <div className="progress-dots" aria-label="Reel progress">
+          {profilesSource.map((profile, index) => (
+            <button
+              key={profile.id}
+              type="button"
+              className={`progress-dot${index === activeIndex ? ' progress-dot--active' : ''}`}
+              aria-label={`Go to match ${index + 1}`}
+              onClick={() => scrollToReel(index)}
+            />
+          ))}
+        </div>
+
+        {activeIndex < profilesSource.length - 1 ? (
+          <div className="discover__scroll-hint" aria-hidden="true">
+            <span>Swipe up for next match</span>
+            <ChevronDown size={14} />
+          </div>
+        ) : null}
       </div>
     </AppShell>
   );

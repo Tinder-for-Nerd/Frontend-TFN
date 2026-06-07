@@ -767,6 +767,9 @@ export const events = [
     domain: 'Product',
     date: 'Apr 24',
     time: '7:00 PM',
+    durationMinutes: 120,
+    location: 'Online — Tinder for Nerds virtual room',
+    linkedinEventUrl: 'https://www.linkedin.com/events/career-builders-demo-night/',
     attendees: 124,
     tags: ['Product', 'Mentoring', 'Networking'],
     summary:
@@ -781,6 +784,9 @@ export const events = [
     domain: 'Engineering',
     date: 'Apr 27',
     time: '6:30 PM',
+    durationMinutes: 150,
+    location: 'Innovation Hub, Block C',
+    linkedinEventUrl: 'https://www.linkedin.com/events/build-with-ai-workshop/',
     attendees: 86,
     tags: ['Engineering', 'ML', 'Workshops'],
     summary:
@@ -795,6 +801,8 @@ export const events = [
     domain: 'Design',
     date: 'Apr 29',
     time: '5:00 PM',
+    durationMinutes: 90,
+    location: 'Online — Zoom',
     attendees: 63,
     tags: ['Design', 'Feedback', 'Portfolio'],
     summary:

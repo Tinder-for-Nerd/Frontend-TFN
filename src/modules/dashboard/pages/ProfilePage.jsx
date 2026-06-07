@@ -101,6 +101,8 @@ export function ProfilePage({ variant = 'student' }) {
       title={profile?.name ?? 'Profile'}
       subtitle={isMe ? 'Your profile' : 'Profile'}
       actions={null}
+      hideTopbar
+      className="pm-profile-shell"
     >
       <div className="pm-profile-page">
         <div className="pm-gh-profile">

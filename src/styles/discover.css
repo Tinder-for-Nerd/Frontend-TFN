@@ -1,205 +1,341 @@
-/* Lock scroll of body and html when discover page is active */
-html.pm-discover-page-active,
-body.pm-discover-page-active {
-  overflow: hidden !important;
-  height: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
+/* Discover — full-screen Instagram Reels style */
+
+.pm-app-shell--discover-page {
+  background: transparent;
 }
 
-/* Viewport-locked discover shell wrapper */
-.pm-app-shell--discover {
-  height: 100vh !important;
-  height: 100dvh !important;
-  overflow: hidden !important;
-}
-
-.pm-app-shell--discover .pm-app-shell__content {
-  height: 100vh !important;
-  height: 100dvh !important;
-  overflow: hidden !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-.pm-app-shell--discover .pm-main {
-  flex: 1 !important;
-  overflow: hidden !important;
-  display: flex !important;
-  flex-direction: column !important;
-  padding: 16px !important;
-  box-sizing: border-box !important;
-}
-
-/* Discover (swipe stack) */
-.pm-discover {
-  width: min(100%, 740px);
-  margin: auto auto !important;
-  padding: 8px;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-  flex: 1 !important;
-  min-height: 0 !important;
-  box-sizing: border-box;
-}
-
-.pm-app-shell--discover .pm-discover {
-  /* Fill the available main area so the stack can clamp to viewport. */
-  flex: 1 !important;
-  min-height: 0 !important;
-  height: auto !important;
-}
-
-@media (max-width: 640px) {
-  .pm-app-shell--discover .pm-main {
-    overflow: hidden;
-  }
-
-  .pm-app-shell--discover .pm-topbar {
-    padding: 10px 14px;
-  }
-
-  .pm-app-shell--discover .pm-topbar__actions {
-    display: none;
-  }
-
-  .pm-app-shell--discover .pm-topbar__title {
-    gap: 0;
-  }
-
-  .pm-app-shell--discover .pm-topbar__title .pm-kicker {
-    font-size: 0.92rem;
-  }
-}
-
-.pm-discover__stack {
+.pm-app-shell--discover-page .pm-app-shell__content,
+.pm-app-shell--discover-page .pm-main {
   overflow: hidden;
+  background: transparent;
+}
+
+.pm-app-shell--discover-page .pm-main {
+  width: 100%;
+  max-width: none;
+  height: calc(100dvh - var(--site-header-h));
+  padding: 0;
+  margin: 0;
+}
+
+.discover {
   position: relative;
   width: 100%;
-  cursor: grab;
-  border-radius: var(--radius-xl);
-  background: var(--surface-container-low);
-  border: 1px solid var(--outline-variant);
-  box-shadow: var(--shadow-ambient);
+  max-width: 480px;
+  height: 100%;
+  margin: 0 auto;
+  background: transparent;
 }
 
-.pm-discover__stack.is-dragging {
-  cursor: grabbing;
-}
-
-.pm-discover__rail {
+.discover__reels {
   width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
-.pm-discover__cell {
-  width: 100%;
+.discover__reels::-webkit-scrollbar {
+  display: none;
+}
+
+.reel {
+  height: 100%;
+  min-height: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
   display: flex;
-  align-items: stretch;
-  justify-content: stretch;
-  padding: 18px;
-  box-sizing: border-box;
+  align-items: flex-end;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #000;
 }
 
-@media (max-width: 640px) {
-  .pm-discover {
-    padding: 0;
-  }
-
-  .pm-discover__cell {
-    padding: 12px;
-  }
-
-  .pm-discover__card .pm-mini-profile {
-    min-height: 0;
-    padding: 16px;
-    gap: 14px;
-  }
-
-  .pm-discover__card .pm-mini-profile__head {
-    gap: 12px;
-  }
-
-  .pm-discover__card .pm-mini-profile__name {
-    font-size: 1.05rem;
-  }
-
-  .pm-discover__card .pm-mini-profile__fit-value {
-    font-size: 1.15rem;
-  }
-
-  .pm-discover__card .pm-mini-profile__title,
-  .pm-discover__card .pm-mini-profile__headline,
-  .pm-discover__card .pm-mini-profile__why p,
-  .pm-discover__card .pm-mini-profile__mutuals {
-    font-size: 0.9rem;
-  }
-
-  .pm-discover__card .pm-mini-profile__body {
-    gap: 12px;
-  }
-
-  .pm-discover__card .pm-mini-profile__why {
-    padding: 12px;
-    border-radius: 14px;
-  }
-
-  .pm-discover__card .pm-mini-profile__skills {
-    gap: 6px;
-  }
-
-  .pm-discover__card .pm-mini-profile__skill {
-    padding: 5px 10px;
-    font-size: 0.74rem;
-  }
-
-  .pm-discover__card .pm-mini-profile__mutuals {
-    gap: 10px;
-    margin-top: 0;
-  }
-
-  .pm-discover__card .pm-mini-profile__actions {
-    gap: 10px;
-    margin-top: 0;
-  }
-
-  .pm-discover__card .pm-mini-profile__row-actions {
-    gap: 6px;
-  }
-
-  .pm-discover__card .pm-button {
-    min-height: 40px;
-  }
-
-  .pm-discover__card .pm-mini-profile__row-actions .pm-button {
-    min-height: 38px;
-  }
+.reel__media {
+  position: absolute;
+  inset: 0;
 }
 
-.pm-discover__card {
+.reel__image {
   width: 100%;
-  /* Keep the “layered paper” look by letting the stack bg show at edges */
-  padding: 2px;
   height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
 }
 
-/* Let the card fill the available height so we don't get a dead zone at the bottom */
-.pm-discover__card .pm-mini-profile {
-  height: 100%;
-  justify-content: space-between;
+.reel__vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0.05) 35%,
+    rgba(0, 0, 0, 0.55) 75%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+  pointer-events: none;
 }
 
-.pm-discover__empty {
+.reel__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 0 16px 28px;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.reel__info {
+  flex: 1;
+  min-width: 0;
+  padding-right: 8px;
+}
+
+.reel__score {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(var(--primary-rgb), 0.2);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+
+.reel__name-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.reel__name {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.reel__intent {
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.reel__title {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
+  margin: 0 0 6px;
+}
+
+.reel__bio {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.reel__tags {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.reel__tag {
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.reel__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.reel-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  text-decoration: none;
+  transition: transform 0.15s ease;
+  padding: 0;
+}
+
+.reel-action:hover {
+  transform: scale(1.08);
+}
+
+.reel-action:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+}
+
+.reel-action__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-secondary);
-  font-weight: 800;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-/* Lock stack touch-action to none to allow full custom drag snap physics without browser interference */
-.pm-discover__stack {
-  touch-action: none;
+.reel-action:hover .reel-action__icon {
+  background: rgba(255, 255, 255, 0.25);
 }
 
+.reel-action--primary .reel-action__icon {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+  color: #ffffff;
+}
+
+.reel-action--sent .reel-action__icon {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--primary);
+}
+
+.reel-action__label {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1;
+}
+
+.progress-dots {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  z-index: 5;
+  pointer-events: auto;
+}
+
+.progress-dot {
+  width: 3px;
+  height: 8px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.35);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: height 0.2s ease, background 0.2s ease;
+}
+
+.progress-dot--active {
+  height: 18px;
+  background: var(--primary);
+}
+
+.discover__scroll-hint {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+  animation: hint-float 2.6s ease-in-out infinite;
+  white-space: nowrap;
+  z-index: 5;
+}
+
+@keyframes hint-float {
+  0%, 100% { opacity: 0.45; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 0.9; transform: translateX(-50%) translateY(-4px); }
+}
+
+/* Desktop: centered reel column */
+@media (min-width: 769px) {
+  .pm-app-shell--discover-page .pm-main {
+    display: flex;
+    justify-content: center;
+  }
+
+  .discover {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow:
+      0 24px 60px rgba(17, 26, 62, 0.14),
+      0 0 0 1px rgba(17, 26, 62, 0.08);
+  }
+}
+
+@media (max-width: 768px) {
+  .discover {
+    max-width: none;
+  }
+
+  .reel__content {
+    padding: 0 14px 24px;
+    gap: 10px;
+  }
+
+  .reel__name {
+    font-size: 1.35rem;
+  }
+
+  .reel-action__icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

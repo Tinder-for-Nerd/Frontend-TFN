@@ -624,7 +624,7 @@
   width: 110px;
   height: 110px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--brand-teal-subtle), rgba(91, 75, 189, 0.08));
+  background: linear-gradient(135deg, var(--brand-teal-subtle), rgba(49, 154, 255, 0.08));
   display: grid;
   place-items: center;
   color: var(--brand-teal);

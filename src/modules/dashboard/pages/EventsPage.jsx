@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 import { AppShell } from '../../../components/layout';
 import { Button, Badge, Chip, Icon } from '../../../components/ui';
-import { SectionHeader } from '../../../components/common';
+import { SectionHeader, EventCalendarMenu } from '../../../components/common';
 import { events } from '../../../data/mockData';
 
 function EventCard({ event, variant }) {
@@ -95,7 +95,13 @@ export function EventsPage({ variant = 'student' }) {
 
               <div className="pm-hero-actions">
                 <button className="pm-rsvp-btn">RSVP Now</button>
-                <button className="pm-calendar-btn">Save to Calendar</button>
+                <EventCalendarMenu
+                  event={activeEvent}
+                  variant="secondary"
+                  size="md"
+                  label="Save to Calendar"
+                  className="pm-hero-calendar-menu"
+                />
               </div>
             </div>
           </section>

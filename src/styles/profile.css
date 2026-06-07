@@ -1,3 +1,17 @@
+/* Profile page — scroll-safe layout (mirrors event detail) */
+.pm-profile-shell .pm-main {
+  overflow: visible;
+  min-height: auto;
+  padding-bottom: calc(64px + env(safe-area-inset-bottom));
+}
+
+.pm-profile-shell .pm-profile-page {
+  min-height: auto;
+  isolation: auto;
+  position: static;
+  padding-bottom: 32px;
+}
+
 /* Profile Page (GitHub-like) */
 .pm-profile-page {
   width: min(100%, 1120px);
@@ -15,10 +29,11 @@
 
 .pm-gh-sidebar {
   position: sticky;
-  top: 88px;
+  top: calc(var(--site-header-h, 64px) + 16px);
   align-self: start;
   display: grid;
   gap: 14px;
+  max-height: none;
 }
 
 .pm-gh-avatar__img {
@@ -106,22 +121,32 @@
 
 .pm-gh-main {
   min-width: 0;
-  display: grid;
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .pm-gh-tabs {
-  position: sticky;
-  top: 88px;
-  z-index: 2;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   padding: 10px;
+  margin-bottom: 4px;
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
   backdrop-filter: blur(10px);
+}
+
+.pm-gh-section {
+  display: grid;
+  gap: 16px;
+  position: relative;
+  z-index: 0;
+  scroll-margin-top: calc(var(--site-header-h, 64px) + 24px);
 }
 
 .pm-gh-tabs button {
@@ -139,20 +164,15 @@
 }
 
 .pm-gh-tabs button:hover {
-  background: rgba(0, 68, 201, 0.05);
-  border-color: rgba(0, 68, 201, 0.08);
+  background: rgba(0, 132, 255, 0.05);
+  border-color: rgba(0, 132, 255, 0.08);
   color: var(--text-primary);
 }
 
 .pm-gh-tabs button.is-active {
-  background: rgba(0, 68, 201, 0.08);
-  border-color: rgba(0, 68, 201, 0.14);
+  background: rgba(0, 132, 255, 0.08);
+  border-color: rgba(0, 132, 255, 0.14);
   color: var(--text-primary);
-}
-
-.pm-gh-section {
-  display: grid;
-  gap: 12px;
 }
 
 .pm-gh-card {
@@ -405,6 +425,12 @@
 
 .pm-gh-post__pill--end {
   margin-left: auto;
+}
+
+@media (max-width: 1100px) {
+  .pm-gh-sidebar {
+    position: static;
+  }
 }
 
 /* Mobile Optimization */

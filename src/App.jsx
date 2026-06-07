@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
-
-
+import { RootLayout } from './components/layout';
 // Modular Page Imports
 import { LandingPage, FeaturesPage, AboutPage, ContactPage } from './modules/public/pages';
-import { LoginPage, LogoutPage } from './modules/auth/pages';
+import { RoleSelectorPage, RoleLoginPage, LogoutPage } from './modules/auth/pages';
+import { OrgDashboardPage } from './modules/org/pages/OrgDashboardPage';
 import { OnboardingPage } from './modules/onboarding/pages';
 import { 
   FeedPage, 
@@ -71,20 +71,13 @@ function ScrollLockSafeguard() {
   const location = useLocation();
 
   useEffect(() => {
-    // 1. Clear any inline style scroll locks on body/html
-    if (document.body.style.overflow === 'hidden') {
-      document.body.style.overflow = '';
-    }
-    if (document.documentElement.style.overflow === 'hidden') {
-      document.documentElement.style.overflow = '';
-    }
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+    document.body.style.height = '';
+    document.documentElement.style.height = '';
 
-    // 2. Clear discover scroll lock classes if we are not on a discover route
-    const isDiscover = location.pathname.includes('/discover');
-    if (!isDiscover) {
-      document.documentElement.classList.remove('pm-discover-page-active', 'pm-scroll-locked');
-      document.body.classList.remove('pm-discover-page-active', 'pm-scroll-locked');
-    }
+    document.documentElement.classList.remove('pm-discover-page-active', 'pm-scroll-locked');
+    document.body.classList.remove('pm-discover-page-active', 'pm-scroll-locked');
   }, [location.pathname]);
 
   return null;
@@ -96,14 +89,17 @@ export default function App() {
       <BrowserRouter>
         <ScrollLockSafeguard />
         <Routes>
+          <Route element={<RootLayout />}>
           {/* Public pages — accessible without login */}
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/" element={<LandingPage />} />          <Route path="/features" element={<FeaturesPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="/login" element={<LoginPage mode="login" />} />
-          <Route path="/signup" element={<LoginPage mode="signup" />} />
+          <Route path="/login" element={<RoleSelectorPage />} />
+          <Route path="/login/:rolePath" element={<RoleLoginPage mode="login" />} />
+          <Route path="/signup" element={<Navigate to="/login" replace />} />
+          <Route path="/signup/:rolePath" element={<RoleLoginPage mode="signup" />} />
           <Route path="/logout" element={<LogoutPage />} />
+          <Route path="/preview/discover" element={<DiscoverPage variant="student" />} />
 
           {/* Protected: Onboarding */}
           <Route path="/onboarding" element={<P><OnboardingPage /></P>} />
@@ -155,6 +151,13 @@ export default function App() {
           <Route path="/pro/profile/:username" element={<P><ProfilePage variant="pro" /></P>} />
           <Route path="/pro/settings" element={<P><SettingsPage variant="pro" /></P>} />
 
+          {/* Protected: Organization Domain */}
+          <Route path="/org" element={<Navigate to="/org/dashboard" replace />} />
+          <Route path="/org/dashboard" element={<P><OrgDashboardPage /></P>} />
+          <Route path="/org/events" element={<P><EventsPage variant="student" /></P>} />
+          <Route path="/org/events/host" element={<P><HostEventPage variant="student" /></P>} />
+          <Route path="/org/settings" element={<P><SettingsPage variant="student" /></P>} />
+
           {/* Protected: Shared */}
           <Route path="/profile/:username" element={<P><ProfilePage variant="student" /></P>} />
           <Route path="/settings" element={<Navigate to="/student/settings" replace />} />
@@ -180,8 +183,8 @@ export default function App() {
           <Route path="/profile/:userId" element={<LegacyProfileRoute />} />
           
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
+          </Route>
+        </Routes>      </BrowserRouter>
     </AuthProvider>
   );
 }

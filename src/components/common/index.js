@@ -6,4 +6,5 @@ export { StatCard } from './StatCard';
 export { MiniProfileCard } from './MiniProfileCard';
 export { CommandPalette } from './CommandPalette';
 export { EmptyState } from './EmptyState';
+export { EventCalendarMenu } from './EventCalendarMenu';
 

@@ -3,7 +3,7 @@
   --messenger-bg: #f5f6fa;
   --messenger-sidebar-dark: #121212;
   --messenger-sidebar-light: #ffffff;
-  --messenger-accent: #5b4bf5;
+  --messenger-accent: #0084ff;
   --messenger-accent-soft: #eeecff;
   --messenger-text-primary: #1a1a1a;
   --messenger-text-secondary: #717171;
@@ -21,8 +21,8 @@
   border-radius: 0;
 }
 
-/* When topbar is hidden, main fills full height */
-.pm-main--no-topbar {
+/* When topbar is hidden, messages main fills viewport height */
+.pm-messages-shell .pm-main--no-topbar {
   padding: 0 !important;
   height: 100vh !important;
   max-height: 100vh !important;

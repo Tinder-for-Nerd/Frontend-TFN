@@ -1,0 +1,193 @@
+/* Site-wide layout */
+:root {
+  --site-header-h: 64px;
+}
+
+.site-root__content {
+  min-height: 100dvh;
+  padding-top: var(--site-header-h);
+  overflow: visible;
+}
+
+.site-root {
+  min-height: 100dvh;
+  position: relative;
+  overflow: visible;
+}
+
+.site-root--onboarding .site-root__content,
+.site-root--call .site-root__content {
+  padding-top: 0;
+}
+
+/* App shell without sidebar/topbar */
+.pm-app-shell {
+  display: block !important;
+  grid-template-columns: 1fr !important;
+  min-height: auto;
+  height: auto;
+  overflow: visible !important;
+  isolation: auto;
+  background: transparent;
+}
+
+.pm-app-shell__content {
+  overflow: visible;
+  min-height: 0;
+}
+
+.pm-app-shell .pm-shell-art {
+  pointer-events: none;
+}
+
+.pm-app-shell .pm-shell-art,
+.pm-app-shell .pm-shell-art *,
+.pm-app-shell .pm-student-shell-art,
+.pm-app-shell .pm-student-shell-art *,
+.pm-app-shell .pm-shell-orb,
+.pm-app-shell .pm-shell-orb * {
+  pointer-events: none !important;
+}
+
+.pm-app-shell .pm-main {
+  width: min(100%, 1440px);
+  margin-inline: auto;
+  padding: 24px clamp(16px, 3vw, 36px) 48px;
+  overflow: visible;
+  min-height: auto;
+  height: auto;
+  max-height: none;
+}
+
+.pm-page-header {
+  width: min(100%, 1440px);
+  margin: 0 auto;
+  padding: 8px clamp(16px, 3vw, 36px) 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pm-page-header__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  color: var(--on-surface);
+  letter-spacing: -0.02em;
+}
+
+.pm-page-header__subtitle {
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.pm-page-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pm-page-header--actions-only {
+  justify-content: flex-end;
+}
+
+.pm-app-shell .pm-main--no-topbar {
+  padding-top: 24px;
+}
+
+/*
+ * hideTopbar is used on messages (full-height) AND scrollable pages (settings, profile, events).
+ * Only messages/discover should lock viewport height.
+ */
+.pm-app-shell:not(.pm-messages-shell):not(.pm-app-shell--discover-page) .pm-main--no-topbar {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  display: block !important;
+  padding: 24px clamp(16px, 3vw, 36px) calc(96px + env(safe-area-inset-bottom)) !important;
+}
+
+/* Scroll-safe dashboard pages — document scroll, not trapped shell scroll */
+.pm-event-detail-shell,
+.pm-profile-shell,
+.pm-settings-shell {
+  overflow: visible;
+  height: auto;
+  min-height: auto;
+}
+
+.pm-event-detail-shell .pm-app-shell__content,
+.pm-profile-shell .pm-app-shell__content,
+.pm-settings-shell .pm-app-shell__content {
+  overflow: visible;
+  height: auto;
+  min-height: auto;
+}
+
+.pm-event-detail-shell .pm-main,
+.pm-profile-shell .pm-main,
+.pm-settings-shell .pm-main {
+  overflow: visible;
+  min-height: auto;
+  height: auto;
+  max-height: none;
+  padding-bottom: calc(96px + env(safe-area-inset-bottom));
+}
+
+/* Skip link — visually hidden until keyboard focus; sits below the site header */
+.pm-app-shell > .pm-skip-link {
+  position: fixed;
+  left: 16px;
+  top: calc(var(--site-header-h, 64px) + 8px);
+  z-index: 1101;
+  margin: 0;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #111a3e;
+  border: 1px solid rgba(17, 26, 62, 0.12);
+  box-shadow: 0 8px 24px rgba(17, 26, 62, 0.12);
+  font-weight: 700;
+  text-decoration: none;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  transform: none !important;
+}
+
+.pm-app-shell > .pm-skip-link:focus {
+  clip: auto;
+  clip-path: none;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  outline: 2px solid #0084ff;
+  outline-offset: 2px;
+}
+
+@media (max-width: 700px) {
+  .pm-app-shell .pm-main {
+    padding: 16px 16px calc(48px + env(safe-area-inset-bottom));
+  }
+
+  .pm-settings-shell .pm-main {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
+  }
+
+  .pm-event-detail-shell .pm-main {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
+  }
+
+  .pm-app-shell--discover-page .pm-main {
+    padding: 0;
+  }
+}

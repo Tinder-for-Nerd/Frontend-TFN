@@ -27,6 +27,8 @@ export function SettingsPage({ variant = 'student' }) {
           ? 'Control bookings, notifications, and professional preferences.'
           : 'Control notifications, privacy, and account preferences.'
       }
+      hideTopbar
+      className="pm-settings-shell"
     >
       <div className="pm-settings-page">
         <header className="pm-settings-header">
@@ -179,7 +181,7 @@ export function SettingsPage({ variant = 'student' }) {
 
           <section className="pm-settings-section pm-settings-section--danger">
             <h2 className="pm-settings-section__title">Account</h2>
-            <Button variant="secondary" size="md">
+            <Button variant="secondary" size="md" to="/logout" icon="logout">
               Sign out
             </Button>
             <Button variant="secondary" size="md">
