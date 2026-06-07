@@ -6,6 +6,7 @@ import { useAuthStore } from './store/authStore';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import LoginPage from './pages/LoginPage';
 import FeedPage from './pages/FeedPage';
+import DiscoverPage from './pages/DiscoverPage';
 import ExplorePage from './pages/ExplorePage';
 import SearchPage from './pages/SearchPage';
 import MessagesPage from './pages/MessagesPage';
@@ -17,6 +18,8 @@ import AdminPage from './pages/AdminPage';
 import NotificationsPage from './pages/NotificationsPage';
 import SettingsPage from './pages/SettingsPage';
 import LandingPage from './pages/LandingPage';
+import SignupPage from './pages/SignupPage';
+import ConnectionsPage from './pages/ConnectionsPage';
 
 const queryClient = new QueryClient();
 
@@ -41,6 +44,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={isAuthenticated ? <Navigate to="/discover" replace /> : <LandingPage />} />
       <Route path="/login" element={isAuthenticated ? <Navigate to="/discover" replace /> : <LoginPage />} />
+      <Route path="/signup" element={isAuthenticated ? <Navigate to="/discover" replace /> : <SignupPage />} />
       <Route
         element={
           <AuthGuard>
@@ -48,8 +52,9 @@ function AppRoutes() {
           </AuthGuard>
         }
       >
-        <Route path="/discover" element={<FeedPage />} />
+        <Route path="/discover" element={<DiscoverPage />} />
         <Route path="/feed" element={<FeedPage />} />
+        <Route path="/connections" element={<ConnectionsPage />} />
         <Route path="/explore" element={<ExplorePage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/messages" element={<MessagesPage />} />

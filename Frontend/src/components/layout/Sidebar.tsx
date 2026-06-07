@@ -12,6 +12,8 @@ import {
   Flame,
   Send,
   LayoutDashboard,
+  Users,
+  Compass,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -22,8 +24,10 @@ interface SidebarProps {
 
 const navItems = {
   student: [
+    { icon: Compass, label: 'Discover', path: '/discover' },
     { icon: Rss, label: 'Feed', path: '/feed' },
     { icon: Flame, label: 'Explore', path: '/explore' },
+    { icon: Users, label: 'Connections', path: '/connections' },
     { icon: Send, label: 'Direct Messages', path: '/messages' },
     { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
     { icon: Calendar, label: 'Sessions', path: '/sessions' },
@@ -33,8 +37,10 @@ const navItems = {
     { icon: Settings, label: 'Settings', path: '/settings' },
   ],
   professional: [
+    { icon: Compass, label: 'Discover', path: '/discover' },
     { icon: Rss, label: 'Feed', path: '/feed' },
     { icon: Flame, label: 'Explore', path: '/explore' },
+    { icon: Users, label: 'Connections', path: '/connections' },
     { icon: Send, label: 'Direct Messages', path: '/messages' },
     { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
     { icon: Calendar, label: 'Sessions', path: '/sessions' },
@@ -45,8 +51,10 @@ const navItems = {
   ],
   admin: [
     { icon: Shield, label: 'Admin', path: '/admin' },
+    { icon: Compass, label: 'Discover', path: '/discover' },
     { icon: Rss, label: 'Feed', path: '/feed' },
     { icon: Flame, label: 'Explore', path: '/explore' },
+    { icon: Users, label: 'Connections', path: '/connections' },
     { icon: Send, label: 'Direct Messages', path: '/messages' },
     { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
     { icon: Calendar, label: 'Sessions', path: '/sessions' },
