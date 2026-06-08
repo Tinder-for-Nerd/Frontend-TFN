@@ -1,0 +1,336 @@
+/* premium-messages.css */
+:root {
+  --messenger-bg: #f5f6fa;
+  --messenger-sidebar-dark: #121212;
+  --messenger-sidebar-light: #ffffff;
+  --messenger-accent: #0084ff;
+  --messenger-accent-soft: #eeecff;
+  --messenger-text-primary: #1a1a1a;
+  --messenger-text-secondary: #717171;
+  --messenger-border: #eef1f6;
+  --messenger-white: #ffffff;
+}
+
+.pm-premium-messages {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  background: var(--messenger-bg);
+  overflow: hidden;
+  margin: 0;
+  border-radius: 0;
+}
+
+/* When topbar is hidden, messages main fills viewport height */
+.pm-messages-shell .pm-main--no-topbar {
+  padding: 0 !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  overflow: hidden !important;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Thread Sidebar */
+.pm-premium-threads {
+  width: 300px;
+  min-width: 300px;
+  background: #ffffff;
+  border-right: 1px solid var(--messenger-border);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.pm-premium-threads .search-box {
+  background: #f0f2f8;
+  border-radius: 12px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 16px 12px;
+  flex-shrink: 0;
+}
+
+.pm-premium-threads .search-box input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  width: 100%;
+}
+
+.pm-thread-list-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 8px;
+}
+
+.pm-premium-thread-item {
+  display: flex;
+  padding: 12px;
+  gap: 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 2px;
+  position: relative;
+}
+
+.pm-premium-thread-item:hover {
+  background: #f8f9fc;
+}
+
+.pm-premium-thread-item.is-active {
+  background: var(--messenger-accent-soft);
+}
+
+.pm-premium-thread-item .item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.pm-premium-thread-item .item-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.pm-premium-thread-item .item-meta strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--messenger-text-primary);
+}
+
+.pm-premium-thread-item .item-meta span {
+  font-size: 11px;
+  color: var(--messenger-text-secondary);
+}
+
+.pm-premium-thread-item p {
+  font-size: 13px;
+  color: var(--messenger-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.pm-premium-thread-item .count {
+  background: #ff5c5c;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+/* Chat Window */
+.pm-premium-chat {
+  flex: 1;
+  min-width: 0;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.pm-premium-chat .chat-header {
+  height: 64px;
+  min-height: 64px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--messenger-border);
+  flex-shrink: 0;
+}
+
+.pm-premium-chat .chat-header h2 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.pm-premium-chat .chat-header span {
+  font-size: 12px;
+  color: var(--messenger-text-secondary);
+}
+
+.pm-premium-chat .chat-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #fdfdfe;
+  min-height: 0;
+}
+
+.pm-message-group {
+  display: flex;
+  gap: 10px;
+  max-width: 70%;
+}
+
+.pm-message-group.is-me {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.pm-message-bubble-modern {
+  background: #f1f3f9;
+  padding: 12px 16px;
+  border-radius: 18px;
+  border-top-left-radius: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--messenger-text-primary);
+  position: relative;
+}
+
+.pm-message-group.is-me .pm-message-bubble-modern {
+  background: var(--messenger-accent);
+  color: white;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 4px;
+}
+
+.pm-message-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--messenger-text-secondary);
+}
+
+.pm-message-group.is-me .pm-message-info {
+  justify-content: flex-end;
+}
+
+.pm-chat-input-area {
+  padding: 12px 24px 16px;
+  flex-shrink: 0;
+  border-top: 1px solid var(--messenger-border);
+}
+
+.pm-chat-input-container {
+  background: #f0f2f8;
+  border-radius: 18px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pm-chat-input-container input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+/* Right Info Sidebar — hidden by default, shown only on wide screens */
+.pm-premium-info {
+  display: none;
+}
+
+@media (min-width: 1400px) {
+  .pm-premium-info {
+    width: 280px;
+    min-width: 280px;
+    background: #f5f6fa;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    border-left: 1px solid var(--messenger-border);
+  }
+}
+
+.pm-info-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+.pm-info-card h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.pm-media-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.pm-media-item {
+  aspect-ratio: 1;
+  background: #eee;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.pm-media-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pm-accordion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.pm-accordion-item:last-child {
+  border-bottom: none;
+}
+
+.pm-member-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.pm-member-item .name {
+  font-size: 14px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.pm-member-item .role {
+  font-size: 11px;
+  color: var(--messenger-accent);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Unused slim nav styles (kept for reference) */
+.pm-premium-nav-slim { display: none; }
+.pm-nav-icon { display: none; }
+.pm-nav-logout { display: none; }

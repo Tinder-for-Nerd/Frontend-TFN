@@ -1,0 +1,230 @@
+/* Settings page — scroll-safe layout */
+.pm-settings-shell .pm-main {
+  overflow: visible;
+  min-height: auto;
+  height: auto;
+  max-height: none;
+  padding-bottom: calc(96px + env(safe-area-inset-bottom));
+}
+
+.pm-settings-shell .pm-settings-page {
+  min-height: auto;
+  isolation: auto;
+  position: static;
+  padding-bottom: 48px;
+}
+
+/* Settings Page */
+.pm-settings-page {
+  width: min(100%, 980px);
+  margin: 0 auto;
+  display: grid;
+  align-content: start;
+  gap: var(--space-6);
+  min-height: auto;
+}
+
+.pm-settings-header {
+  padding: var(--space-6);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+}
+
+.pm-settings-header__title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: var(--text-primary);
+}
+
+.pm-settings-header p {
+  margin: var(--space-2) 0 0;
+  color: var(--text-secondary);
+}
+
+.pm-settings-sections {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.pm-settings-section {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.pm-settings-section__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-primary);
+}
+
+.pm-setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--bg-base);
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+}
+
+.pm-setting-label {
+  flex: 1;
+}
+
+.pm-setting-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.pm-setting-description {
+  margin: var(--space-1) 0 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Toggle Switch */
+.pm-toggle-switch {
+  position: relative;
+  display: inline-flex;
+  width: 50px;
+  height: 28px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.pm-toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.pm-toggle-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--border-default);
+  border-radius: 14px;
+  transition: all 0.3s ease;
+}
+
+.pm-toggle-slider::before {
+  content: '';
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.pm-toggle-switch input:checked + .pm-toggle-slider {
+  background-color: var(--brand-teal);
+}
+
+.pm-toggle-switch input:checked + .pm-toggle-slider::before {
+  transform: translateX(22px);
+}
+
+.pm-setting-select {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-size: 16px;
+  font-family: var(--font-body);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  min-width: 150px;
+}
+
+.pm-setting-select:focus {
+  outline: none;
+  border-color: var(--brand-teal);
+  box-shadow: 0 0 0 3px var(--brand-teal-glow);
+}
+
+.pm-settings-section--danger {
+  gap: var(--space-4);
+  scroll-margin-bottom: 32px;
+}
+
+.pm-settings-section--danger .pm-button,
+.pm-settings-section--danger button {
+  width: 100%;
+  min-height: 44px;
+}
+
+/* Mobile Optimization */
+@media (max-width: 640px) {
+  .pm-settings-page {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .pm-settings-header {
+    padding: var(--space-4);
+  }
+
+  .pm-settings-header__title {
+    font-size: 24px;
+  }
+
+  .pm-settings-sections {
+    gap: var(--space-6);
+  }
+
+  .pm-settings-section {
+    padding: var(--space-4);
+    gap: var(--space-4);
+  }
+
+  .pm-setting-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    min-height: 60px;
+  }
+
+  .pm-setting-select {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .pm-settings-section--danger button {
+    width: 100%;
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    .pm-toggle-switch {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .pm-setting-select {
+      -webkit-appearance: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+  }
+}
