@@ -140,6 +140,60 @@
   padding-bottom: calc(96px + env(safe-area-inset-bottom));
 }
 
+/* Discover — vertical reel scroll inside a locked viewport (not document scroll) */
+.pm-app-shell--discover-page {
+  overflow: hidden !important;
+  height: calc(100dvh - var(--site-header-h, 64px));
+  min-height: calc(100dvh - var(--site-header-h, 64px));
+  max-height: calc(100dvh - var(--site-header-h, 64px));
+}
+
+.pm-app-shell--discover-page .pm-app-shell__content {
+  overflow: hidden !important;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.pm-app-shell--discover-page .pm-main,
+.pm-app-shell--discover-page .pm-main--no-topbar {
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1;
+}
+
+.pm-app-shell--discover-page .discover {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.pm-app-shell--discover-page .discover__reels {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+.pm-app-shell--discover-page .pm-shell-art,
+.pm-app-shell--discover-page .pm-shell-orb {
+  display: none !important;
+}
+
 /* Skip link — visually hidden until keyboard focus; sits below the site header */
 .pm-app-shell > .pm-skip-link {
   position: fixed;
@@ -175,7 +229,7 @@
 }
 
 @media (max-width: 700px) {
-  .pm-app-shell .pm-main {
+  .pm-app-shell:not(.pm-app-shell--discover-page) .pm-main {
     padding: 16px 16px calc(48px + env(safe-area-inset-bottom));
   }
 
@@ -187,7 +241,8 @@
     padding-bottom: calc(96px + env(safe-area-inset-bottom));
   }
 
-  .pm-app-shell--discover-page .pm-main {
-    padding: 0;
+  .pm-app-shell--discover-page .pm-main,
+  .pm-app-shell--discover-page .pm-main--no-topbar {
+    padding: 0 !important;
   }
 }

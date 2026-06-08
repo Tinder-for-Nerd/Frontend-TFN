@@ -99,6 +99,14 @@ export function DiscoverPage({ variant = 'student' }) {
   );
 
   useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
+  useEffect(() => {
     const container = reelsRef.current;
     if (!container) return undefined;
 
