@@ -560,7 +560,7 @@ export const studentConnections = {
   shortlisted: [profiles.priya, profiles.nora],
 };
 
-// Messaging threads
+// Messaging threads — student vs professional workspaces
 export const studentThreads = [
   {
     id: 'sarah-chen',
@@ -573,19 +573,19 @@ export const studentThreads = [
       {
         id: 1,
         from: 'them',
-        body: 'Hey Alex, your portfolio looks strong.',
-        time: '10:22',
+        body: 'Hey Alex — saw your FinTech hackathon post. Your React + ML stack is exactly what our team needs.',
+        time: '10:20',
       },
       {
         id: 2,
         from: 'me',
-        body: 'Thanks. I would love feedback on PM skills.',
-        time: '10:24',
+        body: 'Thanks Sarah! I am looking for a mentor on product thinking and portfolio reviews.',
+        time: '10:22',
       },
       {
         id: 3,
         from: 'them',
-        body: 'Want to hop on a quick call next week?',
+        body: 'Happy to help. Want to hop on a quick call next week?',
         time: '10:25',
       },
     ],
@@ -601,19 +601,19 @@ export const studentThreads = [
       {
         id: 1,
         from: 'them',
-        body: 'Loved the ML project you shared.',
+        body: 'Loved the distributed scheduling project you shared in the student feed.',
         time: '09:04',
       },
       {
         id: 2,
         from: 'me',
-        body: 'Thanks, I am trying to turn it into a portfolio piece.',
+        body: 'Thanks — trying to turn it into a portfolio piece before internship apps.',
         time: '09:07',
       },
       {
         id: 3,
         from: 'them',
-        body: 'I can send a starter repo if you want.',
+        body: 'I can send a starter repo with Redis + worker patterns if you want.',
         time: '09:08',
       },
     ],
@@ -629,14 +629,13 @@ export const studentThreads = [
       {
         id: 1,
         from: 'them',
-        body: 'Can you review my resume this week?',
+        body: 'Can you review my resume this week? Targeting ML intern roles.',
         time: 'Yesterday',
       },
       {
         id: 2,
         from: 'me',
-        body:
-          'Yes. Send the latest version and the target role.',
+        body: 'Yes — send the latest version and the roles you are aiming for.',
         time: 'Yesterday',
       },
     ],
@@ -655,20 +654,19 @@ export const proThreads = [
       {
         id: 1,
         from: 'me',
-        body: 'Your product direction feels strong.',
-        time: '10:10',
+        body: 'Ethan — your GTM notes from last week were sharp. I have two founders who match your domain.',
+        time: '10:08',
       },
       {
         id: 2,
         from: 'them',
-        body: 'Could we talk about a co-founder profile?',
+        body: 'Could we talk about a co-founder profile? I am open to a 30-min intro this week.',
         time: '10:11',
       },
       {
         id: 3,
         from: 'me',
-        body:
-          'Yes, I can share a few options and next steps.',
+        body: 'Absolutely. I will send FitScore-ranked options and calendar slots.',
         time: '10:14',
       },
     ],
@@ -684,13 +682,13 @@ export const proThreads = [
       {
         id: 1,
         from: 'them',
-        body: 'The workshop deck is ready for review.',
+        body: 'The founder AMA workshop deck is ready for review — can you skim before Thursday?',
         time: '08:40',
       },
       {
         id: 2,
         from: 'me',
-        body: 'Great, I will review it before lunch.',
+        body: 'On it. I will leave comments on narrative flow and session timing.',
         time: '08:43',
       },
     ],
@@ -700,22 +698,26 @@ export const proThreads = [
     person: profiles.priya,
     status: 'Online',
     unread: 2,
-    last:
-      'The next session should include architecture notes.',
+    last: 'The next session should include architecture notes.',
     time: '30m',
     messages: [
       {
         id: 1,
         from: 'them',
-        body:
-          'The next session should include architecture notes.',
+        body: 'For our paid mentorship block — the next session should include architecture notes for the fraud model.',
         time: '11:00',
       },
       {
         id: 2,
         from: 'me',
-        body: 'Agreed. I will add them to the brief.',
+        body: 'Agreed. I will add a systems diagram and reading list to the brief.',
         time: '11:04',
+      },
+      {
+        id: 3,
+        from: 'them',
+        body: 'Perfect. Billing is already set up on your Pro calendar.',
+        time: '11:06',
       },
     ],
   },

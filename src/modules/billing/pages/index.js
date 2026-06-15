@@ -1,0 +1,1 @@
+export { ProCheckoutPage } from './ProCheckoutPage';

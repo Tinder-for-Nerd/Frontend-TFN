@@ -141,6 +141,7 @@ export function StudentFeedPage() {
                 value={newPostContent}
                 onChange={(event) => setNewPostContent(event.target.value)}
                 placeholder="Start a post"
+                rows={3}
               />
             </div>
 

@@ -8,7 +8,6 @@
 .pm-messages-shell .pm-main {
   padding: 0 !important;
   max-width: none !important;
-  height: 100dvh;
   overflow: hidden;
 }
 
@@ -37,6 +36,7 @@
   background: var(--bg-surface);
   border-right: 1px solid var(--border-subtle);
   min-height: 0;
+  overflow: hidden;
 }
 
 .wa-sidebar__head {
@@ -166,8 +166,10 @@
 
 .wa-thread-list {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  overscroll-behavior: contain;
 }
 
 .wa-thread-list::-webkit-scrollbar {
@@ -425,8 +427,10 @@
 
 .wa-messages {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  overscroll-behavior: contain;
   z-index: 1;
 }
 
@@ -678,7 +682,6 @@
 @media (max-width: 900px) {
   .pm-app-shell--student.pm-messages-shell .wa-layout {
     box-sizing: border-box;
-    padding-bottom: calc(88px + env(safe-area-inset-bottom));
   }
 
   .wa-sidebar {
@@ -746,9 +749,93 @@
   }
 }
 
-@media (max-width: 1200px) {
+@media (min-width: 901px) and (max-width: 1200px) {
   .wa-sidebar {
     width: 340px;
     min-width: 340px;
   }
 }
+
+/* ─── Live chat: typing, presence, socket status ─────────────────────────── */
+
+.wa-thread__preview.is-typing {
+  color: var(--primary);
+  font-style: italic;
+}
+
+.wa-thread__presence {
+  display: block;
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-tertiary, #94a3b8);
+  letter-spacing: 0.02em;
+}
+
+.wa-socket-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.wa-socket-status__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+
+.wa-socket-status__dot.is-live {
+  background: #22c55e;
+}
+
+.wa-socket-status__dot.is-mock {
+  background: #3b82f6;
+}
+
+.wa-typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 4px 0 8px;
+  padding: 10px 14px;
+  border-radius: 18px 18px 18px 6px;
+  background: var(--surface-container-high, rgba(15, 23, 42, 0.06));
+}
+
+.wa-typing__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  animation: wa-typing-bounce 1.2s ease-in-out infinite;
+}
+
+.wa-typing__dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.wa-typing__dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes wa-typing-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+.wa-bubble__check.is-seen {
+  color: #34b7f1;
+}
+

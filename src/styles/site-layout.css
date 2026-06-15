@@ -3,21 +3,105 @@
   --site-header-h: 64px;
 }
 
-.site-root__content {
-  min-height: 100dvh;
-  padding-top: var(--site-header-h);
-  overflow: visible;
-}
-
 .site-root {
   min-height: 100dvh;
   position: relative;
   overflow: visible;
+  background: transparent;
+}
+
+.site-root__content {
+  min-height: 100dvh;
+  padding-top: var(--site-header-h);
+  overflow: visible;
+  background: transparent;
 }
 
 .site-root--onboarding .site-root__content,
 .site-root--call .site-root__content {
   padding-top: 0;
+}
+
+.site-root--auth {
+  overflow: visible;
+  min-height: auto;
+  height: auto;
+}
+
+.site-root--auth .site-root__content {
+  padding-top: 0 !important;
+  min-height: auto;
+  height: auto;
+  overflow: visible;
+}
+
+.site-root--public-marketing .site-root__content {
+  padding-top: 96px;
+}
+
+.site-root--public-marketing .site-header--public.taskly-nav {
+  position: fixed;
+  top: 16px;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  width: auto;
+  max-width: none;
+  height: auto;
+  border: none;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  pointer-events: none;
+}
+
+.site-root--public-marketing .site-header--public .taskly-nav__inner {
+  width: min(calc(100% - 32px), 1060px);
+  margin: 0 auto;
+  pointer-events: auto;
+}
+
+/* Uiverse grid background — site-wide (Gautammsharma) */
+body.pm-light-theme {
+  background-color: #f8fafc;
+  background-image:
+    radial-gradient(ellipse 56% 46% at 0% 0%, rgba(96, 177, 255, 0.12), transparent 60%),
+    radial-gradient(ellipse 48% 40% at 18% 8%, rgba(49, 154, 255, 0.08), transparent 54%);
+}
+
+body.pm-light-theme::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+    linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+  background-size: 20px 30px;
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 60% at 50% 0%,
+    #000 60%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 70% 60% at 50% 0%,
+    #000 60%,
+    transparent 100%
+  );
+  opacity: 1;
+}
+
+.taskly-page,
+.taskly-auth-page,
+.pm-contact-page,
+.pm-features-page,
+.pm-about-page {
+  background: transparent !important;
+}
+
+.taskly-page::before {
+  display: none;
 }
 
 /* App shell without sidebar/topbar */
@@ -47,6 +131,11 @@
 .pm-app-shell .pm-shell-orb,
 .pm-app-shell .pm-shell-orb * {
   pointer-events: none !important;
+}
+
+/* Decorative orb removed from all dashboard shells */
+.pm-shell-orb {
+  display: none !important;
 }
 
 .pm-app-shell .pm-main {
@@ -116,7 +205,8 @@
 /* Scroll-safe dashboard pages — document scroll, not trapped shell scroll */
 .pm-event-detail-shell,
 .pm-profile-shell,
-.pm-settings-shell {
+.pm-settings-shell,
+.pm-billing-shell {
   overflow: visible;
   height: auto;
   min-height: auto;
@@ -124,7 +214,8 @@
 
 .pm-event-detail-shell .pm-app-shell__content,
 .pm-profile-shell .pm-app-shell__content,
-.pm-settings-shell .pm-app-shell__content {
+.pm-settings-shell .pm-app-shell__content,
+.pm-billing-shell .pm-app-shell__content {
   overflow: visible;
   height: auto;
   min-height: auto;
@@ -132,7 +223,8 @@
 
 .pm-event-detail-shell .pm-main,
 .pm-profile-shell .pm-main,
-.pm-settings-shell .pm-main {
+.pm-settings-shell .pm-main,
+.pm-billing-shell .pm-main {
   overflow: visible;
   min-height: auto;
   height: auto;
@@ -189,6 +281,52 @@
   touch-action: pan-y;
 }
 
+/* Messages — locked viewport; only thread list + chat panes scroll */
+.pm-app-shell.pm-messages-shell {
+  overflow: hidden !important;
+  height: calc(100dvh - var(--site-header-h, 64px));
+  min-height: calc(100dvh - var(--site-header-h, 64px));
+  max-height: calc(100dvh - var(--site-header-h, 64px));
+}
+
+.pm-messages-shell .pm-app-shell__content {
+  overflow: hidden !important;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.pm-messages-shell .pm-main,
+.pm-messages-shell .pm-main--no-topbar {
+  width: 100% !important;
+  max-width: none !important;
+  flex: 1;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.pm-messages-shell .wa-layout {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.site-root:has(.pm-messages-shell) .site-root__content {
+  overflow: hidden;
+}
+
+.pm-messages-shell .pm-shell-art {
+  display: none !important;
+}
+
 .pm-app-shell--discover-page .pm-shell-art,
 .pm-app-shell--discover-page .pm-shell-orb {
   display: none !important;
@@ -229,11 +367,32 @@
 }
 
 @media (max-width: 700px) {
+  :root {
+    --site-header-h: 56px;
+  }
+
+  .site-header {
+    height: var(--site-header-h);
+  }
+
+  .site-header__brand {
+    font-size: 1.1rem;
+  }
+
+  .site-header__inner {
+    width: calc(100% - 24px);
+    gap: 10px;
+  }
+
   .pm-app-shell:not(.pm-app-shell--discover-page) .pm-main {
     padding: 16px 16px calc(48px + env(safe-area-inset-bottom));
   }
 
   .pm-settings-shell .pm-main {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
+  }
+
+  .pm-billing-shell .pm-main {
     padding-bottom: calc(96px + env(safe-area-inset-bottom));
   }
 
@@ -245,4 +404,46 @@
   .pm-app-shell--discover-page .pm-main--no-topbar {
     padding: 0 !important;
   }
+}
+
+/* ── Solid surfaces — disable glassmorphism site-wide ── */
+*,
+*::before,
+*::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.pm-light-theme .pm-sidebar,
+body.pm-light-theme .pm-topbar,
+body.pm-light-theme .pm-mobile-nav,
+body.pm-light-theme .pm-chat-panel,
+body.pm-light-theme .pm-messages-sidebar,
+body.pm-light-theme .pm-messages-thread-header,
+body.pm-light-theme .pm-reel-info,
+body.pm-light-theme .pm-card,
+body.pm-light-theme .pm-panel,
+body.pm-light-theme .pm-onboarding-preview,
+body.pm-light-theme .pm-login-card,
+body.pm-light-theme .pm-role-card,
+body.pm-light-theme .pm-oauth-button,
+body.pm-light-theme .discover-filters,
+body.pm-light-theme .discover__empty,
+body.pm-light-theme .discover__fit-panel,
+body.pm-light-theme .site-header:not(.site-header--public),
+body.pm-light-theme .taskly-feature-card,
+body.pm-light-theme .taskly-quote-card,
+body.pm-light-theme .taskly-pricing-card,
+body.pm-light-theme .taskly-faq__item,
+body.pm-light-theme .taskly-rating,
+body.pm-light-theme .taskly-secondary-cta:not(.taskly-secondary-cta--light),
+body.pm-light-theme .taskly-showcase__card,
+body.pm-light-theme .taskly-feature-strip__item,
+body.pm-light-theme .taskly-step-card,
+body.pm-light-theme .hiring-kanban__col,
+body.pm-light-theme .pm-contact-form,
+body.pm-light-theme .pm-about-card,
+body.pm-light-theme .event-calendar-menu,
+body.pm-light-theme .profile-stats__item {
+  background: var(--bg-surface, #ffffff) !important;
 }

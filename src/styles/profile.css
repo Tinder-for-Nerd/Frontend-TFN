@@ -74,6 +74,20 @@
   font-size: 0.95rem;
 }
 
+.pm-gh-fit-score {
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+}
+
+.pm-gh-fit-score .fit-score__label {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
 .pm-gh-bio p {
   margin: 0;
   color: var(--text-primary);
@@ -135,10 +149,9 @@
   flex-wrap: wrap;
   padding: 10px;
   margin-bottom: 4px;
-  background: rgba(255, 255, 255, 0.92);
+  background: #ffffff;
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
-  backdrop-filter: blur(10px);
 }
 
 .pm-gh-section {

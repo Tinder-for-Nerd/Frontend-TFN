@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button } from '../../../components/ui';
+import { ContactGlassCard } from '../components/ContactGlassCard';
 import '../../../styles/contact.css';
 
 export function ContactPage() {
@@ -28,28 +29,7 @@ export function ContactPage() {
       </section>
 
       <div className="pm-contact-container">
-        <div className="pm-contact-info">
-          <h2>Contact information</h2>
-          
-          <div className="pm-info-item">
-            <h3>Email</h3>
-            <a href="mailto:hello@tinderfornerds.app">hello@tinderfornerds.app</a>
-          </div>
-
-          <div className="pm-info-item">
-            <h3>Social</h3>
-            <div className="pm-social-links">
-              <a href="#">Twitter</a>
-              <a href="#">LinkedIn</a>
-              <a href="#">Discord</a>
-            </div>
-          </div>
-
-          <div className="pm-info-item">
-            <h3>Response time</h3>
-            <p>We typically respond within 24 hours</p>
-          </div>
-        </div>
+        <ContactGlassCard />
 
         <form className="pm-contact-form" onSubmit={handleSubmit}>
           <h2>Send us a message</h2>

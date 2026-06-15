@@ -3,61 +3,55 @@ import lightTechBg from '../../../assets/light-tech-background.png';
 import '../../../styles/landing.css';
 import '../../../styles/login.css';
 
-const ORB_VIDEO_URL = 'https://future.co/images/homepage/glassy-orb/orb-purple.webm';
-
 export function AuthShell({ children }) {
   return (
     <div className="taskly-page taskly-auth-page">
-      <div className="taskly-background-art taskly-auth-background" aria-hidden="true">
+      <div className="taskly-auth-ambient" aria-hidden="true">
         <GridDistortion
           imageSrc={lightTechBg}
           grid={12}
           mouse={0.08}
           strength={0.12}
           relaxation={0.92}
-          className="taskly-background-art__canvas"
+          className="taskly-auth-ambient__grid"
         />
       </div>
 
       <main className="taskly-auth-main">{children}</main>
-
-      <div className="taskly-auth-orb" aria-hidden="true">
-        <video src={ORB_VIDEO_URL} autoPlay loop muted playsInline preload="auto" />
-      </div>
     </div>
   );
 }
 
 export function AuthLandingVisual({ title, body, stats }) {
   return (
-    <div className="taskly-auth-visual" aria-hidden="true">
-      <div className="taskly-visual">
-        <div className="taskly-visual__image">
+    <aside className="taskly-auth-visual" aria-label="Platform highlights">
+      <div className="taskly-auth-visual__card">
+        <div className="taskly-auth-visual__media">
           <GridDistortion
             imageSrc={lightTechBg}
             grid={10}
             mouse={0.12}
             strength={0.16}
             relaxation={0.9}
-            className="taskly-visual__distortion"
+            className="taskly-auth-visual__distortion"
           />
-          <div className="taskly-visual__caption">
-            <strong>{title}</strong>
-            <span>{body}</span>
-          </div>
+        </div>
+        <div className="taskly-auth-visual__copy">
+          <h2 className="taskly-auth-visual__title">{title}</h2>
+          <p className="taskly-auth-visual__body">{body}</p>
         </div>
       </div>
 
       {stats?.length ? (
         <div className="taskly-auth-stats">
           {stats.map((stat) => (
-            <article className="taskly-community-stat" key={stat.label}>
-              <strong>{stat.value}</strong>
-              <span>{stat.label}</span>
+            <article className="taskly-auth-stat" key={stat.label}>
+              <strong className="taskly-auth-stat__value">{stat.value}</strong>
+              <span className="taskly-auth-stat__label">{stat.label}</span>
             </article>
           ))}
         </div>
       ) : null}
-    </div>
+    </aside>
   );
 }

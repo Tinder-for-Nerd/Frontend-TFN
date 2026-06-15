@@ -3,10 +3,7 @@
   width: 100%;
   overflow-x: hidden;
   color: #111a3e;
-  background:
-    radial-gradient(ellipse 56% 46% at 0% 0%, rgba(96, 177, 255, 0.22), transparent 60%),
-    radial-gradient(ellipse 48% 40% at 18% 8%, rgba(49, 154, 255, 0.16), transparent 54%),
-    #ffffff;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 42%, #f4f7fc 100%);
   font-family: var(--font-body);
   position: relative;
   isolation: isolate;
@@ -18,60 +15,69 @@
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(17, 26, 62, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(17, 26, 62, 0.04) 1px, transparent 1px);
-  background-size: 48px 48px;
-  opacity: 0.28;
-  mask-image: linear-gradient(180deg, rgba(0,0,0,0.65), transparent 72%);
+    linear-gradient(rgba(17, 26, 62, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 26, 62, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  opacity: 0.35;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.5), transparent 85%);
 }
 
-.taskly-background-art {
+/* Ambient background */
+.taskly-ambient {
   position: absolute;
-  top: 96px;
-  right: max(-220px, -12vw);
-  width: min(980px, 72vw);
-  height: min(720px, 58vw);
-  z-index: 0;
-  border-radius: 48px;
+  inset: 0;
   overflow: hidden;
-  opacity: 0.34;
-  filter: saturate(1.22) hue-rotate(-8deg);
-  transform: rotate(-4deg);
-  pointer-events: auto;
-  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.92), transparent 72%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.taskly-ambient__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.45;
+}
+
+.taskly-ambient__orb--blue {
+  top: -120px;
+  right: 10%;
+  width: 480px;
+  height: 480px;
+  background: rgba(0, 132, 255, 0.22);
+}
+
+.taskly-ambient__orb--violet {
+  top: 280px;
+  left: -80px;
+  width: 360px;
+  height: 360px;
+  background: rgba(108, 92, 231, 0.16);
+}
+
+.taskly-ambient__grid {
+  position: absolute !important;
+  top: 80px;
+  right: -8%;
+  width: min(920px, 68vw);
+  height: min(680px, 55vw);
+  opacity: 0.28;
+  border-radius: 40px;
+  overflow: hidden;
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.85), transparent 72%);
 }
 
 .taskly-nav,
 .taskly-hero,
-.taskly-partners,
-.taskly-feature-band,
-.taskly-pricing-band {
+.taskly-feature-strip,
+.taskly-steps,
+.taskly-final-cta {
   position: relative;
   z-index: 1;
 }
 
-.taskly-background-art::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.86) 70%),
-    radial-gradient(circle at 24% 20%, rgba(0,132,255,0.28), transparent 42%);
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
-
-.taskly-background-art__canvas canvas {
-  filter: blur(0.2px) contrast(1.08) brightness(1.08);
-}
-
-.taskly-nav {
-  position: sticky;
-  top: 30px;
-  z-index: 50;
-  width: min(100% - 32px, 1060px);
-  margin: 0 auto;
-  padding-top: 0;
+.taskly-nav__links a.is-active {
+  color: #0084ff;
+  font-weight: 700;
 }
 
 .taskly-nav__inner {
@@ -83,19 +89,13 @@
   padding: 10px 12px 10px 24px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.48);
-  box-shadow:
-    inset 0 4px 4px rgba(255, 255, 255, 0.35),
-    0 18px 54px rgba(17, 26, 62, 0.08);
-  backdrop-filter: blur(50px) saturate(170%);
-  -webkit-backdrop-filter: blur(50px) saturate(170%);
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(17, 26, 62, 0.08);
   transition: transform 220ms ease, box-shadow 220ms ease;
 }
 
 .taskly-nav.is-scrolled .taskly-nav__inner {
-  box-shadow:
-    inset 0 4px 4px rgba(255, 255, 255, 0.42),
-    0 24px 68px rgba(17, 26, 62, 0.12);
+  box-shadow: 0 12px 32px rgba(17, 26, 62, 0.12);
 }
 
 .taskly-brand {
@@ -104,6 +104,7 @@
   font-weight: 800;
   letter-spacing: 0;
   color: #111a3e;
+  text-decoration: none;
 }
 
 .taskly-nav__links {
@@ -126,8 +127,19 @@
   transform: translateY(-1px);
 }
 
-.taskly-nav__enter {
+.taskly-nav__links .taskly-nav__enter {
   display: none;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  border-radius: 16px;
+  color: #111a3e;
+  font-weight: 800;
+  text-decoration: none;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(17, 26, 62, 0.06);
 }
 
 .taskly-nav__actions {
@@ -136,7 +148,7 @@
   gap: 8px;
 }
 
-.taskly-signup {
+.taskly-nav__actions .taskly-signup {
   min-height: 44px;
   display: inline-flex;
   align-items: center;
@@ -146,19 +158,16 @@
   border-radius: 16px;
   color: #111a3e;
   font-weight: 800;
-  background: rgba(255, 255, 255, 0.54);
+  text-decoration: none;
+  background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow:
-    inset 0 4px 4px rgba(255, 255, 255, 0.35),
-    0 10px 24px rgba(17, 26, 62, 0.06);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 4px 12px rgba(17, 26, 62, 0.06);
   transition: transform 180ms ease, background 180ms ease;
 }
 
-.taskly-signup:hover {
+.taskly-nav__actions .taskly-signup:hover {
   transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.7);
+  background: #f8fafc;
 }
 
 .taskly-menu {
@@ -168,45 +177,60 @@
   place-items: center;
   border-radius: 14px;
   color: #111a3e;
-  background: rgba(255, 255, 255, 0.56);
+  background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .taskly-hero {
   width: 100%;
-  padding: 86px 24px 54px;
+  padding: clamp(28px, 5vw, 48px) 24px 40px;
 }
 
 .taskly-hero__inner {
-  width: min(100%, 1600px);
-  min-height: min(760px, calc(100vh - 140px));
+  width: min(100%, 1280px);
+  min-height: min(680px, calc(100dvh - var(--site-header-h, 64px) - 100px));
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(360px, 1.08fr);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.95fr);
   align-items: center;
-  gap: clamp(36px, 7vw, 120px);
+  gap: clamp(40px, 6vw, 80px);
 }
 
 .taskly-hero__copy {
-  max-width: 680px;
-  padding-left: clamp(0px, 3vw, 44px);
+  max-width: 620px;
+}
+
+.taskly-hero__eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.taskly-hero__pill {
+  display: inline-flex;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #0084ff;
+  background: rgba(0, 132, 255, 0.1);
+  border: 1px solid rgba(0, 132, 255, 0.18);
 }
 
 .taskly-rating {
-  width: fit-content;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 28px;
-  padding: 10px 14px;
+  gap: 8px;
+  padding: 8px 12px;
   border-radius: 999px;
   color: #111a3e;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: inset 0 4px 4px rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  font-size: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  font-size: 13px;
   font-weight: 700;
 }
 
@@ -217,69 +241,122 @@
 }
 
 .taskly-hero h1 {
-  max-width: 10.8ch;
   margin: 0;
   color: #111a3e;
   font-family: var(--font-display);
-  font-size: clamp(48px, 5.7vw, 75px);
+  font-size: clamp(44px, 5.4vw, 72px);
   font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -2px;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+}
+
+.taskly-gradient-text {
+  background: linear-gradient(135deg, #0084ff 0%, #6c5ce7 55%, #00cec9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .taskly-hero__subtitle {
-  max-width: 620px;
-  margin: 24px 0 0;
-  color: #44475e;
-  font-size: 18px;
-  line-height: 1.72;
-  letter-spacing: -1px;
+  max-width: 540px;
+  margin: 20px 0 0;
+  color: #5a6078;
+  font-size: clamp(16px, 1.6vw, 18px);
+  line-height: 1.7;
 }
 
 .taskly-hero__actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 18px;
-  margin-top: 34px;
+  gap: 14px;
+  margin-top: 32px;
+}
+
+.taskly-hero__checks {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.taskly-hero__checks li {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #44475e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.taskly-hero__checks svg {
+  flex-shrink: 0;
+  color: #0084ff;
 }
 
 .taskly-primary-cta {
-  min-height: 62px;
+  min-height: 56px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  padding: 0 12px 0 26px;
-  border-radius: 16px;
+  gap: 14px;
+  padding: 0 10px 0 22px;
+  border-radius: 14px;
   color: #ffffff;
-  background: rgba(0, 132, 255, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  box-shadow:
-    inset 0 4px 4px rgba(255, 255, 255, 0.35),
-    0 18px 42px rgba(0, 132, 255, 0.22);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  text-decoration: none;
+  background: linear-gradient(135deg, #0084ff 0%, #0070d8 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 14px 36px rgba(0, 132, 255, 0.28);
   font-weight: 800;
-  letter-spacing: 0;
   transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
 .taskly-primary-cta:hover {
-  transform: scale(1.02);
-  box-shadow:
-    inset 0 4px 4px rgba(255, 255, 255, 0.42),
-    0 24px 52px rgba(0, 132, 255, 0.28);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 44px rgba(0, 132, 255, 0.34);
 }
 
 .taskly-primary-cta__icon {
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   display: inline-grid;
   place-items: center;
   border-radius: 999px;
   color: #0084ff;
   background: #ffffff;
+}
+
+.taskly-secondary-cta {
+  min-height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 22px;
+  border-radius: 14px;
+  color: #111a3e;
+  font-weight: 800;
+  text-decoration: none;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(17, 26, 62, 0.06);
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.taskly-secondary-cta:hover {
+  transform: translateY(-1px);
+  background: #ffffff;
+}
+
+.taskly-secondary-cta--light {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.taskly-secondary-cta--light:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .taskly-workspace-link {
@@ -290,253 +367,657 @@
   font-weight: 800;
 }
 
-.taskly-visual {
-  min-height: 620px;
+/* Product showcase */
+.taskly-showcase {
   position: relative;
+  min-height: 520px;
   display: grid;
   place-items: center;
 }
 
-.taskly-visual__image {
+.taskly-showcase__glow {
   position: absolute;
-  left: 0;
-  bottom: 20px;
+  inset: 10% 5%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 132, 255, 0.18), transparent 68%);
+  filter: blur(20px);
+}
+
+.taskly-showcase__card {
+  position: absolute;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 12px 32px rgba(17, 26, 62, 0.1);
+}
+
+.taskly-showcase__card--main {
+  position: relative;
   z-index: 2;
-  width: min(520px, 44vw);
-  aspect-ratio: 1.18;
-  overflow: hidden;
-  border-radius: 34px;
-  background: rgba(255, 255, 255, 0.42);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow:
-    inset 0 4px 4px rgba(255, 255, 255, 0.35),
-    0 28px 80px rgba(17, 26, 62, 0.13);
-  backdrop-filter: blur(24px) saturate(165%);
-  -webkit-backdrop-filter: blur(24px) saturate(165%);
+  width: min(100%, 380px);
+  padding: 20px;
+  animation: taskly-float 6s ease-in-out infinite;
 }
 
-.taskly-visual__image::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.78)),
-    radial-gradient(circle at 24% 18%, rgba(0, 132, 255, 0.24), transparent 44%);
-  pointer-events: none;
-}
-
-.taskly-visual__distortion {
-  position: absolute !important;
-  inset: 0;
-}
-
-.taskly-visual__distortion canvas {
-  filter: saturate(1.24) contrast(1.04) brightness(1.08);
-}
-
-.taskly-visual__caption {
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 18px;
+.taskly-showcase__card--chat {
+  top: 8%;
+  right: 0;
   z-index: 3;
-  display: grid;
-  gap: 4px;
-  padding: 16px;
-  border-radius: 22px;
-  color: #111a3e;
-  background: rgba(255, 255, 255, 0.58);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: inset 0 4px 4px rgba(255,255,255,0.35);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  width: min(260px, 72%);
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  animation: taskly-float 5s ease-in-out infinite 0.8s;
 }
 
-.taskly-visual__caption strong {
-  font-family: var(--font-display);
-  font-size: 18px;
+.taskly-showcase__card--chat svg {
+  color: #0084ff;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.taskly-showcase__card--chat strong,
+.taskly-showcase__card--event strong {
+  display: block;
+  font-size: 13px;
+  color: #111a3e;
+}
+
+.taskly-showcase__card--chat span,
+.taskly-showcase__card--event span {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: #5a6078;
+  font-weight: 600;
+}
+
+.taskly-showcase__card--event {
+  bottom: 6%;
+  left: 0;
+  z-index: 3;
+  width: min(240px, 68%);
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  animation: taskly-float 7s ease-in-out infinite 1.2s;
+}
+
+.taskly-showcase__card--event svg {
+  color: #6c5ce7;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.taskly-showcase__card-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.taskly-showcase__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  font-weight: 800;
+  color: #0084ff;
+  background: rgba(0, 132, 255, 0.12);
+}
+
+.taskly-showcase__card-head strong {
+  display: block;
+  font-size: 15px;
+  color: #111a3e;
+}
+
+.taskly-showcase__card-head span {
+  display: block;
+  font-size: 12px;
+  color: #5a6078;
+  font-weight: 600;
+}
+
+.taskly-showcase__match {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #0084ff;
+  background: rgba(0, 132, 255, 0.1);
+}
+
+.taskly-showcase__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 12px;
+}
+
+.taskly-showcase__tags span {
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #44475e;
+  background: rgba(17, 26, 62, 0.05);
+}
+
+.taskly-showcase__card--main > p {
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #5a6078;
+}
+
+.taskly-showcase__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.taskly-showcase__btn {
+  flex: 1;
+  min-height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 13px;
   font-weight: 800;
 }
 
-.taskly-visual__caption span {
-  color: #44475e;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.45;
+.taskly-showcase__btn--pass {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.15);
 }
 
-.taskly-orb {
-  position: absolute;
-  right: -22%;
-  top: -16%;
-  z-index: 1;
-  width: min(460px, 40vw);
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  pointer-events: none;
+.taskly-showcase__btn--connect {
+  color: #ffffff;
+  background: linear-gradient(135deg, #0084ff, #0070d8);
 }
 
-.taskly-orb video {
-  width: 108%;
-  max-width: none;
-  object-fit: contain;
-  mix-blend-mode: screen;
-  filter: hue-rotate(-55deg) saturate(160%) brightness(1.12);
-  -webkit-mask-image: radial-gradient(circle at 50% 48%, #000 52%, transparent 74%);
-  mask-image: radial-gradient(circle at 50% 48%, #000 52%, transparent 74%);
+@keyframes taskly-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-.taskly-partners {
-  width: min(100% - 48px, 1320px);
-  margin: 0 auto;
-  padding: 38px 0 82px;
-  text-align: center;
+/* Feature strip */
+.taskly-feature-strip {
+  width: min(100% - 48px, 1180px);
+  margin: 0 auto 72px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(17, 26, 62, 0.06);
+  border-bottom: 1px solid rgba(17, 26, 62, 0.06);
 }
 
-.taskly-partners p {
-  margin: 0 0 30px;
-  color: rgba(17, 26, 62, 0.58);
-  font-weight: 700;
-  letter-spacing: 0;
-}
-
-.taskly-partners__track {
+.taskly-feature-strip__inner {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
 }
 
-.taskly-community-stat {
-  min-height: 118px;
+.taskly-feature-strip__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 16px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 12px rgba(17, 26, 62, 0.06);
+  transition: transform 200ms ease, box-shadow 200ms ease, background 200ms ease;
+}
+
+.taskly-feature-strip__item:hover {
+  transform: translateY(-2px);
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(17, 26, 62, 0.1);
+}
+
+.taskly-feature-strip__icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
   display: grid;
-  align-content: center;
-  gap: 6px;
-  padding: 22px 18px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow:
-    inset 0 4px 4px rgba(255, 255, 255, 0.35),
-    0 18px 46px rgba(17, 26, 62, 0.08);
-  backdrop-filter: blur(24px) saturate(165%);
-  -webkit-backdrop-filter: blur(24px) saturate(165%);
+  place-items: center;
+  border-radius: 12px;
+  color: #0084ff;
+  background: rgba(0, 132, 255, 0.1);
 }
 
-.taskly-community-stat strong {
-  color: #111a3e;
+.taskly-feature-strip__item h3 {
+  margin: 0 0 4px;
   font-family: var(--font-display);
-  font-size: clamp(28px, 3vw, 42px);
-  font-weight: 800;
-  line-height: 1;
-}
-
-.taskly-community-stat span {
-  color: #44475e;
   font-size: 14px;
-  font-weight: 700;
-  line-height: 1.4;
+  font-weight: 800;
+  color: #111a3e;
+  line-height: 1.25;
 }
 
-.taskly-feature-band,
-.taskly-pricing-band {
+.taskly-feature-strip__item p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #5a6078;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Section headers */
+.taskly-steps,
+.taskly-final-cta {
   width: min(100% - 48px, 1180px);
-  margin: 0 auto 72px;
+  margin: 0 auto 80px;
 }
 
 .taskly-section-head {
   display: grid;
-  gap: 10px;
-  max-width: 720px;
-  margin-bottom: 26px;
+  gap: 12px;
+  max-width: 640px;
+  margin-bottom: 36px;
 }
 
-.taskly-section-head span,
-.taskly-pricing-card > span {
+.taskly-section-head--center {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.taskly-section-head span {
   width: fit-content;
-  padding: 8px 12px;
+  padding: 7px 12px;
   border-radius: 999px;
   color: #0084ff;
   background: rgba(0, 132, 255, 0.08);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-.taskly-section-head h2,
-.taskly-pricing-card h2 {
+.taskly-section-head--center span {
+  margin: 0 auto;
+}
+
+.taskly-section-head h2 {
   margin: 0;
   color: #111a3e;
   font-family: var(--font-display);
-  font-size: clamp(32px, 4vw, 52px);
+  font-size: clamp(30px, 3.8vw, 48px);
   font-weight: 800;
   line-height: 1.08;
-  letter-spacing: 0;
+  letter-spacing: -0.03em;
+}
+
+.taskly-section-head p {
+  margin: 0;
+  color: #5a6078;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+/* How it works */
+.taskly-steps__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.taskly-step-card {
+  position: relative;
+  padding: 28px 24px;
+  border-radius: 22px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 20px rgba(17, 26, 62, 0.06);
+  overflow: hidden;
+}
+
+.taskly-step-card__num {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1;
+  color: rgba(0, 132, 255, 0.08);
+}
+
+.taskly-step-card__icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 18px;
+  border-radius: 14px;
+  color: #0084ff;
+  background: rgba(0, 132, 255, 0.1);
+}
+
+.taskly-step-card h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: #111a3e;
+}
+
+.taskly-step-card p {
+  margin: 0;
+  color: #5a6078;
+  font-size: 14px;
+  line-height: 1.65;
 }
 
 .taskly-feature-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
 }
 
-.taskly-feature-card,
-.taskly-pricing-card {
-  border-radius: 24px;
+.taskly-feature-card {
+  border-radius: 22px;
   padding: 28px;
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow:
-    inset 0 4px 4px rgba(255, 255, 255, 0.35),
-    0 18px 46px rgba(17, 26, 62, 0.08);
-  backdrop-filter: blur(24px) saturate(165%);
-  -webkit-backdrop-filter: blur(24px) saturate(165%);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 14px 36px rgba(17, 26, 62, 0.06);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.taskly-feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 48px rgba(17, 26, 62, 0.1);
+}
+
+.taskly-feature-card__icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  color: #0084ff;
+  background: rgba(0, 132, 255, 0.1);
 }
 
 .taskly-feature-card h3 {
-  margin: 0 0 12px;
+  margin: 0 0 10px;
   color: #111a3e;
   font-family: var(--font-display);
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
 }
 
 .taskly-feature-card p {
   margin: 0;
-  color: #44475e;
+  color: #5a6078;
+  line-height: 1.65;
+  font-size: 15px;
+}
+
+/* Testimonials */
+.taskly-testimonials__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.taskly-quote-card {
+  margin: 0;
+  padding: 28px;
+  border-radius: 22px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 14px 36px rgba(17, 26, 62, 0.06);
+}
+
+.taskly-quote-card p {
+  margin: 0 0 20px;
+  color: #111a3e;
+  font-size: 15px;
   line-height: 1.7;
+  font-style: italic;
+}
+
+.taskly-quote-card footer {
+  display: grid;
+  gap: 2px;
+}
+
+.taskly-quote-card strong {
+  color: #111a3e;
+  font-size: 14px;
+}
+
+.taskly-quote-card span {
+  color: #5a6078;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Pricing */
+.taskly-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  align-items: stretch;
 }
 
 .taskly-pricing-card {
+  position: relative;
   display: grid;
-  gap: 22px;
-  padding: clamp(28px, 5vw, 54px);
+  gap: 16px;
+  padding: 28px;
+  border-radius: 22px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 14px 36px rgba(17, 26, 62, 0.06);
 }
 
-.taskly-pricing-card__actions {
+.taskly-pricing-card.is-featured {
+  border-color: rgba(0, 132, 255, 0.28);
+  box-shadow:
+    0 24px 56px rgba(0, 132, 255, 0.14),
+    0 0 0 1px rgba(0, 132, 255, 0.12);
+  transform: scale(1.02);
+}
+
+.taskly-pricing-card__badge {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #0084ff;
+  background: rgba(0, 132, 255, 0.1);
+}
+
+.taskly-pricing-card h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: #111a3e;
+}
+
+.taskly-pricing-card__price {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  align-items: baseline;
+  gap: 4px;
 }
 
-.taskly-pricing-card__actions a {
+.taskly-pricing-card__price strong {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 800;
+  color: #111a3e;
+  line-height: 1;
+}
+
+.taskly-pricing-card__price span {
+  color: #5a6078;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.taskly-pricing-card > p {
+  margin: 0;
+  color: #5a6078;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.taskly-pricing-card ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.taskly-pricing-card li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #44475e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.taskly-pricing-card li svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #0084ff;
+}
+
+.taskly-pricing-card__cta {
+  margin-top: auto;
   min-height: 48px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0 18px;
-  border-radius: 14px;
-  color: #ffffff;
-  background: rgba(0, 132, 255, 0.8);
+  border-radius: 12px;
+  color: #111a3e;
   font-weight: 800;
-  box-shadow: inset 0 4px 4px rgba(255, 255, 255, 0.28);
+  text-decoration: none;
+  background: rgba(17, 26, 62, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: background 180ms ease;
 }
 
-.taskly-pricing-card__actions a + a {
+.taskly-pricing-card.is-featured .taskly-pricing-card__cta {
+  color: #ffffff;
+  background: linear-gradient(135deg, #0084ff, #0070d8);
+  border-color: transparent;
+}
+
+.taskly-pricing-card__cta:hover {
+  background: rgba(17, 26, 62, 0.08);
+}
+
+.taskly-pricing-card.is-featured .taskly-pricing-card__cta:hover {
+  background: linear-gradient(135deg, #0070d8, #005bb5);
+}
+
+/* FAQ */
+.taskly-faq__list {
+  display: grid;
+  gap: 12px;
+}
+
+.taskly-faq__item {
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.taskly-faq__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 700;
   color: #111a3e;
-  background: rgba(255, 255, 255, 0.54);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.taskly-faq__chevron {
+  flex-shrink: 0;
+  color: #5a6078;
+  transition: transform 200ms ease;
+}
+
+.taskly-faq__item.is-open .taskly-faq__chevron {
+  transform: rotate(180deg);
+}
+
+.taskly-faq__answer {
+  margin: 0;
+  padding: 0 20px 18px;
+  color: #5a6078;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+/* Final CTA */
+.taskly-final-cta {
+  width: min(100% - 48px, 1180px);
+  margin: 0 auto 80px;
+}
+
+.taskly-final-cta__inner {
+  padding: clamp(40px, 6vw, 64px);
+  border-radius: 28px;
+  text-align: center;
+  color: #ffffff;
+  background:
+    linear-gradient(135deg, rgba(0, 132, 255, 0.95) 0%, rgba(108, 92, 231, 0.92) 100%);
+  box-shadow: 0 28px 64px rgba(0, 132, 255, 0.28);
+}
+
+.taskly-final-cta__inner h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.taskly-final-cta__inner > p {
+  margin: 12px auto 0;
+  max-width: 480px;
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.92;
+}
+
+.taskly-final-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 28px;
 }
 
 @media (max-width: 980px) {
@@ -545,50 +1026,25 @@
     min-height: auto;
   }
 
-  .taskly-hero__copy {
-    padding-left: 0;
+  .taskly-showcase {
+    min-height: 460px;
+    margin-top: 12px;
   }
 
-  .taskly-background-art {
-    top: 420px;
-    right: -320px;
-    width: 760px;
-    height: 520px;
+  .taskly-showcase__card--main {
+    margin: 0 auto;
   }
 
-  .taskly-visual {
-    min-height: 520px;
-  }
-
-  .taskly-visual__image {
-    width: min(560px, 92vw);
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .taskly-orb video {
-    width: 100%;
-    transform: scale(1);
-  }
-
-  .taskly-orb {
-    width: min(460px, 78vw);
-    right: 50%;
-    top: -24px;
-    z-index: 1;
-    transform: translateX(38%);
-  }
-
-  .taskly-visual__image {
-    z-index: 2;
-  }
-
-  .taskly-feature-grid {
+  .taskly-steps__grid {
     grid-template-columns: 1fr;
   }
 
-  .taskly-partners__track {
+  .taskly-feature-strip__inner {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .taskly-ambient__grid {
+    display: none;
   }
 }
 
@@ -612,11 +1068,9 @@
     gap: 8px;
     padding: 16px;
     border-radius: 22px;
-    background: rgba(255, 255, 255, 0.82);
+    background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.08);
-    box-shadow: 0 24px 70px rgba(17, 26, 62, 0.16);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
+    box-shadow: 0 12px 32px rgba(17, 26, 62, 0.12);
     transform: translateY(-12px);
     opacity: 0;
     pointer-events: none;
@@ -634,11 +1088,11 @@
     font-size: 16px;
   }
 
-  .taskly-nav__enter {
+  .taskly-nav__links .taskly-nav__enter {
     display: inline-flex;
   }
 
-  .taskly-signup {
+  .taskly-nav__actions .taskly-signup {
     display: none;
   }
 
@@ -647,7 +1101,7 @@
   }
 
   .taskly-hero {
-    padding: 58px 18px 34px;
+    padding: 16px 18px 34px;
   }
 
   .taskly-rating {
@@ -667,58 +1121,38 @@
   }
 
   .taskly-hero__actions,
-  .taskly-pricing-card__actions {
+  .taskly-final-cta__actions {
     align-items: stretch;
     flex-direction: column;
   }
 
   .taskly-primary-cta,
-  .taskly-workspace-link,
-  .taskly-pricing-card__actions a {
+  .taskly-secondary-cta,
+  .taskly-pricing-card__cta {
     width: 100%;
   }
 
-  .taskly-workspace-link {
-    justify-content: center;
-    min-height: 48px;
+  .taskly-showcase {
+    min-height: 400px;
   }
 
-  .taskly-background-art {
-    display: none;
+  .taskly-showcase__card--chat {
+    right: 4%;
+    width: min(220px, 78%);
   }
 
-  .taskly-visual {
-    min-height: 410px;
+  .taskly-showcase__card--event {
+    left: 4%;
+    width: min(210px, 74%);
   }
 
-  .taskly-visual__image {
-    bottom: 8px;
-    aspect-ratio: 0.98;
-    border-radius: 26px;
-  }
-
-  .taskly-orb {
-    width: min(340px, 82vw);
-    top: -36px;
-    z-index: 1;
-    opacity: 0.88;
-    transform: translateX(46%);
-  }
-
-  .taskly-visual__caption {
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    padding: 14px;
-  }
-
-  .taskly-feature-band,
-  .taskly-pricing-band,
-  .taskly-partners {
+  .taskly-feature-strip,
+  .taskly-steps,
+  .taskly-final-cta {
     width: min(100% - 32px, 1180px);
   }
 
-  .taskly-partners__track {
+  .taskly-feature-strip__inner {
     grid-template-columns: 1fr;
   }
 }

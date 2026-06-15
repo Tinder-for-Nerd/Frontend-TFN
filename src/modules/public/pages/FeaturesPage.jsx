@@ -60,7 +60,7 @@ export function FeaturesPage() {
 
       <section className="pm-features-cta">
         <h2>Ready to get started?</h2>
-        <Button variant="primary" size="lg">
+        <Button variant="primary" size="lg" to="/login">
           Start exploring today
         </Button>
       </section>

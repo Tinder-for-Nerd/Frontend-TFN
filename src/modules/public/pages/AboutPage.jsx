@@ -72,7 +72,7 @@ export function AboutPage() {
       <section className="pm-about-cta">
         <h2>Join Tinder for Nerds</h2>
         <p>Start discovering better collaborations today</p>
-        <Button variant="primary" size="lg">
+        <Button variant="primary" size="lg" to="/login">
           Get started free
         </Button>
       </section>

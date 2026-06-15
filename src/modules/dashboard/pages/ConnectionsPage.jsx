@@ -1,13 +1,20 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AppShell } from '../../../components/layout';
 import { Button, Badge, Icon } from '../../../components/ui';
 import { SectionHeader, MiniProfileCard, EmptyState } from '../../../components/common';
+import { ProfessionalSearchModal } from '../components/discover/ProfessionalSearchModal';
 import { profiles, studentConnections } from '../../../data/mockData';
+import { saveProfessionalSearch } from '../../../data/professionalSearch';
 import { usePageMeta } from '../../../hooks/usePageMeta';
+import '../../../styles/discover.css';
+import '../../../styles/connections.css';
 
 export function ConnectionsPage() {
   usePageMeta('My Connections | Tinder for Nerds', 'Manage your network, view pending requests, and discover suggested matches.');
-  
+
+  const navigate = useNavigate();
+  const [searchOpen, setSearchOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('connected');
   const [query, setQuery] = useState('');
 
@@ -37,7 +44,7 @@ export function ConnectionsPage() {
       title="Connections" 
       subtitle="Manage your professional network and discover new builders."
       actions={
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="pm-connections-toolbar">
           <div className="pm-search-input">
             <Icon name="search" size={16} />
             <input 
@@ -47,7 +54,9 @@ export function ConnectionsPage() {
               onChange={(e) => setQuery(e.target.value)}
             />
           </div>
-          <Button variant="primary" icon="spark">Discover more</Button>
+          <Button variant="primary" icon="spark" onClick={() => setSearchOpen(true)}>
+            Discover more
+          </Button>
         </div>
       }
     >
@@ -98,82 +107,23 @@ export function ConnectionsPage() {
               icon="connections" 
               title="No connections found" 
               description={query ? `No results for "${query}" in this section.` : "Start exploring to build your network."}
-              actionLabel="Discover people"
-              onAction={() => setActiveTab('suggested')}
+              actionLabel="Discover more"
+              onAction={() => setSearchOpen(true)}
             />
           )}
         </section>
       </div>
 
-      <style>{`
-        .pm-connections-container {
-          display: grid;
-          gap: 32px;
-        }
-        .pm-tabs {
-          display: flex;
-          gap: 32px;
-          border-bottom: 1px solid var(--outline-variant);
-          padding-bottom: 2px;
-        }
-        .pm-tabs button {
-          background: none;
-          border: none;
-          padding: 8px 0 16px;
-          font-family: var(--font-display);
-          font-weight: 600;
-          color: var(--on-surface-variant);
-          cursor: pointer;
-          position: relative;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        .pm-tabs button.is-active {
-          color: var(--primary);
-        }
-        .pm-tabs button.is-active::after {
-          content: '';
-          position: absolute;
-          bottom: -1px;
-          left: 0;
-          right: 0;
-          height: 2px;
-          background: var(--primary);
-        }
-        .pm-tab-count {
-          font-size: 10px;
-          background: var(--surface-container-high);
-          padding: 2px 6px;
-          border-radius: 10px;
-          color: var(--on-surface);
-        }
-        .pm-connections-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-          gap: 24px;
-          margin-top: 24px;
-        }
-        .pm-search-input {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          background: var(--surface-container-low);
-          border: 1px solid var(--outline-variant);
-          padding: 0 16px;
-          border-radius: var(--radius-full);
-          height: 40px;
-          min-width: 240px;
-        }
-        .pm-search-input input {
-          background: none;
-          border: none;
-          outline: none;
-          color: var(--on-surface);
-          font-size: 14px;
-          width: 100%;
-        }
-      `}</style>
+      <ProfessionalSearchModal
+        isOpen={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        onSubmit={(criteria) => {
+          saveProfessionalSearch(criteria);
+          setSearchOpen(false);
+          navigate('/student/search', { state: { professionalSearch: criteria } });
+        }}
+      />
+
     </AppShell>
   );
 }

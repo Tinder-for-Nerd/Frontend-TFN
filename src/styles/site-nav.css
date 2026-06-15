@@ -6,9 +6,8 @@
   z-index: 1000;
   height: var(--site-header-h, 64px);
   border-bottom: 1px solid rgba(17, 26, 62, 0.08);
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  background: #ffffff;
+  border-bottom: 1px solid rgba(17, 26, 62, 0.08);
 }
 
 .site-header__inner {
@@ -77,7 +76,7 @@
   justify-content: center;
   border-radius: 50%;
   border: 1px solid rgba(17, 26, 62, 0.12);
-  background: rgba(255, 255, 255, 0.8);
+  background: #ffffff;
   color: #111a3e;
   text-decoration: none;
   transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
@@ -152,7 +151,7 @@
   justify-content: center;
   border: 1px solid rgba(17, 26, 62, 0.12);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.8);
+  background: #ffffff;
   color: #111a3e;
   cursor: pointer;
 }
@@ -199,6 +198,11 @@
 
   .site-header--app .site-header__menu {
     display: inline-flex;
+  }
+
+  .site-header--app .site-header__actions .site-header__icon-btn,
+  .site-header--app .site-header__actions .site-header__profile-btn {
+    display: none;
   }
 }
 
@@ -251,7 +255,7 @@
 
   .site-header--app .site-header__actions .site-header__icon-btn,
   .site-header--app .site-header__actions .site-header__profile-btn {
-    display: inline-flex;
+    display: none;
   }
 
   .site-header__menu {

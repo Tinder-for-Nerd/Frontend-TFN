@@ -629,9 +629,7 @@ h3 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em
   justify-content: space-between;
   gap: var(--space-md);
   padding: var(--space-md) var(--space-xl);
-  background: rgba(247, 249, 255, 0.8); /* surface with glass */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: #f7f9ff;
   transition: background var(--dur-normal);
 }
 
@@ -751,10 +749,9 @@ h3 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em
   min-width: 200px;
   padding: 10px;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.96);
+  background: #ffffff;
   border: 1px solid var(--border-default);
   box-shadow: var(--shadow-lg);
-  backdrop-filter: blur(20px);
   animation: slideDown var(--dur-normal) var(--ease-spring);
 }
 
@@ -2275,11 +2272,10 @@ ol {
 .pm-calendar-board,
 .pm-thread-panel,
 .pm-chat-panel {
-  background: rgba(255, 255, 255, 0.88);
+  background: #ffffff;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(16px);
 }
 
 .pm-card,
@@ -2360,20 +2356,16 @@ ol {
 
 .pm-button--primary,
 .pm-button--brand {
-  background: rgba(0, 132, 255, 0.8);
+  background: #0084ff;
   color: var(--on-primary);
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  box-shadow:
-    inset 0 4px 4px rgba(255, 255, 255, 0.35),
-    0 18px 42px rgba(0, 132, 255, 0.22);
+  border: 1px solid rgba(0, 132, 255, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 132, 255, 0.22);
 }
 
 .pm-button--primary:hover,
 .pm-button--brand:hover {
   filter: brightness(1.05);
-  box-shadow:
-    inset 0 4px 4px rgba(255, 255, 255, 0.42),
-    0 24px 52px rgba(0, 132, 255, 0.28);
+  box-shadow: 0 12px 32px rgba(0, 132, 255, 0.28);
 }
 
 .pm-button--secondary {
@@ -2789,10 +2781,9 @@ select.pm-input:focus,
   align-items: center;
   gap: 20px;
   padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.82);
+  background: #ffffff;
   border: 1px solid transparent;
   border-radius: 22px;
-  backdrop-filter: blur(20px);
 }
 
 .pm-public-navbar.is-scrolled {
@@ -3630,9 +3621,8 @@ select.pm-input:focus,
   grid-template-rows: auto 1fr auto;
   gap: 20px;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.9);
+  background: #ffffff;
   border-right: 1px solid var(--border-subtle);
-  backdrop-filter: blur(18px);
   transition: width 0.3s ease-in-out, padding 0.3s ease-in-out, gap 0.3s ease-in-out;
   overflow: hidden;
 }
@@ -3745,9 +3735,8 @@ select.pm-input:focus,
   top: 0;
   z-index: 20;
   padding: 18px 28px;
-  background: rgba(255, 255, 255, 0.9);
+  background: #ffffff;
   border-bottom: 1px solid var(--border-subtle);
-  backdrop-filter: blur(20px);
 }
 
 .pm-topbar__title {
@@ -5612,8 +5601,7 @@ p {
 }
 
 .pm-reel-info {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(8px);
+  background: #ffffff;
   padding: 16px;
   border-radius: 16px;
   border: 1px solid rgba(15, 23, 42, 0.08);
@@ -6529,9 +6517,8 @@ h3 {
 
 .pm-sidebar {
   border-right: 1px solid rgba(17, 26, 62, 0.08);
-  background: rgba(248, 251, 255, 0.65);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  background: #ffffff;
+  border: 1px solid rgba(17, 26, 62, 0.08);
   box-shadow: 14px 0 34px rgba(17, 26, 62, 0.05);
 }
 
@@ -6560,9 +6547,7 @@ h3 {
 
 .pm-topbar {
   border-bottom: 1px solid rgba(17, 26, 62, 0.08);
-  background: rgba(249, 251, 255, 0.65);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  background: #f9fbff;
 }
 
 .pm-topbar__title .pm-kicker {
@@ -6623,9 +6608,8 @@ h3 {
   display: none;
   gap: 6px;
   padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
-  background: rgba(249, 251, 255, 0.78);
+  background: #f9fbff;
   border-top: 1px solid rgba(17, 26, 62, 0.08);
-  backdrop-filter: blur(18px) saturate(160%);
 }
 
 .pm-bottom-nav__item {
@@ -6716,13 +6700,9 @@ body.pm-light-theme .pm-command-palette,
 body.pm-light-theme .wa-sidebar,
 body.pm-light-theme .wa-chat__head,
 body.pm-light-theme .wa-composer {
-  background: rgba(255, 255, 255, 0.45);
+  background: #ffffff;
   border-color: rgba(0, 0, 0, 0.08);
-  box-shadow:
-    inset 0 4px 4px rgba(255, 255, 255, 0.35),
-    0 18px 46px rgba(17, 26, 62, 0.08);
-  backdrop-filter: blur(24px) saturate(165%);
-  -webkit-backdrop-filter: blur(24px) saturate(165%);
+  box-shadow: 0 4px 16px rgba(17, 26, 62, 0.06);
 }
 
 body.pm-light-theme .pm-card:hover,
@@ -6737,9 +6717,7 @@ body.pm-light-theme .pm-event-card:hover,
 body.pm-light-theme .pm-notification-row:hover,
 body.pm-light-theme .pm-connection-row:hover {
   border-color: rgba(0, 132, 255, 0.18);
-  box-shadow:
-    inset 0 4px 4px rgba(255, 255, 255, 0.42),
-    0 24px 62px rgba(17, 26, 62, 0.12);
+  box-shadow: 0 8px 24px rgba(17, 26, 62, 0.1);
 }
 
 .pm-button--ghost {
@@ -6747,7 +6725,7 @@ body.pm-light-theme .pm-connection-row:hover {
 }
 
 .pm-button--secondary {
-  background: rgba(255,255,255,0.78);
+  background: #ffffff;
   border-color: rgba(17, 26, 62, 0.12);
 }
 

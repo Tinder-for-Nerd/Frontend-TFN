@@ -2,14 +2,17 @@ import { useState, useMemo, useRef } from 'react';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 import { AppShell } from '../../../components/layout';
 import { Button, Badge, Icon, Avatar } from '../../../components/ui';
+import { getDashboardMessages } from '../../../data/dashboardMessages';
 import { profiles } from '../../../constants/profiles';
 import { cx } from '../../../utils/helpers';
 import '../../../styles/student-feed.css';
 
 export function StudentHomePage() {
+  const dashboard = getDashboardMessages('student');
+
   usePageMeta(
-    'Tinder for Nerds | Student Home', 
-    'Student home feed with updates from your network. Share progress, ask for help, and spot collaborators.'
+    'Tinder for Nerds | Student Home',
+    dashboard.homeSubtitle,
   );
 
   const composerRef = useRef(null);
@@ -108,33 +111,41 @@ export function StudentHomePage() {
   return (
     <AppShell
       variant="student"
-      title="Home"
-      subtitle="Updates from your network. Share progress, ask for help, and spot collaborators."
-      actions={
-        <div className="pm-student-feed__actions">
-          <div className="pm-student-feed__search" role="search">
-            <Icon name="search" size={16} />
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search posts..."
-              type="search"
-            />
-          </div>
-          <Button
-            variant="primary"
-            icon="plus"
-            onClick={() =>
-              composerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-            }
-          >
-            New post
-          </Button>
-        </div>
-      }
+      title={dashboard.homeTitle}
+      subtitle={dashboard.homeSubtitle}
+      hideTopbar
+      className="pm-feed-shell"
     >
       <div className="pm-li-feed">
         <div className="pm-li-feed__main">
+          <header className="pm-feed-toolbar">
+            <div className="pm-feed-toolbar__intro">
+              <h1>{dashboard.homeTitle}</h1>
+              <p>{dashboard.homeSubtitle}</p>
+            </div>
+            <div className="pm-student-feed__actions">
+              <div className="pm-student-feed__search" role="search">
+                <Icon name="search" size={16} />
+                <input
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Search posts..."
+                  type="search"
+                />
+              </div>
+              <Button
+                variant="primary"
+                icon="plus"
+                size="sm"
+                onClick={() =>
+                  composerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }
+              >
+                New post
+              </Button>
+            </div>
+          </header>
+
           {/* Post Composer */}
           <section ref={composerRef} className="pm-li-composer pm-card" aria-label="Create post">
             <div className="pm-li-composer__row">
@@ -149,7 +160,8 @@ export function StudentHomePage() {
                 className="pm-li-composer__input"
                 value={newPostContent}
                 onChange={(event) => setNewPostContent(event.target.value)}
-                placeholder="Start a post"
+                placeholder={dashboard.composerPlaceholder}
+                rows={3}
               />
             </div>
 

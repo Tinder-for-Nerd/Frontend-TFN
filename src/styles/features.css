@@ -91,8 +91,19 @@
   font-family: var(--font-display);
 }
 
-.pm-features-cta button {
-  color: var(--brand-teal);
+.pm-features-cta .pm-button {
+  background: #ffffff;
+  color: #111a3e;
+  border: none;
+  box-shadow: 0 10px 28px rgba(17, 26, 62, 0.18);
+  font-weight: 700;
+}
+
+.pm-features-cta .pm-button:hover {
+  background: #f8fafc;
+  color: #111a3e;
+  filter: none;
+  box-shadow: 0 14px 36px rgba(17, 26, 62, 0.22);
 }
 
 /* Mobile Optimization */

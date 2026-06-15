@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppShell } from '../../../components/layout';
 import { Button, Badge, Icon } from '../../../components/ui';
+import { FitScore } from '../../../components/fit/FitScore';
 import { profiles as allProfiles, events as allEvents } from '../../../data/mockData';
 import '../../../styles/profile.css';
 
@@ -70,6 +71,9 @@ export function ProfilePage({ variant = 'student' }) {
 
   const primaryActions = isMe ? (
     <div className="pm-gh-actions">
+      <Button variant="primary" size="sm" to="/freelancer/dashboard">
+        Freelancer workspace
+      </Button>
       <Button variant="secondary" size="sm" onClick={() => setIsEditing(!isEditing)}>
         {isEditing ? 'Save changes' : 'Edit profile'}
       </Button>
@@ -128,6 +132,10 @@ export function ProfilePage({ variant = 'student' }) {
               <div className="pm-gh-username">@{profile?.username ?? 'me'}</div>
               <div className="pm-gh-role">{profile?.title || profile?.role || 'Member'}</div>
             </div>
+
+            <section className="pm-gh-fit-score" aria-label="Skill score">
+              <FitScore profile={profile} label="Skill score" showBars />
+            </section>
 
             <div className="pm-gh-bio">
               {isEditing ? (

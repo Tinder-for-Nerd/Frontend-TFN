@@ -1,4 +1,12 @@
+import { AUTH_ROLES, resolveAuthRole } from '../modules/auth/authConfig';
+
 const WORKSPACE_KEY = 'pm_workspace';
+
+export const PUBLIC_MARKETING_PATHS = ['/', '/features', '/about', '/contact'];
+
+export function isPublicMarketingPath(pathname) {
+  return PUBLIC_MARKETING_PATHS.includes(pathname) || pathname.startsWith('/preview/');
+}
 
 export function persistWorkspace(workspace) {
   if (typeof window !== 'undefined' && (workspace === 'pro' || workspace === 'student' || workspace === 'org')) {
@@ -49,6 +57,7 @@ export function getProNavLinks() {
     { label: 'Discover', href: '/pro/discover', activePrefix: '/pro/discover' },
     { label: 'Inbox', href: '/pro/inbox', activePrefix: '/pro/inbox' },
     { label: 'Analytics', href: '/pro/analytics', activePrefix: '/pro/analytics' },
+    { label: 'Hiring', href: '/startup/hiring', activePrefix: '/startup' },
     { label: 'Settings', href: '/pro/settings', activePrefix: '/pro/settings' },
   ];
 }
@@ -68,6 +77,48 @@ export function isNavLinkActive(link, pathname, defaultActive) {
   return defaultActive;
 }
 
+export function getDashboardForRole(roleId) {
+  return AUTH_ROLES[resolveAuthRole(roleId)]?.dashboard ?? '/student/home';
+}
+
+function withoutDiscoverLinks(links) {
+  return links.filter(
+    (link) => link.label !== 'Discover' && !link.href.includes('/discover')
+  );
+}
+
+function applyPublicNavOverrides(config, pathname) {
+  if (!config.links) {
+    return config;
+  }
+
+  if (PUBLIC_MARKETING_PATHS.includes(pathname)) {
+    return {
+      ...config,
+      links: withoutDiscoverLinks(config.links),
+    };
+  }
+
+  return config;
+}
+
+function getPublicNavConfig(pathname, isAuthenticated, user) {
+  const workspace = resolveWorkspace(user);
+  const dashboard = getDashboardForRole(workspace);
+
+  return applyPublicNavOverrides(
+    {
+      hidden: false,
+      variant: 'public',
+      logoTo: '/',
+      ctaLabel: isAuthenticated ? 'Open dashboard' : 'Get Started',
+      ctaTo: isAuthenticated ? dashboard : '/login',
+      links: getPublicNavLinks(),
+    },
+    pathname
+  );
+}
+
 export function resolveSiteNav(location, isAuthenticated, user) {
   const workspace = resolveWorkspace(user);
   const isPro = workspace === 'pro';
@@ -76,6 +127,10 @@ export function resolveSiteNav(location, isAuthenticated, user) {
 
   if (isOnboarding || isCall) {
     return { hidden: true };
+  }
+
+  if (isPublicMarketingPath(location.pathname)) {
+    return getPublicNavConfig(location.pathname, isAuthenticated, user);
   }
 
   if (isAuthenticated && workspace === 'org') {
@@ -111,12 +166,5 @@ export function resolveSiteNav(location, isAuthenticated, user) {
     };
   }
 
-  return {
-    hidden: false,
-    variant: 'public',
-    logoTo: '/',
-    ctaLabel: 'Get Started',
-    ctaTo: '/signup',
-    links: getPublicNavLinks(),
-  };
+  return getPublicNavConfig(location.pathname, isAuthenticated, user);
 }

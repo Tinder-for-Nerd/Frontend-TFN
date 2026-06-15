@@ -4,8 +4,6 @@ import { CommandPalette } from '../common/CommandPalette';
 import GridDistortion from '../ui/GridDistortion';
 import lightTechBg from '../../assets/light-tech-background.png';
 
-const ORB_VIDEO_URL = 'https://future.co/images/homepage/glassy-orb/orb-purple.webm';
-
 export function AppShell({
   children,
   title = 'Tinder for Nerds',
@@ -52,17 +50,6 @@ export function AppShell({
           strength={0.1}
           relaxation={0.92}
           className="pm-shell-art__canvas"
-        />
-      </div>
-
-      <div className="pm-shell-orb" aria-hidden="true">
-        <video
-          src={ORB_VIDEO_URL}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
         />
       </div>
 

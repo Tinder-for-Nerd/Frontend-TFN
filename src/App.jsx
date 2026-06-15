@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { SocketProvider } from './context/SocketProvider';
+import { SubscriptionProvider } from './context/SubscriptionContext';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
 import { RootLayout } from './components/layout';
 // Modular Page Imports
@@ -26,7 +28,7 @@ import {
   OrganizerDashboardPage,
   CallPage
 } from './modules/dashboard/pages';
-import { StudentHomePage, StudentProgressPage, StudentFeedPage, StudentBillingPage } from './modules/student/pages';
+import { StudentHomePage, StudentProgressPage, StudentFeedPage, StudentBillingPage, ProfessionalSearchPage } from './modules/student/pages';
 import { 
   ProOverviewPage, 
   NetworkPage, 
@@ -35,6 +37,19 @@ import {
   ProAnalyticsPage, 
   ProCompanyPage 
 } from './modules/pro/pages';
+import {
+  FreelancerDashboardPage,
+  FreelancerDiscoverPage,
+  FreelancerProfilePage,
+  FreelancerOnboardingPage,
+  PortfolioAnalyzerPage,
+} from './modules/freelancer/pages';
+import {
+  StartupOnboardingPage,
+  HiringDashboardPage,
+  ProjectPostPage,
+} from './modules/startup/pages';
+import { ProCheckoutPage } from './modules/billing/pages';
 
 // Helper: wrap element with ProtectedRoute
 const P = ({ children }) => <ProtectedRoute>{children}</ProtectedRoute>;
@@ -76,8 +91,8 @@ function ScrollLockSafeguard() {
     document.body.style.height = '';
     document.documentElement.style.height = '';
 
-    document.documentElement.classList.remove('pm-discover-page-active', 'pm-scroll-locked');
-    document.body.classList.remove('pm-discover-page-active', 'pm-scroll-locked');
+    document.documentElement.classList.remove('pm-discover-page-active', 'pm-scroll-locked', 'pm-messages-page-active');
+    document.body.classList.remove('pm-discover-page-active', 'pm-scroll-locked', 'pm-messages-page-active');
   }, [location.pathname]);
 
   return null;
@@ -86,6 +101,8 @@ function ScrollLockSafeguard() {
 export default function App() {
   return (
     <AuthProvider>
+      <SubscriptionProvider>
+      <SocketProvider>
       <BrowserRouter>
         <ScrollLockSafeguard />
         <Routes>
@@ -121,10 +138,12 @@ export default function App() {
           <Route path="/student/feed" element={<P><StudentFeedPage /></P>} />
           <Route path="/student/discover" element={<P><DiscoverPage variant="student" /></P>} />
           <Route path="/student/connections" element={<P><ConnectionsPage /></P>} />
+          <Route path="/student/search" element={<P><ProfessionalSearchPage /></P>} />
           <Route path="/student/messages" element={<P><MessagesPage variant="student" /></P>} />
           <Route path="/student/messages/:threadId" element={<P><MessagesPage variant="student" /></P>} />
           <Route path="/student/sessions" element={<P><SessionsPage /></P>} />
           <Route path="/student/billing" element={<P><StudentBillingPage /></P>} />
+          <Route path="/student/transaction" element={<P><StudentBillingPage /></P>} />
           <Route path="/student/events" element={<P><EventsPage variant="student" /></P>} />
           <Route path="/student/events/organizer" element={<P><OrganizerDashboardPage variant="student" /></P>} />
           <Route path="/student/events/host" element={<P><HostEventPage variant="student" /></P>} />
@@ -151,6 +170,21 @@ export default function App() {
           <Route path="/pro/profile/:username" element={<P><ProfilePage variant="pro" /></P>} />
           <Route path="/pro/settings" element={<P><SettingsPage variant="pro" /></P>} />
 
+          {/* Freelancer */}
+          <Route path="/freelancer/onboarding/:step" element={<P><FreelancerOnboardingPage /></P>} />
+          <Route path="/freelancer/dashboard" element={<P><FreelancerDashboardPage /></P>} />
+          <Route path="/freelancer/discover" element={<P><FreelancerDiscoverPage /></P>} />
+          <Route path="/freelancer/profile/:username" element={<P><FreelancerProfilePage /></P>} />
+          <Route path="/freelancer/portfolio" element={<P><PortfolioAnalyzerPage /></P>} />
+
+          {/* Startup / hiring */}
+          <Route path="/startup/onboarding/:step" element={<P><StartupOnboardingPage /></P>} />
+          <Route path="/startup/hiring" element={<P><HiringDashboardPage /></P>} />
+          <Route path="/startup/projects/new" element={<P><ProjectPostPage /></P>} />
+
+          {/* Pro billing */}
+          <Route path="/pro/billing" element={<P><ProCheckoutPage /></P>} />
+
           {/* Protected: Organization Domain */}
           <Route path="/org" element={<Navigate to="/org/dashboard" replace />} />
           <Route path="/org/dashboard" element={<P><OrgDashboardPage /></P>} />
@@ -169,6 +203,8 @@ export default function App() {
           <Route path="/connections" element={<Navigate to="/student/connections" replace />} />
           <Route path="/messages" element={<Navigate to="/student/messages" replace />} />
           <Route path="/bookings" element={<Navigate to="/student/sessions" replace />} />
+          <Route path="/billing" element={<Navigate to="/student/billing" replace />} />
+          <Route path="/transaction" element={<Navigate to="/student/billing" replace />} />
           <Route path="/events" element={<Navigate to="/student/events" replace />} />
           <Route path="/profile" element={<Navigate to="/profile/me" replace />} />
 
@@ -185,6 +221,8 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>      </BrowserRouter>
+      </SocketProvider>
+      </SubscriptionProvider>
     </AuthProvider>
   );
 }

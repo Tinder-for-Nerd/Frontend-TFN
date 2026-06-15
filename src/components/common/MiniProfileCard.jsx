@@ -9,6 +9,7 @@ export function MiniProfileCard({
   secondaryLabel = 'Message', 
   extraLink = '/profile/me',
   hideActions = false,
+  fitLabel = 'Fit',
   onCta,
   ctaDisabled = false,
 }) {
@@ -81,7 +82,7 @@ export function MiniProfileCard({
           <span className="pm-mini-profile__fit-value">
             {profile.match}%
           </span>
-          <span className="pm-mini-profile__fit-label">Fit</span>
+          <span className="pm-mini-profile__fit-label">{fitLabel}</span>
         </div>
       </div>
 
