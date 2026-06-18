@@ -1,0 +1,267 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:var(--color-background-tertiary);color:var(--color-text-primary)}
+.layout{display:flex;min-height:600px;gap:0}
+.sidebar{width:220px;flex-shrink:0;background:var(--color-background-primary);border-right:0.5px solid var(--color-border-tertiary);padding:1.5rem 0}
+.sidebar-title{font-size:18px;font-weight:500;padding:0 1.25rem 1rem;color:var(--color-text-primary)}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 1.25rem;cursor:pointer;font-size:13.5px;color:var(--color-text-secondary);border-left:2px solid transparent;transition:all .15s;user-select:none}
+.nav-item:hover{background:var(--color-background-secondary);color:var(--color-text-primary)}
+.nav-item.active{color:#0A66C2;background:#EEF4FB;border-left:2px solid #0A66C2;font-weight:500}
+.nav-item i{font-size:17px}
+.content{flex:1;padding:2rem;overflow-y:auto;background:var(--color-background-tertiary)}
+.panel{display:none}
+.panel.active{display:block}
+.section-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:1rem;overflow:hidden}
+.card-header{padding:1rem 1.25rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card-header h3{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+.card-header p{font-size:12.5px;color:var(--color-text-secondary);margin-top:2px}
+.row{display:flex;align-items:center;justify-content:space-between;padding:13px 1.25rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.row:last-child{border-bottom:none}
+.row-left{}
+.row-label{font-size:13.5px;color:var(--color-text-primary)}
+.row-desc{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.toggle{position:relative;width:38px;height:22px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.slider-t{position:absolute;inset:0;background:var(--color-border-secondary);border-radius:22px;cursor:pointer;transition:.2s}
+.slider-t:before{content:"";position:absolute;width:16px;height:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s}
+input:checked+.slider-t{background:#0A66C2}
+input:checked+.slider-t:before{transform:translateX(16px)}
+.badge-pill{font-size:11px;padding:3px 9px;border-radius:12px;font-weight:500}
+.badge-blue{background:#EEF4FB;color:#0A66C2}
+.badge-green{background:#EAF3DE;color:#3B6D11}
+.badge-gray{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.btn-outline{font-size:12.5px;padding:5px 14px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer}
+.btn-outline:hover{background:var(--color-background-secondary)}
+.btn-primary{font-size:12.5px;padding:5px 14px;border:none;border-radius:var(--border-radius-md);background:#0A66C2;color:#fff;cursor:pointer;font-weight:500}
+.btn-danger{font-size:12.5px;padding:5px 14px;border:0.5px solid #E24B4A;border-radius:var(--border-radius-md);background:transparent;color:#A32D2D;cursor:pointer}
+.btn-danger:hover{background:#FCEBEB}
+.field-group{padding:1.25rem}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.field-row.full{grid-template-columns:1fr}
+label{display:block;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+input[type=text],input[type=email],input[type=url],select,textarea{width:100%;font-size:13.5px;padding:7px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);outline:none}
+input[type=text]:focus,input[type=email]:focus,select:focus,textarea:focus{border-color:#0A66C2;box-shadow:0 0 0 2px rgba(10,102,194,0.15)}
+textarea{resize:vertical;min-height:72px}
+.avatar-row{display:flex;align-items:center;gap:14px;padding:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.avatar{width:64px;height:64px;border-radius:50%;background:#EEF4FB;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:500;color:#0A66C2;flex-shrink:0}
+.save-row{padding:1rem 1.25rem;display:flex;justify-content:flex-end;gap:8px;border-top:0.5px solid var(--color-border-tertiary)}
+.plan-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:1rem 1.25rem;display:flex;align-items:center;justify-content:space-between;margin:1.25rem;background:var(--color-background-secondary)}
+.plan-name{font-size:14px;font-weight:500}
+.plan-desc{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.divider{height:0.5px;background:var(--color-border-tertiary);margin:0}
+.danger-zone{padding:1.25rem}
+.danger-title{font-size:13px;font-weight:500;color:#A32D2D;margin-bottom:10px}
+</style>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-title">Settings</div>
+    <div class="nav-item active" onclick="show('profile',this)"><i class="ti ti-user" aria-hidden="true"></i> Account & profile</div>
+    <div class="nav-item" onclick="show('privacy',this)"><i class="ti ti-eye" aria-hidden="true"></i> Visibility</div>
+    <div class="nav-item" onclick="show('notifications',this)"><i class="ti ti-bell" aria-hidden="true"></i> Notifications</div>
+    <div class="nav-item" onclick="show('billing',this)"><i class="ti ti-credit-card" aria-hidden="true"></i> Plan & billing</div>
+    <div class="nav-item" onclick="show('security',this)"><i class="ti ti-lock" aria-hidden="true"></i> Security</div>
+    <div class="nav-item" onclick="show('data',this)"><i class="ti ti-database" aria-hidden="true"></i> Data & privacy</div>
+  </nav>
+
+  <main class="content">
+
+    <!-- Account & Profile -->
+    <div class="panel active" id="panel-profile">
+      <div class="section-card">
+        <div class="card-header"><h3>Profile information</h3><p>This is visible to startups browsing your profile</p></div>
+        <div class="avatar-row">
+          <div class="avatar">VS</div>
+          <div>
+            <div style="font-size:13.5px;font-weight:500;margin-bottom:4px">Profile photo</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn-outline">Change photo</button>
+              <button class="btn-outline" style="color:var(--color-text-secondary)">Remove</button>
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="field-row">
+            <div><label>First name</label><input type="text" value="Vyas"></div>
+            <div><label>Last name</label><input type="text" value="S."></div>
+          </div>
+          <div class="field-row full"><div><label>Headline</label><input type="text" value="AI/ML Engineer · Founder @ ProMatch"></div></div>
+          <div class="field-row full"><div><label>Bio</label><textarea>Building AI-powered tools for the startup ecosystem. Open to collaborations and consulting.</textarea></div></div>
+          <div class="field-row">
+            <div><label>Location</label><input type="text" value="Chennai, India"></div>
+            <div><label>Portfolio URL</label><input type="url" value="https://vyass.dev"></div>
+          </div>
+          <div class="field-row">
+            <div><label>GitHub</label><input type="text" value="github.com/vyass"></div>
+            <div><label>LinkedIn</label><input type="text" value="linkedin.com/in/vyass"></div>
+          </div>
+        </div>
+        <div class="save-row"><button class="btn-outline">Discard</button><button class="btn-primary">Save changes</button></div>
+      </div>
+
+      <div class="section-card">
+        <div class="card-header"><h3>Contact details</h3><p>Used for project communication and invoicing</p></div>
+        <div class="field-group">
+          <div class="field-row">
+            <div><label>Email address</label><input type="email" value="vyas@promatch.io"></div>
+            <div><label>Phone (optional)</label><input type="text" placeholder="+91 9876543210"></div>
+          </div>
+        </div>
+        <div class="save-row"><button class="btn-primary">Save changes</button></div>
+      </div>
+    </div>
+
+    <!-- Visibility -->
+    <div class="panel" id="panel-privacy">
+      <div class="section-card">
+        <div class="card-header"><h3>Profile visibility</h3><p>Control who can discover and view your profile</p></div>
+        <div class="row">
+          <div class="row-left"><div class="row-label">Profile visibility</div><div class="row-desc">Who can find you in search and discovery feed</div></div>
+          <select style="width:160px;font-size:13px">
+            <option>Everyone</option>
+            <option>Verified startups only</option>
+            <option>Hidden</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="row-left"><div class="row-label">Show availability status</div><div class="row-desc">Display "Open to work" badge on your profile</div></div>
+          <label class="toggle"><input type="checkbox" checked><span class="slider-t"></span></label>
+        </div>
+        <div class="row">
+          <div class="row-left"><div class="row-label">Show hourly rate</div><div class="row-desc">Visible to startups before connecting</div></div>
+          <label class="toggle"><input type="checkbox"><span class="slider-t"></span></label>
+        </div>
+        <div class="row">
+          <div class="row-left"><div class="row-label">Show profile views</div><div class="row-desc">See who viewed your profile in the last 30 days</div></div>
+          <div style="display:flex;align-items:center;gap:8px"><span class="badge-blue">Pro</span><label class="toggle"><input type="checkbox" disabled><span class="slider-t"></span></label></div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="card-header"><h3>Connection settings</h3></div>
+        <div class="row">
+          <div class="row-left"><div class="row-label">Allow startups to message me</div><div class="row-desc">Before connecting</div></div>
+          <label class="toggle"><input type="checkbox" checked><span class="slider-t"></span></label>
+        </div>
+        <div class="row">
+          <div class="row-left"><div class="row-label">Show mutual connections</div></div>
+          <label class="toggle"><input type="checkbox" checked><span class="slider-t"></span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="panel" id="panel-notifications">
+      <div class="section-card">
+        <div class="card-header"><h3>Email notifications</h3></div>
+        <div class="row"><div class="row-left"><div class="row-label">New project matches</div><div class="row-desc">When AI finds a project that fits your skills</div></div><label class="toggle"><input type="checkbox" checked><span class="slider-t"></span></label></div>
+        <div class="row"><div class="row-left"><div class="row-label">Application updates</div><div class="row-desc">Shortlisted, accepted, or declined</div></div><label class="toggle"><input type="checkbox" checked><span class="slider-t"></span></label></div>
+        <div class="row"><div class="row-left"><div class="row-label">New messages</div><div class="row-desc">From startups you're connected with</div></div><label class="toggle"><input type="checkbox" checked><span class="slider-t"></span></label></div>
+        <div class="row"><div class="row-left"><div class="row-label">Weekly match digest</div><div class="row-desc">Summary of top project matches every Monday</div></div><label class="toggle"><input type="checkbox"><span class="slider-t"></span></label></div>
+        <div class="row"><div class="row-left"><div class="row-label">ProMatch announcements</div><div class="row-desc">Product updates and new features</div></div><label class="toggle"><input type="checkbox"><span class="slider-t"></span></label></div>
+      </div>
+
+      <div class="section-card">
+        <div class="card-header"><h3>Push notifications</h3><p>Sent to your mobile app</p></div>
+        <div class="row"><div class="row-left"><div class="row-label">New messages</div></div><label class="toggle"><input type="checkbox" checked><span class="slider-t"></span></label></div>
+        <div class="row"><div class="row-left"><div class="row-label">Match alerts</div></div><label class="toggle"><input type="checkbox" checked><span class="slider-t"></span></label></div>
+        <div class="row"><div class="row-left"><div class="row-label">Application status changes</div></div><label class="toggle"><input type="checkbox" checked><span class="slider-t"></span></label></div>
+      </div>
+    </div>
+
+    <!-- Billing -->
+    <div class="panel" id="panel-billing">
+      <div class="section-card">
+        <div class="card-header"><h3>Current plan</h3></div>
+        <div class="plan-card">
+          <div>
+            <div class="plan-name" style="display:flex;align-items:center;gap:8px">Free plan <span class="badge-gray">Active</span></div>
+            <div class="plan-desc">10 project matches/day · Basic messaging · No analytics</div>
+          </div>
+          <button class="btn-primary">Upgrade to Pro</button>
+        </div>
+        <div class="row">
+          <div class="row-left"><div class="row-label">Pro plan</div><div class="row-desc">Unlimited matches · Analytics · "Why this match?" · Priority feed</div></div>
+          <div style="display:flex;align-items:center;gap:10px"><span style="font-size:14px;font-weight:500">₹999/mo</span><button class="btn-outline">Upgrade</button></div>
+        </div>
+        <div class="row">
+          <div class="row-left"><div class="row-label">Team plan</div><div class="row-desc">Everything in Pro + team dashboard + bulk invite</div></div>
+          <div style="display:flex;align-items:center;gap:10px"><span style="font-size:14px;font-weight:500">₹3,999/mo</span><button class="btn-outline">Upgrade</button></div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="card-header"><h3>Payment method</h3></div>
+        <div class="row"><div class="row-left"><div class="row-label">No payment method added</div><div class="row-desc">Add one to upgrade your plan</div></div><button class="btn-outline">Add card</button></div>
+      </div>
+    </div>
+
+    <!-- Security -->
+    <div class="panel" id="panel-security">
+      <div class="section-card">
+        <div class="card-header"><h3>Password</h3></div>
+        <div class="field-group">
+          <div class="field-row full"><div><label>Current password</label><input type="text" placeholder="••••••••"></div></div>
+          <div class="field-row">
+            <div><label>New password</label><input type="text" placeholder="••••••••"></div>
+            <div><label>Confirm new password</label><input type="text" placeholder="••••••••"></div>
+          </div>
+        </div>
+        <div class="save-row"><button class="btn-primary">Update password</button></div>
+      </div>
+
+      <div class="section-card">
+        <div class="card-header"><h3>Two-factor authentication</h3><p>Add an extra layer of security to your account</p></div>
+        <div class="row"><div class="row-left"><div class="row-label">Authenticator app</div><div class="row-desc">Use Google Authenticator or Authy</div></div><button class="btn-outline">Set up</button></div>
+        <div class="row"><div class="row-left"><div class="row-label">SMS verification</div><div class="row-desc">Receive a code via text message</div></div><button class="btn-outline">Set up</button></div>
+      </div>
+
+      <div class="section-card">
+        <div class="card-header"><h3>Active sessions</h3></div>
+        <div class="row"><div class="row-left"><div class="row-label">Chrome · Chennai, India</div><div class="row-desc">Current session · Last active just now</div></div><span class="badge-green">Active</span></div>
+        <div class="row"><div class="row-left"><div class="row-label">ProMatch Android app</div><div class="row-desc">Last active 2 hours ago</div></div><button class="btn-outline">Sign out</button></div>
+      </div>
+    </div>
+
+    <!-- Data & Privacy -->
+    <div class="panel" id="panel-data">
+      <div class="section-card">
+        <div class="card-header"><h3>Your data</h3></div>
+        <div class="row"><div class="row-left"><div class="row-label">Download your data</div><div class="row-desc">Get a copy of your profile, applications, and messages</div></div><button class="btn-outline">Request download</button></div>
+        <div class="row"><div class="row-left"><div class="row-label">AI matching data</div><div class="row-desc">Interaction signals used to personalise your feed</div></div><button class="btn-outline">View details</button></div>
+      </div>
+
+      <div class="section-card">
+        <div class="card-header"><h3>Connected accounts</h3></div>
+        <div class="row"><div class="row-left"><div class="row-label">Google</div><div class="row-desc">vyas@gmail.com</div></div><span class="badge-green">Connected</span></div>
+        <div class="row"><div class="row-left"><div class="row-label">LinkedIn</div><div class="row-desc">Not connected</div></div><button class="btn-outline">Connect</button></div>
+        <div class="row"><div class="row-left"><div class="row-label">GitHub</div><div class="row-desc">github.com/vyass</div></div><span class="badge-green">Connected</span></div>
+      </div>
+
+      <div class="section-card">
+        <div class="card-header"><h3 style="color:#A32D2D">Danger zone</h3></div>
+        <div class="danger-zone">
+          <div class="row" style="border:0.5px solid #F7C1C1;border-radius:var(--border-radius-md);padding:12px;margin-bottom:8px">
+            <div class="row-left"><div class="row-label">Deactivate account</div><div class="row-desc">Hide your profile temporarily. You can reactivate anytime.</div></div>
+            <button class="btn-danger">Deactivate</button>
+          </div>
+          <div class="row" style="border:0.5px solid #F7C1C1;border-radius:var(--border-radius-md);padding:12px">
+            <div class="row-left"><div class="row-label">Delete account</div><div class="row-desc">Permanently delete your account and all data. This cannot be undone.</div></div>
+            <button class="btn-danger">Delete account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function show(id, el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  el.classList.add('active');
+}
+</script>

@@ -1,0 +1,20 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": false,
+    "noImplicitAny": false,
+    "baseUrl": ".",
+    "allowJs": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@shared/*": ["../../packages/shared/src/*"],
+      "@tokens/*": ["../../packages/tokens/src/*"]
+    }
+  },
+  "include": [
+    "app",
+    "src",
+    "nativewind-env.d.ts",
+    "expo-env.d.ts"
+  ]
+}

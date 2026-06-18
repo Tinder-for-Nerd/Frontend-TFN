@@ -1,10 +1,15 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useBillingPlanQuery } from '../../packages/shared/src/query/index.js';
+import { useSubscriptionStore } from '../../packages/shared/src/stores/index.js';
 
 const SubscriptionContext = createContext(null);
 
 const PRO_STORAGE_KEY = 'pm_pro_subscription';
 
 export function SubscriptionProvider({ children }) {
+  const { data: billingPlan } = useBillingPlanQuery();
+  const setBillingState = useSubscriptionStore((state) => state.setBillingState);
+  const canUseSharedFeature = useSubscriptionStore((state) => state.canUse);
   const [isPro, setIsPro] = useState(() => {
     try {
       return localStorage.getItem(PRO_STORAGE_KEY) === 'active';
@@ -13,28 +18,40 @@ export function SubscriptionProvider({ children }) {
     }
   });
 
+  useEffect(() => {
+    if (billingPlan) {
+      setBillingState(billingPlan);
+    }
+  }, [billingPlan, setBillingState]);
+
   const activatePro = useCallback(() => {
     localStorage.setItem(PRO_STORAGE_KEY, 'active');
     setIsPro(true);
-  }, []);
+    setBillingState({ plan: 'pro', gatedFeatures: [] });
+  }, [setBillingState]);
 
   const cancelPro = useCallback(() => {
     localStorage.removeItem(PRO_STORAGE_KEY);
     setIsPro(false);
-  }, []);
+    setBillingState({
+      plan: billingPlan?.plan || 'free',
+      gatedFeatures: billingPlan?.gatedFeatures,
+    });
+  }, [billingPlan, setBillingState]);
 
   const value = useMemo(
     () => ({
       isPro,
+      billingPlan,
       activatePro,
       cancelPro,
       canAccess: (feature) => {
         const proOnly = ['analytics', 'portfolio-analyzer', 'unlimited-matches', 'fit-breakdown'];
         if (!proOnly.includes(feature)) return true;
-        return isPro;
+        return isPro || canUseSharedFeature(feature);
       },
     }),
-    [isPro, activatePro, cancelPro],
+    [isPro, billingPlan, activatePro, cancelPro, canUseSharedFeature],
   );
 
   return (

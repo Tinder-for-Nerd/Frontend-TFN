@@ -13,15 +13,24 @@
 
 .pm-tabs {
   display: flex;
-  gap: 32px;
-  border-bottom: 1px solid var(--outline-variant);
-  padding-bottom: 2px;
+  gap: 0;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 0;
+  border: 3px solid #111111;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.16);
 }
 
 .pm-tabs button {
-  background: none;
-  border: none;
-  padding: 8px 0 16px;
+  background: #ffffff !important;
+  border: none !important;
+  border-right: 2px solid #111111 !important;
+  box-shadow: none !important;
+  padding: 12px 20px;
+  border-radius: 0 !important;
   font-family: var(--font-display);
   font-weight: 600;
   color: var(--on-surface-variant);
@@ -33,18 +42,17 @@
   white-space: nowrap;
 }
 
+.pm-tabs button:last-child {
+  border-right: none !important;
+}
+
 .pm-tabs button.is-active {
   color: var(--primary);
+  background: #eaf4ff !important;
 }
 
 .pm-tabs button.is-active::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--primary);
+  display: none;
 }
 
 .pm-tab-count {
@@ -107,7 +115,6 @@
   }
 
   .pm-tabs {
-    gap: 20px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;

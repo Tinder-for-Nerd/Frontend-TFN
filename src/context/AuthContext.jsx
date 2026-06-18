@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { resolveAuthRole } from '../modules/auth/authConfig';
+import { useUserStore } from '../../packages/shared/src/stores/index.js';
 
 const AuthContext = createContext(null);
 
@@ -17,6 +18,8 @@ function normalizeUser(userData) {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const setSharedUser = useUserStore((state) => state.setUser);
+  const clearSharedUser = useUserStore((state) => state.logout);
 
   useEffect(() => {
     const stored = localStorage.getItem('pm_user');
@@ -25,6 +28,7 @@ export function AuthProvider({ children }) {
         const parsed = JSON.parse(stored);
         const normalized = normalizeUser(parsed);
         setUser(normalized);
+        setSharedUser(normalized);
         localStorage.setItem('pm_user', JSON.stringify(normalized));
         if (typeof window !== 'undefined') {
           sessionStorage.setItem('pm_workspace', normalized.role);
@@ -33,8 +37,11 @@ export function AuthProvider({ children }) {
         localStorage.removeItem('pm_user');
       }
     }
+    if (!stored) {
+      clearSharedUser();
+    }
     setLoading(false);
-  }, []);
+  }, [clearSharedUser, setSharedUser]);
 
   const login = (userData) => {
     const u = normalizeUser(userData);
@@ -43,6 +50,7 @@ export function AuthProvider({ children }) {
       sessionStorage.setItem('pm_workspace', u.role);
     }
     setUser(u);
+    setSharedUser(u);
   };
 
   const logout = () => {
@@ -51,6 +59,7 @@ export function AuthProvider({ children }) {
       sessionStorage.removeItem('pm_workspace');
     }
     setUser(null);
+    clearSharedUser();
   };
 
   return (

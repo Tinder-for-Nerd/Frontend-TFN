@@ -41,7 +41,7 @@ export default function SignupPage() {
               P
             </div>
             <h1 className="mt-4 text-2xl font-bold text-[#0F172A]">Create your account</h1>
-            <p className="mt-1 text-sm text-[#64748B]">Join ProMatch today</p>
+            <p className="mt-1 text-sm text-[#64748B]">Join Tinder For Nerds today</p>
           </div>
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">

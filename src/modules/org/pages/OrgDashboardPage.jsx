@@ -16,7 +16,7 @@ const recentEvents = [
 ];
 
 export function OrgDashboardPage() {
-  usePageMeta('Organization Dashboard | ProMatch', 'Cohort overview, hosted events, and team connections.');
+  usePageMeta('Organization Dashboard | Tinder For Nerds', 'Cohort overview, hosted events, and team connections.');
 
   return (
     <AppShell

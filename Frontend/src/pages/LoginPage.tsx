@@ -33,7 +33,7 @@ export default function LoginPage() {
               P
             </div>
             <h1 className="mt-4 text-2xl font-bold text-[#0F172A]">Welcome back</h1>
-            <p className="mt-1 text-sm text-[#64748B]">Sign in to your ProMatch account</p>
+            <p className="mt-1 text-sm text-[#64748B]">Sign in to your Tinder For Nerds account</p>
           </div>
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">

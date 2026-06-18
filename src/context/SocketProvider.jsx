@@ -17,6 +17,10 @@ import {
   isMockSocket,
   SOCKET_EVENTS,
 } from '../lib/socket';
+import {
+  useChatStore,
+  useNotificationStore,
+} from '../../packages/shared/src/stores/index.js';
 
 export const SocketContext = createContext(null);
 
@@ -47,6 +51,10 @@ function formatRelativeTime(iso) {
 
 export function SocketProvider({ children }) {
   const { isAuthenticated } = useAuth();
+  const pushSharedNotification = useNotificationStore((state) => state.pushNotification);
+  const setSharedPresence = useChatStore((state) => state.setPresence);
+  const setSharedTyping = useChatStore((state) => state.setTyping);
+  const setSharedReadReceipt = useChatStore((state) => state.setReadReceipt);
   const [status, setStatus] = useState(() => getSocketMode());
   const [notifications, setNotifications] = useState(() =>
     normalizeSeedNotifications(seedNotifications.slice(0, 5)),
@@ -75,6 +83,7 @@ export function SocketProvider({ children }) {
     const handlePresence = ({ userId, status: nextStatus }) => {
       if (!userId) return;
       setPresence((prev) => ({ ...prev, [userId]: nextStatus }));
+      setSharedPresence(userId, nextStatus);
     };
 
     const handleNotification = ({ type, payload }) => {
@@ -99,6 +108,26 @@ export function SocketProvider({ children }) {
         },
         ...prev,
       ].slice(0, 50));
+      pushSharedNotification({
+        type: type || 'message',
+        title: payload.title || 'Notification',
+        message: payload.message || '',
+        link: payload.link,
+      });
+    };
+
+    const handleTyping = ({ conversationId, userId }) => {
+      if (conversationId && userId) setSharedTyping(conversationId, userId, true);
+    };
+
+    const handleTypingStopped = ({ conversationId, userId }) => {
+      if (conversationId && userId) setSharedTyping(conversationId, userId, false);
+    };
+
+    const handleReadAck = ({ conversationId, userId, messageId }) => {
+      if (conversationId && userId && messageId) {
+        setSharedReadReceipt(conversationId, userId, messageId);
+      }
     };
 
     socket.on('connect', handleConnect);
@@ -106,6 +135,9 @@ export function SocketProvider({ children }) {
     socket.on('connect_error', handleConnectError);
     socket.on(SOCKET_EVENTS.PRESENCE_UPDATE, handlePresence);
     socket.on(SOCKET_EVENTS.NOTIFICATION, handleNotification);
+    socket.on(SOCKET_EVENTS.USER_TYPING, handleTyping);
+    socket.on(SOCKET_EVENTS.TYPING_STOPPED, handleTypingStopped);
+    socket.on(SOCKET_EVENTS.MESSAGE_READ_ACK, handleReadAck);
 
     if (socket.connected) handleConnect();
 
@@ -115,8 +147,17 @@ export function SocketProvider({ children }) {
       socket.off('connect_error', handleConnectError);
       socket.off(SOCKET_EVENTS.PRESENCE_UPDATE, handlePresence);
       socket.off(SOCKET_EVENTS.NOTIFICATION, handleNotification);
+      socket.off(SOCKET_EVENTS.USER_TYPING, handleTyping);
+      socket.off(SOCKET_EVENTS.TYPING_STOPPED, handleTypingStopped);
+      socket.off(SOCKET_EVENTS.MESSAGE_READ_ACK, handleReadAck);
     };
-  }, [isAuthenticated]);
+  }, [
+    isAuthenticated,
+    pushSharedNotification,
+    setSharedPresence,
+    setSharedReadReceipt,
+    setSharedTyping,
+  ]);
 
   const markAsRead = useCallback((id) => {
     setNotifications((prev) =>

@@ -149,7 +149,7 @@ export default function FeedPage() {
 
           <div className="px-4 text-xs text-gray-400 leading-relaxed">
             <p>About &bull; Help &bull; Press &bull; API &bull; Jobs &bull; Privacy &bull; Terms</p>
-            <p className="mt-2">&copy; 2026 ProMatch from SkillSynth</p>
+            <p className="mt-2">&copy; 2026 Tinder For Nerds from SkillSynth</p>
           </div>
         </div>
       </div>

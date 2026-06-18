@@ -113,7 +113,7 @@ export function SiteNav() {
     <header className={`site-header site-header--${variant}`}>
       <div className="site-header__inner">
         <Link className="site-header__brand" to={logoTo} onClick={closeMobile}>
-          ProMatch
+          Tinder For Nerds
         </Link>
 
         <nav

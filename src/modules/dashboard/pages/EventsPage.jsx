@@ -6,13 +6,42 @@ import { Button, Badge, Chip, Icon } from '../../../components/ui';
 import { SectionHeader, EventCalendarMenu } from '../../../components/common';
 import { events } from '../../../data/mockData';
 
+const EVENT_THUMBNAILS = {
+  Product: {
+    emoji: '🚀',
+    accent: '#0084ff',
+    background:
+      'radial-gradient(circle at 18% 22%, rgba(255,255,255,0.92) 0 9%, transparent 10%), radial-gradient(circle at 78% 30%, rgba(255,255,255,0.55) 0 12%, transparent 13%), linear-gradient(135deg, #0084ff 0%, #6c5ce7 55%, #ffb703 100%)',
+  },
+  Engineering: {
+    emoji: '⚙️',
+    accent: '#10b981',
+    background:
+      'radial-gradient(circle at 18% 24%, rgba(255,255,255,0.9) 0 8%, transparent 9%), repeating-linear-gradient(45deg, rgba(255,255,255,0.16) 0 10px, transparent 10px 20px), linear-gradient(135deg, #111827 0%, #0ea5e9 48%, #22c55e 100%)',
+  },
+  Design: {
+    emoji: '🎨',
+    accent: '#ec4899',
+    background:
+      'radial-gradient(circle at 20% 24%, rgba(255,255,255,0.85) 0 13%, transparent 14%), radial-gradient(circle at 78% 70%, rgba(255,255,255,0.55) 0 15%, transparent 16%), linear-gradient(135deg, #ec4899 0%, #f97316 48%, #fde047 100%)',
+  },
+};
+
 function EventCard({ event, variant }) {
+  const thumbnail = EVENT_THUMBNAILS[event.domain] ?? EVENT_THUMBNAILS.Product;
+
   return (
     <article className="pm-card pm-event-card">
-      <div className="pm-event-card__image" style={{ background: `var(--surface-container-high)` }}>
+      <div className="pm-event-card__image" style={{ background: thumbnail.background }}>
         <Badge tone={event.format === 'Virtual' ? 'teal' : 'violet'} className="pm-event-format-badge">
           {event.format}
         </Badge>
+        <div className="pm-event-thumb">
+          <span className="pm-event-thumb__emoji" aria-hidden="true">{thumbnail.emoji}</span>
+          <span className="pm-event-thumb__domain">{event.domain}</span>
+          <strong>{event.title}</strong>
+        </div>
+        <div className="pm-event-thumb__ring" style={{ borderColor: thumbnail.accent }} aria-hidden="true" />
       </div>
       <div className="pm-event-card__content">
         <div className="pm-event-card__meta">
@@ -77,6 +106,14 @@ export function EventsPage({ variant = 'student' }) {
         {/* Featured Section */}
         {activeEvent && (
           <section className="pm-featured-event-hero">
+            <div
+              className="pm-featured-event-art"
+              style={{ background: (EVENT_THUMBNAILS[activeEvent.domain] ?? EVENT_THUMBNAILS.Product).background }}
+              aria-hidden="true"
+            >
+              <span>{(EVENT_THUMBNAILS[activeEvent.domain] ?? EVENT_THUMBNAILS.Product).emoji}</span>
+              <strong>{activeEvent.domain}</strong>
+            </div>
             <div className="pm-featured-content">
               <Badge tone="rose" variant="soft">Upcoming Highlight</Badge>
               <h1>{activeEvent.title}</h1>
@@ -108,7 +145,7 @@ export function EventsPage({ variant = 'student' }) {
         )}
 
         {/* Filters */}
-        <nav className="pm-tabs">
+        <nav className="pm-event-tabs">
           {['All', 'Virtual', 'In-person', 'Product', 'Engineering', 'Design'].map((item) => (
             <button 
               key={item} 
@@ -253,12 +290,62 @@ export function EventsPage({ variant = 'student' }) {
           gap: 40px;
         }
         .pm-featured-event-hero {
+          display: grid;
+          grid-template-columns: minmax(220px, 0.42fr) minmax(0, 1fr);
+          gap: 28px;
+          align-items: stretch;
           background: var(--surface-container-high);
           border-radius: var(--radius-xl);
-          padding: 48px;
+          padding: 22px;
           border: 1px solid var(--outline-variant);
           position: relative;
           overflow: hidden;
+        }
+        .pm-featured-event-art {
+          min-height: 260px;
+          border-radius: 18px;
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          gap: 8px;
+          padding: 26px;
+          color: #ffffff;
+          text-shadow: 0 2px 12px rgba(0,0,0,0.28);
+        }
+        .pm-featured-event-art::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.42)),
+            radial-gradient(circle at 82% 18%, rgba(255,255,255,0.72), transparent 28%);
+        }
+        .pm-featured-event-art span,
+        .pm-featured-event-art strong {
+          position: relative;
+          z-index: 1;
+        }
+        .pm-featured-event-art span {
+          width: 64px;
+          height: 64px;
+          display: grid;
+          place-items: center;
+          border-radius: 16px;
+          background: #ffffff;
+          border: 3px solid #111111;
+          box-shadow: 6px 6px 0 rgba(0,0,0,0.18);
+          text-shadow: none;
+          font-size: 34px;
+        }
+        .pm-featured-event-art strong {
+          font-family: var(--font-display);
+          font-size: clamp(1.55rem, 3vw, 2.25rem);
+          letter-spacing: -0.03em;
+        }
+        .pm-featured-content {
+          padding: 26px;
         }
         .pm-featured-content h1 {
           font-family: var(--font-display);
@@ -289,16 +376,24 @@ export function EventsPage({ variant = 'student' }) {
           display: flex;
           gap: 16px;
         }
-        .pm-tabs {
+        .pm-event-tabs {
           display: flex;
-          gap: 32px;
-          border-bottom: 1px solid var(--outline-variant);
-          padding-bottom: 2px;
+          gap: 0;
+          width: fit-content;
+          max-width: 100%;
+          overflow-x: auto;
+          border: 3px solid #111111;
+          border-radius: 12px;
+          background: #ffffff;
+          box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.16);
         }
-        .pm-tabs button {
-          background: none;
-          border: none;
-          padding: 8px 0 16px;
+        .pm-event-tabs button {
+          background: #ffffff !important;
+          border: none !important;
+          border-right: 2px solid #111111 !important;
+          box-shadow: none !important;
+          padding: 12px 16px;
+          border-radius: 0 !important;
           font-family: var(--font-display);
           font-weight: 600;
           color: var(--on-surface-variant);
@@ -308,17 +403,15 @@ export function EventsPage({ variant = 'student' }) {
           align-items: center;
           gap: 8px;
         }
-        .pm-tabs button.is-active {
-          color: var(--primary);
+        .pm-event-tabs button:last-child {
+          border-right: none !important;
         }
-        .pm-tabs button.is-active::after {
-          content: '';
-          position: absolute;
-          bottom: -1px;
-          left: 0;
-          right: 0;
-          height: 2px;
-          background: var(--primary);
+        .pm-event-tabs button.is-active {
+          color: var(--primary);
+          background: #eaf4ff !important;
+        }
+        .pm-event-tabs button.is-active::after {
+          display: none;
         }
         .pm-event-grid {
           display: grid;
@@ -342,11 +435,70 @@ export function EventsPage({ variant = 'student' }) {
         .pm-event-card__image {
           height: 140px;
           position: relative;
+          overflow: hidden;
+          display: flex;
+          align-items: flex-end;
+          padding: 18px;
+        }
+        .pm-event-card__image::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.36)),
+            radial-gradient(circle at 88% 12%, rgba(255,255,255,0.7), transparent 24%);
         }
         .pm-event-format-badge {
           position: absolute;
           top: 12px;
           left: 12px;
+          z-index: 2;
+          background: #ffffff !important;
+          border: 2px solid #111111 !important;
+          box-shadow: 3px 3px 0 rgba(0,0,0,0.14);
+        }
+        .pm-event-thumb {
+          position: relative;
+          z-index: 1;
+          display: grid;
+          gap: 2px;
+          color: #ffffff;
+          text-shadow: 0 2px 10px rgba(0,0,0,0.28);
+        }
+        .pm-event-thumb__emoji {
+          width: 42px;
+          height: 42px;
+          display: grid;
+          place-items: center;
+          border-radius: 12px;
+          background: rgba(255,255,255,0.92);
+          border: 2px solid #111111;
+          box-shadow: 4px 4px 0 rgba(0,0,0,0.16);
+          text-shadow: none;
+          font-size: 22px;
+          margin-bottom: 6px;
+        }
+        .pm-event-thumb__domain {
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+        .pm-event-thumb strong {
+          font-family: var(--font-display);
+          font-size: 1.2rem;
+          line-height: 1.15;
+          max-width: 16ch;
+        }
+        .pm-event-thumb__ring {
+          position: absolute;
+          right: -32px;
+          bottom: -38px;
+          width: 128px;
+          height: 128px;
+          border: 18px solid;
+          border-radius: 50%;
+          opacity: 0.5;
         }
         .pm-event-card__content {
           padding: 24px;
@@ -432,8 +584,19 @@ export function EventsPage({ variant = 'student' }) {
           }
 
           .pm-featured-event-hero {
-            padding: 24px 18px;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            padding: 18px;
             border-radius: 24px;
+          }
+
+          .pm-featured-event-art {
+            min-height: 180px;
+            padding: 20px;
+          }
+
+          .pm-featured-content {
+            padding: 0;
           }
 
           .pm-featured-content h1 {
@@ -470,18 +633,18 @@ export function EventsPage({ variant = 'student' }) {
             font-size: 14px;
           }
 
-          .pm-tabs {
+          .pm-event-tabs {
             gap: 12px;
             padding-bottom: 0;
             overflow-x: auto;
             scrollbar-width: none;
           }
 
-          .pm-tabs::-webkit-scrollbar {
+          .pm-event-tabs::-webkit-scrollbar {
             display: none;
           }
 
-          .pm-tabs button {
+          .pm-event-tabs button {
             flex: 0 0 auto;
             padding: 8px 0 12px;
             font-size: 0.9rem;

@@ -406,6 +406,47 @@ body.pm-light-theme::before {
   }
 }
 
+/* ── Solid tab surfaces — no transparent tab controls ── */
+.pm-tabs,
+.pm-tab-row,
+.pm-auth-tabs,
+.pm-gh-tabs,
+.wa-tabs,
+.pm-settings-tabs {
+  background: #ffffff !important;
+}
+
+.pm-tabs button,
+.pm-tab,
+.pm-auth-tab,
+.pm-gh-tabs button,
+.wa-tab,
+.pm-settings-tab {
+  background: #ffffff !important;
+  border-color: rgba(17, 26, 62, 0.12) !important;
+}
+
+.pm-tabs button:hover,
+.pm-tab:hover,
+.pm-auth-tab:hover,
+.pm-gh-tabs button:hover,
+.wa-tab:hover,
+.pm-settings-tab:hover {
+  background: #f3f7ff !important;
+  border-color: rgba(0, 132, 255, 0.22) !important;
+}
+
+.pm-tabs button.is-active,
+.pm-tab.is-active,
+.pm-auth-tab.is-active,
+.pm-gh-tabs button.is-active,
+.wa-tab.is-active,
+.pm-settings-tab.is-active {
+  background: #eaf4ff !important;
+  border-color: rgba(0, 132, 255, 0.35) !important;
+  color: #006fd6 !important;
+}
+
 /* ── Solid surfaces — disable glassmorphism site-wide ── */
 *,
 *::before,
@@ -446,4 +487,427 @@ body.pm-light-theme .pm-about-card,
 body.pm-light-theme .event-calendar-menu,
 body.pm-light-theme .profile-stats__item {
   background: var(--bg-surface, #ffffff) !important;
+}
+
+/* Feed post cards keep the bold black outline over generic light-card styles. */
+body.pm-light-theme .pm-feed-shell .pm-li-post.pm-card,
+body.pm-light-theme .pm-feed-shell .pm-li-post.pm-card:hover {
+  background: var(--pm-feed-ivory, #fffaf0) !important;
+  border: 3px solid #000000 !important;
+  border-radius: 8px !important;
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.18) !important;
+}
+
+body.pm-light-theme .pm-feed-shell .pm-li-rail-card.pm-card,
+body.pm-light-theme .pm-feed-shell .pm-li-rail-card.pm-card:hover {
+  background: var(--pm-feed-ivory, #fffaf0) !important;
+  border: 3px solid #000000 !important;
+  border-radius: 8px !important;
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.18) !important;
+}
+
+body.pm-light-theme .pm-feed-shell .pm-li-follow-btn,
+body.pm-light-theme .pm-feed-shell .pm-li-follow .pm-button {
+  border: 3px solid #000000 !important;
+  border-radius: 6px !important;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.16) !important;
+  background: #ffffff !important;
+}
+
+/* ── Site-wide bold black outline design, excluding the landing page ── */
+.site-root:not(.site-root--landing) {
+  --pm-bold-border: #000000;
+  --pm-bold-shadow: 8px 8px 0 rgba(0, 0, 0, 0.18);
+  --pm-bold-control-shadow: 4px 4px 0 rgba(0, 0, 0, 0.16);
+  --pm-bold-radius: 8px;
+  --pm-bold-control-radius: 6px;
+}
+
+.site-root:not(.site-root--landing) .pm-card,
+.site-root:not(.site-root--landing) .pm-panel,
+.site-root:not(.site-root--landing) .pm-ui-card,
+.site-root:not(.site-root--landing) .pm-login-card,
+.site-root:not(.site-root--landing) .pm-auth-form,
+.site-root:not(.site-root--landing) .pm-role-card,
+.site-root:not(.site-root--landing) .pm-settings-nav,
+.site-root:not(.site-root--landing) .pm-settings-content,
+.site-root:not(.site-root--landing) .pm-billing-card,
+.site-root:not(.site-root--landing) .pm-contact-form,
+.site-root:not(.site-root--landing) .pm-about-card,
+.site-root:not(.site-root--landing) .profile-stats__item,
+.site-root:not(.site-root--landing) .discover-filters,
+.site-root:not(.site-root--landing) .discover__empty,
+.site-root:not(.site-root--landing) .discover__fit-panel,
+.site-root:not(.site-root--landing) .pro-search-loading__card,
+.site-root:not(.site-root--landing) .pro-search-modal__panel,
+.site-root:not(.site-root--landing) .event-calendar-menu,
+.site-root:not(.site-root--landing) .hiring-kanban__col,
+.site-root:not(.site-root--landing) .platform-charts__card,
+.site-root:not(.site-root--landing) .taskly-auth-visual__card,
+.site-root:not(.site-root--landing) .taskly-auth-visual__media,
+.site-root:not(.site-root--landing) .taskly-auth-stat {
+  border: 3px solid var(--pm-bold-border) !important;
+  border-radius: var(--pm-bold-radius) !important;
+  box-shadow: var(--pm-bold-shadow) !important;
+}
+
+.site-root:not(.site-root--landing) .site-header:not(.site-header--public) {
+  border: none !important;
+  box-shadow: var(--pm-bold-shadow) !important;
+}
+
+.site-root:not(.site-root--landing) .pm-button,
+.site-root:not(.site-root--landing) .pm-icon-button,
+.site-root:not(.site-root--landing) .pm-input,
+.site-root:not(.site-root--landing) .pm-settings-input,
+.site-root:not(.site-root--landing) input,
+.site-root:not(.site-root--landing) select,
+.site-root:not(.site-root--landing) textarea,
+.site-root:not(.site-root--landing) .pm-tabs button,
+.site-root:not(.site-root--landing) .pm-tab,
+.site-root:not(.site-root--landing) .pm-auth-tab,
+.site-root:not(.site-root--landing) .pm-gh-tabs button,
+.site-root:not(.site-root--landing) .wa-tab,
+.site-root:not(.site-root--landing) .pm-settings-tab,
+.site-root:not(.site-root--landing) .discover-filters__field input,
+.site-root:not(.site-root--landing) .pro-search-modal__field input,
+.site-root:not(.site-root--landing) .pro-search-modal__field select,
+.site-root:not(.site-root--landing) .pro-search-modal__field textarea {
+  border: 3px solid var(--pm-bold-border) !important;
+  border-radius: var(--pm-bold-control-radius) !important;
+  box-shadow: var(--pm-bold-control-shadow) !important;
+}
+
+.site-root:not(.site-root--landing) .pm-button:hover,
+.site-root:not(.site-root--landing) .pm-icon-button:hover,
+.site-root:not(.site-root--landing) .pm-tabs button:hover,
+.site-root:not(.site-root--landing) .pm-tab:hover,
+.site-root:not(.site-root--landing) .pm-auth-tab:hover,
+.site-root:not(.site-root--landing) .pm-gh-tabs button:hover,
+.site-root:not(.site-root--landing) .wa-tab:hover,
+.site-root:not(.site-root--landing) .pm-settings-tab:hover {
+  border-color: var(--pm-bold-border) !important;
+  transform: translate(-1px, -1px);
+}
+
+.site-root:not(.site-root--landing) .pm-card:hover,
+.site-root:not(.site-root--landing) .pm-panel:hover,
+.site-root:not(.site-root--landing) .pm-ui-card:hover {
+  border-color: var(--pm-bold-border) !important;
+  box-shadow: var(--pm-bold-shadow) !important;
+}
+
+/* Messages/chat keeps a cleaner app layout without the heavy black outline theme. */
+.site-root:not(.site-root--landing) .pm-messages-shell .pm-card,
+.site-root:not(.site-root--landing) .pm-messages-shell .pm-panel,
+.site-root:not(.site-root--landing) .pm-messages-shell .pm-button,
+.site-root:not(.site-root--landing) .pm-messages-shell .pm-icon-button,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-sidebar,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-chat,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-chat__head,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-thread,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-composer,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-composer input,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-composer textarea,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-tab {
+  border-color: rgba(17, 26, 62, 0.1) !important;
+  border-width: 1px !important;
+  box-shadow: none !important;
+}
+
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-chat__head {
+  min-height: var(--site-header-h, 64px) !important;
+  background: #ffffff !important;
+  border-top: none !important;
+  border-right: none !important;
+  border-bottom: 3px solid #111111 !important;
+  border-left: none !important;
+  border-radius: 0 !important;
+  box-shadow: var(--pm-bold-shadow) !important;
+}
+
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-sidebar,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-chat,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-composer {
+  border-radius: 0 !important;
+}
+
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-tab,
+.site-root:not(.site-root--landing) .pm-messages-shell .pm-button,
+.site-root:not(.site-root--landing) .pm-messages-shell .pm-icon-button {
+  border-radius: 12px !important;
+}
+
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-tab.is-active {
+  background: rgba(0, 132, 255, 0.1) !important;
+  color: #0084ff !important;
+}
+
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-thread,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-thread:hover,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-thread.is-active {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-thread::after {
+  height: 2px;
+  background: #111111;
+  opacity: 0.12;
+}
+
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-tabs {
+  border: 3px solid #111111 !important;
+  border-radius: 12px !important;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.16) !important;
+  background: #ffffff !important;
+  overflow: hidden;
+}
+
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-tab,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-tab:hover,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-tab.is-active {
+  border-top: none !important;
+  border-bottom: none !important;
+  border-left: none !important;
+  border-right: 2px solid #111111 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-tab:last-child {
+  border-right: none !important;
+}
+
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-search {
+  border: 3px solid #111111 !important;
+  border-radius: 12px !important;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.16) !important;
+  background: #ffffff !important;
+}
+
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-search__input,
+.site-root:not(.site-root--landing) .pm-messages-shell .wa-search__input:focus {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+@media (min-width: 901px) {
+  .site-root:not(.site-root--landing) .pm-messages-shell .wa-sidebar {
+    border-top: none !important;
+    border-right: 2px solid #111111 !important;
+    border-bottom: none !important;
+    border-left: none !important;
+  }
+
+  .site-root:not(.site-root--landing) .pm-messages-shell .wa-chat {
+    border: none !important;
+  }
+}
+
+/* Connections tabs use the same segmented boundary as event filters. */
+.site-root:not(.site-root--landing) .pm-connections-container .pm-tabs {
+  border: 3px solid #111111 !important;
+  border-radius: 12px !important;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.16) !important;
+  background: #ffffff !important;
+}
+
+.site-root:not(.site-root--landing) .pm-connections-container .pm-tabs button,
+.site-root:not(.site-root--landing) .pm-connections-container .pm-tabs button:hover,
+.site-root:not(.site-root--landing) .pm-connections-container .pm-tabs button.is-active {
+  border-top: none !important;
+  border-bottom: none !important;
+  border-left: none !important;
+  border-right: 2px solid #111111 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  transform: none !important;
+}
+
+.site-root:not(.site-root--landing) .pm-connections-container .pm-tabs button:last-child {
+  border-right: none !important;
+}
+
+/* Event filters use one segmented boundary with dividers, not separate boxes. */
+.site-root:not(.site-root--landing) .pm-events-container .pm-event-tabs {
+  border: 3px solid #111111 !important;
+  border-radius: 12px !important;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.16) !important;
+  background: #ffffff !important;
+}
+
+.site-root:not(.site-root--landing) .pm-events-container .pm-event-tabs button,
+.site-root:not(.site-root--landing) .pm-events-container .pm-event-tabs button:hover,
+.site-root:not(.site-root--landing) .pm-events-container .pm-event-tabs button.is-active {
+  border-top: none !important;
+  border-bottom: none !important;
+  border-left: none !important;
+  border-right: 2px solid #111111 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  transform: none !important;
+}
+
+.site-root:not(.site-root--landing) .pm-events-container .pm-event-tabs button:last-child {
+  border-right: none !important;
+}
+
+/* Auth forms use icon/input rows, so the row gets the outline, not the nested input. */
+.site-root:not(.site-root--landing) .pm-auth-form__input-form {
+  border: 3px solid #000000 !important;
+  border-radius: 8px !important;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.16) !important;
+  background: #ffffff !important;
+  overflow: hidden;
+}
+
+.site-root:not(.site-root--landing) .pm-auth-form__input,
+.site-root:not(.site-root--landing) .pm-auth-form__input:focus {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  min-width: 0;
+}
+
+.site-root:not(.site-root--landing) .pm-auth-form__eye,
+.site-root:not(.site-root--landing) .pm-auth-form__link,
+.site-root:not(.site-root--landing) .pm-auth-form__remember input[type="checkbox"] {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.site-root:not(.site-root--landing) .pm-auth-form__remember input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+}
+
+.site-root:not(.site-root--landing) .pm-auth-form {
+  width: min(100%, 450px) !important;
+  padding: 30px !important;
+  overflow: visible !important;
+}
+
+.site-root:not(.site-root--landing) .pm-auth-form__submit,
+.site-root:not(.site-root--landing) .pm-auth-form__oauth-btn {
+  border: 3px solid #000000 !important;
+  border-radius: 8px !important;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.16) !important;
+}
+
+.site-root:not(.site-root--landing) .pm-auth-form__submit {
+  background: #151717 !important;
+}
+
+.site-root:not(.site-root--landing) .pm-auth-form__oauth-btn {
+  background: #ffffff !important;
+}
+
+.site-root:not(.site-root--landing) .pm-login-card--uiverse {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.site-root:not(.site-root--landing) .pm-student-feed__search input,
+.site-root:not(.site-root--landing) .pm-student-feed__search input:focus {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.site-root:not(.site-root--landing) .pm-connections-toolbar .pm-search-input {
+  border: 3px solid #000000 !important;
+  border-radius: 8px !important;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.16) !important;
+  background: #ffffff !important;
+}
+
+.site-root:not(.site-root--landing) .pm-connections-toolbar .pm-search-input input,
+.site-root:not(.site-root--landing) .pm-connections-toolbar .pm-search-input input:focus {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.site-root:not(.site-root--landing) .pm-settings-shell .pm-settings-tab-panel {
+  border: 3px solid #000000 !important;
+  border-radius: 12px !important;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.16) !important;
+  background: #ffffff !important;
+  overflow: hidden;
+  padding: 0;
+}
+
+.site-root:not(.site-root--landing) .pm-settings-shell .pm-settings-header {
+  border: 3px solid #000000 !important;
+  border-radius: 12px !important;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.16) !important;
+  background: #ffffff !important;
+}
+
+.site-root:not(.site-root--landing) .pm-settings-shell .pm-settings-section {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: #ffffff !important;
+}
+
+.site-root:not(.site-root--landing) .pm-settings-shell .pm-setting-item {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: #ffffff !important;
+  margin: 0 calc(var(--space-6) * -1);
+  padding: var(--space-4) var(--space-6) !important;
+}
+
+.site-root:not(.site-root--landing) .pm-settings-shell .pm-setting-item + .pm-setting-item {
+  border-top: 2px solid #111111 !important;
+}
+
+.site-root:not(.site-root--landing) .pm-settings-shell .pm-setting-item .pm-setting-label {
+  align-self: stretch;
+  flex: 0 0 150px;
+  display: flex;
+  align-items: center;
+  border-right: 2px solid #111111;
+  padding-right: var(--space-4);
+}
+
+.site-root:not(.site-root--landing) .pm-settings-shell .pm-setting-item .pm-settings-input,
+.site-root:not(.site-root--landing) .pm-settings-shell .pm-setting-item .pm-settings-input:focus {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding-left: var(--space-4) !important;
+}
+
+@media (max-width: 640px) {
+  .site-root:not(.site-root--landing) .pm-settings-shell .pm-setting-item {
+    margin: 0 calc(var(--space-4) * -1);
+    padding: var(--space-4) !important;
+  }
+
+  .site-root:not(.site-root--landing) .pm-settings-shell .pm-setting-item .pm-setting-label {
+    flex: none;
+    width: 100%;
+    border-right: none;
+    border-bottom: 2px solid #111111;
+    padding-right: 0;
+    padding-bottom: var(--space-3);
+  }
+
+  .site-root:not(.site-root--landing) .pm-settings-shell .pm-setting-item .pm-settings-input {
+    padding-left: 0 !important;
+  }
 }

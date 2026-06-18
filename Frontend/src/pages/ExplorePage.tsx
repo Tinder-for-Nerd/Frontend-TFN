@@ -18,7 +18,7 @@ export default function ExplorePage() {
           className="flex w-full items-center gap-3 rounded-xl bg-gray-100 px-4 py-2.5 text-sm text-gray-500 hover:bg-gray-200 transition-colors"
         >
           <Search size={18} />
-          Search ProMatch
+          Search Tinder For Nerds
         </button>
       </div>
 

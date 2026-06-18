@@ -1,6 +1,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
+import { QueryProvider } from './providers/QueryProvider';
+import { ToastProvider } from './components/ui';
 
 // Global design system — provides all CSS custom properties, component styles, and layout
 import './styles/tinderfornerds-dark.css';
@@ -28,6 +30,7 @@ import './styles/event-detail.css';
 import './styles/event-calendar-menu.css';
 import './styles/billing.css';
 import './styles/connections.css';
+import './styles/ui-library.css';
 /* Layout overrides — must load last to win over page-specific CSS */
 import './styles/site-layout.css';
 import './styles/mobile.css';
@@ -35,6 +38,10 @@ document.body.classList.add('pm-light-theme');
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <QueryProvider>
+      <ToastProvider>
+        <App />
+      </ToastProvider>
+    </QueryProvider>
   </StrictMode>
 );

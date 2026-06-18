@@ -98,17 +98,18 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: var(--surface-container-low);
-  border-radius: 10px;
+  background: #ffffff;
+  border-radius: 12px;
   padding: 8px 14px;
-  border: 1.5px solid transparent;
+  border: 3px solid #111111;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.16);
   transition: all 0.2s ease;
 }
 
 .wa-search:focus-within {
-  background: var(--bg-surface);
-  border-color: var(--brand-teal);
-  box-shadow: 0 0 0 3px var(--brand-teal-subtle);
+  background: #ffffff;
+  border-color: #111111;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.16);
 }
 
 .wa-search__icon {
@@ -134,21 +135,33 @@
 
 .wa-tabs {
   display: flex;
-  gap: 4px;
+  gap: 0;
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
   padding-bottom: 0;
+  border: 3px solid #111111;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.16);
 }
 
 .wa-tab {
-  background: none;
+  background: #ffffff;
   border: none;
+  border-right: 2px solid #111111;
   padding: 8px 16px;
   cursor: pointer;
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-tertiary);
-  border-radius: 20px;
+  border-radius: 0;
   transition: all 0.2s ease;
   letter-spacing: 0.01em;
+}
+
+.wa-tab:last-child {
+  border-right: none;
 }
 
 .wa-tab:hover {
@@ -358,14 +371,15 @@
 /* ─── Chat Header ─────────────────────────────────────────────────────────── */
 
 .wa-chat__head {
-  padding: 8px 16px;
-  background: var(--bg-surface);
+  padding: 0 24px;
+  background: #ffffff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 3px solid #111111;
+  box-shadow: 0 8px 22px rgba(17, 26, 62, 0.08);
   z-index: 10;
-  min-height: 56px;
+  min-height: var(--site-header-h, 64px);
 }
 
 .wa-chat__back {
@@ -380,8 +394,8 @@
   border: none;
   cursor: pointer;
   text-align: left;
-  padding: 4px 8px;
-  border-radius: 10px;
+  padding: 6px 10px;
+  border-radius: 12px;
   transition: background 0.15s ease;
 }
 
@@ -420,7 +434,23 @@
 
 .wa-chat__head-actions {
   display: flex;
-  gap: 2px;
+  align-items: center;
+  gap: 8px;
+}
+
+.wa-chat__head-actions .wa-icon-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(17, 26, 62, 0.12);
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--text-secondary);
+}
+
+.wa-chat__head-actions .wa-icon-btn:hover {
+  background: rgba(0, 132, 255, 0.08);
+  color: #0084ff;
+  border-color: rgba(0, 132, 255, 0.28);
 }
 
 /* ─── Messages Area ───────────────────────────────────────────────────────── */

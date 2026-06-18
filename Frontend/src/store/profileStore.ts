@@ -49,7 +49,7 @@ I'm always eager to learn new technologies and contribute to open source.
 
 ---
 
-*This README was generated with ProMatch - customize your profile the way you want!*
+*This README was generated with Tinder For Nerds - customize your profile the way you want!*
 `;
 
 const defaultGitHubReadme: GitHubReadmeData = {

@@ -34,7 +34,7 @@ export function DiscoverPage({ variant = 'student' }) {
   const hasProfiles = remainingCount > 0;
 
   usePageMeta(
-    variant === 'pro' ? 'ProMatch | Pro Discover' : 'ProMatch | Discover Matches',
+    variant === 'pro' ? 'Tinder For Nerds | Pro Discover' : 'Tinder For Nerds | Discover Matches',
     'Swipe through skill-first matches with filters and spring animations.',
   );
 

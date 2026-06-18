@@ -5,7 +5,7 @@ export function generateAvatar(name: string): string {
 }
 
 const users: FeedUser[] = [
-  { id: 'fu1', name: 'Alex Johnson', username: 'alexjohnson', avatar: generateAvatar('Alex Johnson'), isVerified: true, isPrivate: false, bio: 'Building the future of professional networking. Founder @ ProMatch', followersCount: 12453, followingCount: 843, postsCount: 142, isFollowing: true },
+  { id: 'fu1', name: 'Alex Johnson', username: 'alexjohnson', avatar: generateAvatar('Alex Johnson'), isVerified: true, isPrivate: false, bio: 'Building the future of professional networking. Founder @ Tinder For Nerds', followersCount: 12453, followingCount: 843, postsCount: 142, isFollowing: true },
   { id: 'fu2', name: 'Sarah Chen', username: 'sarahcodes', avatar: generateAvatar('Sarah Chen'), isVerified: true, isPrivate: false, bio: 'Senior Product Designer @ DesignLabs. Figma addict. Design systems enthusiast.', followersCount: 8932, followingCount: 567, postsCount: 89, isFollowing: false },
   { id: 'fu3', name: 'Mike Torres', username: 'miketo', avatar: generateAvatar('Mike Torres'), isVerified: false, isPrivate: false, bio: 'CS @ MIT | Building AI tools | Open source contributor', followersCount: 2341, followingCount: 1089, postsCount: 45, isFollowing: true },
   { id: 'fu4', name: 'Emma Wilson', username: 'emmawilson', avatar: generateAvatar('Emma Wilson'), isVerified: true, isPrivate: false, bio: 'Engineering Manager @ TechCorp | Ex-Amazon, Ex-Microsoft | Speaker', followersCount: 18763, followingCount: 912, postsCount: 234, isFollowing: false },

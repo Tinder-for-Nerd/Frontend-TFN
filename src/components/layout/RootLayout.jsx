@@ -7,6 +7,7 @@ export function RootLayout() {
   const { pathname } = useLocation();
   const isOnboarding = pathname.startsWith('/onboarding');
   const isCall = pathname.startsWith('/call');
+  const isLanding = pathname === '/';
   const isAuth = pathname === '/login'
     || pathname.startsWith('/login/')
     || pathname.startsWith('/signup/');
@@ -21,6 +22,7 @@ export function RootLayout() {
     'site-root',
     isOnboarding && 'site-root--onboarding',
     isCall && 'site-root--call',
+    isLanding && 'site-root--landing',
     isAuth && 'site-root--auth',
     isPublicMarketing && 'site-root--public-marketing',
   ]

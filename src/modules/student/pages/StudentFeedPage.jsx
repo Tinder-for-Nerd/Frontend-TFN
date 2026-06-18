@@ -8,6 +8,7 @@ export function StudentFeedPage() {
   const composerRef = useRef(null);
   const [query, setQuery] = useState('');
   const [newPostContent, setNewPostContent] = useState('');
+  const [composerOpen, setComposerOpen] = useState(false);
   const [activeCommentId, setActiveCommentId] = useState(null);
   const [posts, setPosts] = useState(() => [
     {
@@ -72,6 +73,19 @@ export function StudentFeedPage() {
 
     setPosts((existing) => [newPost, ...existing]);
     setNewPostContent('');
+    setComposerOpen(false);
+  };
+
+  const handleOpenComposer = () => {
+    setComposerOpen((open) => {
+      const nextOpen = !open;
+      if (nextOpen) {
+        window.requestAnimationFrame(() => {
+          composerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+      return nextOpen;
+    });
   };
 
   const trendingTopics = useMemo(
@@ -112,9 +126,7 @@ export function StudentFeedPage() {
           <Button
             variant="primary"
             icon="plus"
-            onClick={() =>
-              composerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-            }
+            onClick={handleOpenComposer}
           >
             New post
           </Button>
@@ -123,53 +135,56 @@ export function StudentFeedPage() {
     >
       <div className="pm-li-feed">
         <div className="pm-li-feed__main">
-          <section
-            ref={composerRef}
-            className="pm-li-composer pm-card"
-            aria-label="Create post"
-          >
-            <div className="pm-li-composer__row">
-              <Avatar
-                name={profiles.me.name}
-                src={profiles.me.src}
-                initials={profiles.me.avatar}
-                tone={profiles.me.tone}
-                size="md"
-              />
-              <textarea
-                className="pm-li-composer__input"
-                value={newPostContent}
-                onChange={(event) => setNewPostContent(event.target.value)}
-                placeholder="Start a post"
-                rows={3}
-              />
-            </div>
-
-            <div className="pm-li-composer__bar">
-              <div className="pm-li-composer__tools" aria-label="Add to your post">
-                <button className="pm-li-tool" type="button">
-                  <Icon name="spark" size={18} />
-                  <span>Media</span>
-                </button>
-                <button className="pm-li-tool" type="button">
-                  <Icon name="events" size={18} />
-                  <span>Event</span>
-                </button>
-                <button className="pm-li-tool" type="button">
-                  <Icon name="connections" size={18} />
-                  <span>Link</span>
-                </button>
+          {composerOpen ? (
+            <section
+              ref={composerRef}
+              className="pm-li-composer pm-card"
+              aria-label="Create post"
+            >
+              <div className="pm-li-composer__row">
+                <Avatar
+                  name={profiles.me.name}
+                  src={profiles.me.src}
+                  initials={profiles.me.avatar}
+                  tone={profiles.me.tone}
+                  size="md"
+                />
+                <textarea
+                  className="pm-li-composer__input"
+                  value={newPostContent}
+                  onChange={(event) => setNewPostContent(event.target.value)}
+                  placeholder="Start a post"
+                  rows={3}
+                  autoFocus
+                />
               </div>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={handleCreatePost}
-                disabled={!newPostContent.trim()}
-              >
-                Post
-              </Button>
-            </div>
-          </section>
+
+              <div className="pm-li-composer__bar">
+                <div className="pm-li-composer__tools" aria-label="Add to your post">
+                  <button className="pm-li-tool" type="button">
+                    <Icon name="spark" size={18} />
+                    <span>Media</span>
+                  </button>
+                  <button className="pm-li-tool" type="button">
+                    <Icon name="events" size={18} />
+                    <span>Event</span>
+                  </button>
+                  <button className="pm-li-tool" type="button">
+                    <Icon name="connections" size={18} />
+                    <span>Link</span>
+                  </button>
+                </div>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={handleCreatePost}
+                  disabled={!newPostContent.trim()}
+                >
+                  Post
+                </Button>
+              </div>
+            </section>
+          ) : null}
 
           <div className="pm-li-sort" aria-label="Sort feed">
             <span>Sort by:</span>

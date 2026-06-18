@@ -1,0 +1,19 @@
+{
+  "name": "@promatch/shared",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./api": "./src/api/index.js",
+    "./query": "./src/query/index.js",
+    "./stores": "./src/stores/index.js",
+    "./socket": "./src/socket/index.js"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.0.0",
+    "socket.io-client": "^4.0.0",
+    "zustand": "^5.0.0"
+  }
+}

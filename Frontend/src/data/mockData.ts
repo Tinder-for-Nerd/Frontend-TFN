@@ -265,7 +265,7 @@ export const mockProfiles: Record<string, Profile> = {
     name: 'Alex Johnson',
     role: 'Admin',
     title: 'Platform Administrator',
-    company: 'ProMatch',
+    company: 'Tinder For Nerds',
     location: 'San Francisco, CA',
     avatar: '',
     bio: 'Building the future of professional networking. Passionate about connecting talent with opportunity.',
@@ -445,10 +445,10 @@ export const mockBookings: Booking[] = [
 ];
 
 export const mockAppEvents: AppEvent[] = [
-  { id: 'ev1', title: 'AI Hackathon 2026', description: 'Build something amazing with AI in 48 hours. Prizes worth $10,000!', date: '2026-07-15', time: '09:00', location: 'San Francisco, CA', type: 'hackathon', mode: 'offline', capacity: 200, attendees: 156, host: 'ProMatch', hostRole: 'Platform', tags: ['AI', 'Hackathon', 'ML'], status: 'approved' },
+  { id: 'ev1', title: 'AI Hackathon 2026', description: 'Build something amazing with AI in 48 hours. Prizes worth $10,000!', date: '2026-07-15', time: '09:00', location: 'San Francisco, CA', type: 'hackathon', mode: 'offline', capacity: 200, attendees: 156, host: 'Tinder For Nerds', hostRole: 'Platform', tags: ['AI', 'Hackathon', 'ML'], status: 'approved' },
   { id: 'ev2', title: 'Product Design Workshop', description: 'Learn design thinking and prototyping from industry experts.', date: '2026-06-20', time: '14:00', location: 'Online', type: 'workshop', mode: 'online', capacity: 100, attendees: 78, host: 'Sarah Chen', hostRole: 'Senior Product Designer', tags: ['Design', 'Workshop', 'Figma'], status: 'approved' },
   { id: 'ev3', title: 'Tech Talk: Scaling Microservices', description: 'Learn how Netflix scales its microservices architecture.', date: '2026-06-25', time: '18:00', location: 'Online', type: 'talk', mode: 'online', capacity: 500, attendees: 234, host: 'Noah Brown', hostRole: 'DevOps Lead, Netflix', tags: ['Microservices', 'DevOps', 'Scaling'], status: 'approved' },
-  { id: 'ev4', title: 'Networking Mixer - SF Bay Area', description: 'Connect with professionals in the Bay Area tech scene.', date: '2026-07-01', time: '19:00', location: 'San Francisco, CA', type: 'networking', mode: 'offline', capacity: 150, attendees: 89, host: 'ProMatch', hostRole: 'Events Team', tags: ['Networking', 'Bay Area'], status: 'approved' },
+  { id: 'ev4', title: 'Networking Mixer - SF Bay Area', description: 'Connect with professionals in the Bay Area tech scene.', date: '2026-07-01', time: '19:00', location: 'San Francisco, CA', type: 'networking', mode: 'offline', capacity: 150, attendees: 89, host: 'Tinder For Nerds', hostRole: 'Events Team', tags: ['Networking', 'Bay Area'], status: 'approved' },
   { id: 'ev5', title: 'Data Science Webinar: NLP Trends', description: 'Latest trends in natural language processing and LLMs.', date: '2026-06-28', time: '15:00', location: 'Online', type: 'webinar', mode: 'online', capacity: 300, attendees: 145, host: 'Mia Robinson', hostRole: 'Data Scientist, Spotify', tags: ['Data Science', 'NLP', 'Webinar'], status: 'pending' },
   { id: 'ev6', title: 'Startup Pitch Night', description: 'Early-stage startups pitch to a panel of investors.', date: '2026-07-10', time: '18:30', location: 'Austin, TX', type: 'talk', mode: 'offline', capacity: 100, attendees: 67, host: 'Liam Anderson', hostRole: 'CTO, DataFlow Systems', tags: ['Startups', 'Pitching', 'Investors'], status: 'approved' },
 ];

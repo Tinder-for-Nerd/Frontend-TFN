@@ -88,7 +88,7 @@ export function Sidebar({ isOpen, onClose, role }: SidebarProps) {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2563EB] text-white font-bold text-sm">
               P
             </div>
-            <span className="text-lg font-bold text-[#0F172A]">ProMatch</span>
+            <span className="text-lg font-bold text-[#0F172A]">Tinder For Nerds</span>
           </NavLink>
           <button
             onClick={onClose}
@@ -121,7 +121,7 @@ export function Sidebar({ isOpen, onClose, role }: SidebarProps) {
 
         <div className="border-t border-[#E2E8F0] p-4">
           <div className="rounded-xl bg-[#F8FAFC] p-3">
-            <p className="text-xs font-medium text-[#0F172A]">ProMatch Pro</p>
+            <p className="text-xs font-medium text-[#0F172A]">Tinder For Nerds Pro</p>
             <p className="mt-1 text-xs text-[#64748B]">
               Unlock premium features
             </p>
