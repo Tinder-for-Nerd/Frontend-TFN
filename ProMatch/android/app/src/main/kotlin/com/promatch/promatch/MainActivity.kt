@@ -1,0 +1,5 @@
+package com.promatch.promatch
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()
