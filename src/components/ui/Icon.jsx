@@ -187,10 +187,44 @@ export function Icon({ name, size = 18, className = '', ...props }) {
           <path d="m9 5 6 7-6 7" />
         </svg>
       );
+    case 'chevron-left':
+      return (
+        <svg {...common}>
+          <path d="m15 5-6 7 6 7" />
+        </svg>
+      );
     case 'chevron-down':
       return (
         <svg {...common}>
           <path d="m5 9 7 6 7-6" />
+        </svg>
+      );
+    case 'chevron-up':
+      return (
+        <svg {...common}>
+          <path d="m5 15 7-6 7 6" />
+        </svg>
+      );
+    case 'arrow-up':
+      return (
+        <svg {...common}>
+          <path d="M12 19V5" />
+          <path d="m5 12 7-7 7 7" />
+        </svg>
+      );
+    case 'arrow-down':
+      return (
+        <svg {...common}>
+          <path d="M12 5v14" />
+          <path d="m19 12-7 7-7-7" />
+        </svg>
+      );
+    case 'history':
+      return (
+        <svg {...common}>
+          <path d="M3 12a9 9 0 1 0 3-6.7" />
+          <path d="M3 4v5h5" />
+          <path d="M12 7v5l3 2" />
         </svg>
       );
     case 'logout':

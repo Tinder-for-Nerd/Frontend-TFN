@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell } from 'lucide-react';
 import { Icon } from '../ui';
 import { useSocketContext } from '../../context/SocketProvider';
 
@@ -13,7 +12,13 @@ function getNotificationIcon(type) {
     case 'event':
       return 'calendar';
     case 'booking':
-      return 'calendar';
+    case 'session':
+      return 'video';
+    case 'analytics':
+    case 'profile_view':
+      return 'chart';
+    case 'connection':
+      return 'connections';
     default:
       return 'bell';
   }
@@ -74,7 +79,7 @@ export function NotificationCenter({ href = '/notifications', className = '' }) 
         aria-haspopup="true"
         onClick={() => setOpen((value) => !value)}
       >
-        <Bell size={20} />
+        <Icon name="bell" size={20} />
         {unreadCount > 0 ? (
           <span className="notif-center__badge" aria-hidden="true">
             {unreadCount > 9 ? '9+' : unreadCount}

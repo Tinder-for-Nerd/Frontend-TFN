@@ -49,6 +49,10 @@
 	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Tinder For Nerds needs camera access for professional video meetings.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Tinder For Nerds needs microphone access for professional video meetings.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

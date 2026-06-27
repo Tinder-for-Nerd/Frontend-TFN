@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/chat_provider.dart';
+import '../data/app_seed_data.dart';
 import '../theme/brand_theme.dart';
+import '../widgets/web_parity_widgets.dart';
 import 'discover/discover_screen.dart';
 import 'feed/feed_screen.dart';
 import 'chat/chat_list_screen.dart';
 import 'calendar/calendar_screen.dart';
 import 'profile/profile_screen.dart';
+import 'notifications/notifications_screen.dart';
 
 class DashboardShell extends StatefulWidget {
-  const DashboardShell({Key? key}) : super(key: key);
+  const DashboardShell({super.key});
 
   @override
   State<DashboardShell> createState() => _DashboardShellState();
@@ -36,14 +39,8 @@ class _DashboardShellState extends State<DashboardShell> {
     final role = authProvider.currentRole;
     final currentUser = authProvider.currentUser;
 
-    Color roleAccent = BrandColors.textInverse;
-    if (role == 'student') {
-      roleAccent = BrandColors.studentAccent;
-    } else if (role == 'pro') {
-      roleAccent = BrandColors.proAccent;
-    } else if (role == 'org') {
-      roleAccent = BrandColors.orgAccent;
-    }
+    final roleType = roleFromId(role);
+    final roleAccent = BrandColors.roleAccent(roleType);
 
     // Get unread chats count
     final unreadCount = chatProvider.threads.fold<int>(0, (sum, t) => sum + t.unreadCount);
@@ -51,14 +48,15 @@ class _DashboardShellState extends State<DashboardShell> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: BrandColors.surfaceMuted,
-        elevation: 0,
+        elevation: 8,
         scrolledUnderElevation: 0,
+        shadowColor: BrandColors.navy.withValues(alpha: 0.12),
         title: Row(
           children: [
             const Icon(Icons.bolt, color: BrandColors.textInverse, size: 24),
             const SizedBox(width: 8),
             Text(
-              'ProMatch',
+              'Tinder For Nerds',
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w900,
                 fontSize: 20,
@@ -68,7 +66,7 @@ class _DashboardShellState extends State<DashboardShell> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: roleAccent.withOpacity(0.08),
+                color: roleAccent.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
@@ -90,11 +88,9 @@ class _DashboardShellState extends State<DashboardShell> {
               IconButton(
                 icon: const Icon(Icons.notifications_outlined, color: BrandColors.textPrimary),
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Notifications Center: No new items.'),
-                      behavior: SnackBarBehavior.floating,
-                    ),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const NotificationsScreen()),
                   );
                 },
               ),
@@ -117,40 +113,37 @@ class _DashboardShellState extends State<DashboardShell> {
           // User Avatar Indicator
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
-            child: CircleAvatar(
+            child: WebAvatar(
+              initials: currentUser?.avatar ?? 'ME',
+              role: roleType,
               radius: 16,
-              backgroundColor: roleAccent.withOpacity(0.12),
-              child: Text(
-                currentUser?.avatar ?? 'ME',
-                style: TextStyle(
-                  color: roleAccent,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 12,
-                ),
-              ),
             ),
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
+          preferredSize: const Size.fromHeight(3),
           child: Container(
-            color: BrandColors.borderSubtle,
-            height: 1,
+            color: BrandColors.boldBorder,
+            height: 3,
           ),
         ),
       ),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
+      body: WebScaffoldBackground(
+        child: IndexedStack(
+          index: _currentIndex,
+          children: _screens,
+        ),
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
+          color: BrandColors.surfaceMuted,
           border: Border(
             top: BorderSide(
-              color: BrandColors.borderSubtle,
-              width: 1.0,
+              color: BrandColors.boldBorder,
+              width: 3.0,
             ),
           ),
+          boxShadow: BrandShadows.md,
         ),
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
@@ -162,7 +155,7 @@ class _DashboardShellState extends State<DashboardShell> {
           type: BottomNavigationBarType.fixed,
           backgroundColor: BrandColors.surfaceMuted,
           selectedItemColor: roleAccent,
-          unselectedItemColor: BrandColors.textSecondary.withOpacity(0.6),
+          unselectedItemColor: BrandColors.textSecondary.withValues(alpha: 0.6),
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w800, fontSize: 11),
           unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 11),
           elevation: 0,

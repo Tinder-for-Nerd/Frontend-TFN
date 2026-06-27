@@ -4,15 +4,16 @@ import '../../providers/auth_provider.dart';
 import '../../theme/brand_theme.dart';
 import '../../widgets/brand_button.dart';
 import '../../widgets/brand_input.dart';
+import '../../widgets/web_parity_widgets.dart';
 import '../onboarding/onboarding_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   final String roleId;
 
   const LoginScreen({
-    Key? key,
+    super.key,
     required this.roleId,
-  }) : super(key: key);
+  });
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -65,13 +66,17 @@ class _LoginScreenState extends State<LoginScreen> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: SafeArea(
+      body: WebScaffoldBackground(
+        child: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            child: Form(
-              key: _formKey,
-              child: Column(
+            child: WebCard(
+              bold: true,
+              padding: const EdgeInsets.all(24),
+              child: Form(
+                key: _formKey,
+                child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Accent Dot indicator
@@ -93,11 +98,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Tinder For Nerds',
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      color: BrandColors.primary,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   Text(
                     loginSubtitle,
                     style: theme.textTheme.bodyLarge?.copyWith(
-                      color: BrandColors.textSecondary.withOpacity(0.8),
+                      color: BrandColors.textSecondary.withValues(alpha: 0.8),
                     ),
                   ),
                   const SizedBox(height: 36),
@@ -181,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   // Divider
                   Row(
                     children: [
-                      Expanded(child: Divider(color: BrandColors.borderDefault.withOpacity(0.5))),
+                      Expanded(child: Divider(color: BrandColors.borderDefault.withValues(alpha: 0.5))),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
@@ -193,7 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      Expanded(child: Divider(color: BrandColors.borderDefault.withOpacity(0.5))),
+                      Expanded(child: Divider(color: BrandColors.borderDefault.withValues(alpha: 0.5))),
                     ],
                   ),
                   
@@ -257,8 +270,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
+              ),
             ),
           ),
+        ),
         ),
       ),
     );

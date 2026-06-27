@@ -7,6 +7,10 @@ export function MiniProfileCard({
   compact = false, 
   ctaLabel = 'Connect', 
   secondaryLabel = 'Message', 
+  ctaTo,
+  secondaryTo,
+  onSecondary,
+  secondaryIcon = 'messages',
   extraLink = '/profile/me',
   hideActions = false,
   fitLabel = 'Fit',
@@ -19,6 +23,9 @@ export function MiniProfileCard({
   const messageLink = isPro
     ? `/pro/inbox/${profile.username || profile.id}`
     : `/student/messages/${profile.username || profile.id}`;
+  const primaryLink = ctaTo || extraLink;
+  const secondaryLink = secondaryTo || messageLink;
+  const hasCustomSecondary = Boolean(secondaryTo || onSecondary);
 
   const handleNavigate = () => {
     if (!extraLink) return;
@@ -145,7 +152,7 @@ export function MiniProfileCard({
             </Button>
           ) : (
             <Button
-              to={extraLink}
+              to={primaryLink}
               variant="primary"
               className="pm-btn-full"
               disabled={ctaDisabled}
@@ -154,13 +161,29 @@ export function MiniProfileCard({
             </Button>
           )}
           <div className="pm-mini-profile__row-actions">
-            <Button 
-              to={messageLink}
-              variant="secondary" 
-              icon="messages" 
-              style={{ flex: 1 }} 
-              aria-label="Send message"
-            />
+            {onSecondary ? (
+              <Button
+                variant="secondary"
+                icon={secondaryIcon}
+                style={{ flex: 1 }}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onSecondary();
+                }}
+              >
+                {secondaryLabel}
+              </Button>
+            ) : (
+              <Button 
+                to={secondaryLink}
+                variant="secondary" 
+                icon={secondaryIcon} 
+                style={{ flex: 1 }} 
+                aria-label={hasCustomSecondary ? secondaryLabel : 'Send message'}
+              >
+                {hasCustomSecondary ? secondaryLabel : null}
+              </Button>
+            )}
             <Button to={extraLink} variant="ghost" style={{ flex: 1 }}>
               <Icon name="chevron-right" />
             </Button>

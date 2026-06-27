@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/chat_provider.dart';
 import '../../theme/brand_theme.dart';
-import '../../widgets/brand_button.dart';
 import '../../widgets/brand_input.dart';
+import '../meeting/meeting_screen.dart';
 
 class ChatDetailScreen extends StatefulWidget {
   final String threadId;
 
   const ChatDetailScreen({
-    Key? key,
+    super.key,
     required this.threadId,
-  }) : super(key: key);
+  });
 
   @override
   State<ChatDetailScreen> createState() => _ChatDetailScreenState();
@@ -92,6 +92,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             ),
             ElevatedButton(
               onPressed: () {
+                final sessionId = DateTime.now().millisecondsSinceEpoch.toString();
                 chatProvider.bookSession(
                   _bookingDateController.text,
                   _bookingTimeController.text,
@@ -101,8 +102,20 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Session call scheduled with ${participant.name}! 📅'),
+                    content: Text('Session call scheduled with ${participant.name}. Opening meeting room...'),
                     behavior: SnackBarBehavior.floating,
+                  ),
+                );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => MeetingScreen(
+                      sessionId: sessionId,
+                      topic: _bookingTopicController.text,
+                      date: _bookingDateController.text,
+                      time: _bookingTimeController.text,
+                      professional: participant,
+                    ),
                   ),
                 );
               },
@@ -153,7 +166,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           children: [
             CircleAvatar(
               radius: 18,
-              backgroundColor: roleAccent.withOpacity(0.08),
+              backgroundColor: roleAccent.withValues(alpha: 0.08),
               child: Text(
                 participant.avatar,
                 style: TextStyle(
@@ -240,7 +253,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                         if (!isMe) ...[
                           CircleAvatar(
                             radius: 12,
-                            backgroundColor: roleAccent.withOpacity(0.08),
+                            backgroundColor: roleAccent.withValues(alpha: 0.08),
                             child: Text(
                               participant.avatar,
                               style: TextStyle(
@@ -300,7 +313,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     children: [
                       CircleAvatar(
                         radius: 8,
-                        backgroundColor: roleAccent.withOpacity(0.08),
+                        backgroundColor: roleAccent.withValues(alpha: 0.08),
                         child: Text(
                           participant.avatar,
                           style: TextStyle(color: roleAccent, fontSize: 6, fontWeight: FontWeight.w800),
@@ -341,7 +354,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                       decoration: InputDecoration(
                         hintText: 'Type a message...',
                         hintStyle: TextStyle(
-                          color: BrandColors.textSecondary.withOpacity(0.5),
+                          color: BrandColors.textSecondary.withValues(alpha: 0.5),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,

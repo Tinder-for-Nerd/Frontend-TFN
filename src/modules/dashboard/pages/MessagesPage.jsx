@@ -683,7 +683,12 @@ export function MessagesPage({ variant = 'student' }) {
 
                 <div className="wa-chat__head-actions">
 
-                  <button className="wa-icon-btn" aria-label="Video call" title="Video call">
+                  <button
+                    className="wa-icon-btn"
+                    aria-label="Video call"
+                    title="Video call"
+                    onClick={() => navigate(`/call/${activeThread.id}`)}
+                  >
 
                     <Icon name="video" size={20} />
 

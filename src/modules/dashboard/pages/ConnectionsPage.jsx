@@ -1,11 +1,9 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useMemo, useState } from 'react';
 import { AppShell } from '../../../components/layout';
-import { Button, Badge, Icon } from '../../../components/ui';
+import { Button, Icon } from '../../../components/ui';
 import { SectionHeader, MiniProfileCard, EmptyState } from '../../../components/common';
-import { ProfessionalSearchModal } from '../components/discover/ProfessionalSearchModal';
 import { profiles, studentConnections } from '../../../data/mockData';
-import { saveProfessionalSearch } from '../../../data/professionalSearch';
+import { getBookedSessions } from '../../../data/bookedSessions';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 import '../../../styles/discover.css';
 import '../../../styles/connections.css';
@@ -13,10 +11,15 @@ import '../../../styles/connections.css';
 export function ConnectionsPage() {
   usePageMeta('My Connections | Tinder for Nerds', 'Manage your network, view pending requests, and discover suggested matches.');
 
-  const navigate = useNavigate();
-  const [searchOpen, setSearchOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('connected');
   const [query, setQuery] = useState('');
+  const upcomingMeetings = useMemo(() => {
+    const candidates = Object.values(profiles ?? {});
+    return getBookedSessions().map((session) => ({
+      ...session,
+      person: candidates.find((profile) => profile?.username === session.withUser || profile?.id === session.withUser),
+    }));
+  }, []);
 
   const tabs = [
     { id: 'connected', label: 'Connected', count: studentConnections.connected.length },
@@ -54,13 +57,39 @@ export function ConnectionsPage() {
               onChange={(e) => setQuery(e.target.value)}
             />
           </div>
-          <Button variant="primary" icon="spark" onClick={() => setSearchOpen(true)}>
-            Discover more
-          </Button>
         </div>
       }
     >
       <div className="pm-connections-container">
+        {upcomingMeetings.length > 0 ? (
+          <section className="pm-connections-upcoming">
+            <SectionHeader
+              eyebrow="Upcoming meeting"
+              title="Your booked 1:1 sessions"
+              description="Join confirmed one-to-one sessions directly from your connections workspace."
+            />
+            <div className="pm-upcoming-meeting-list">
+              {upcomingMeetings.map((meeting) => (
+                <article className="pm-upcoming-meeting pm-upcoming-meeting--section" key={meeting.id}>
+                  <div>
+                    <span className="pm-upcoming-meeting__eyebrow">Upcoming meeting</span>
+                    <strong>1:1 with {meeting.person?.name || 'your connection'}</strong>
+                    <p>{meeting.day} · {meeting.slot}</p>
+                  </div>
+                  <Button
+                    to={`/call/${encodeURIComponent(meeting.id)}?ready=1`}
+                    variant="primary"
+                    size="sm"
+                    icon="video"
+                  >
+                    Join
+                  </Button>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
         {/* Tab Navigation */}
         <nav className="pm-tabs">
           {tabs.map(tab => (
@@ -89,15 +118,18 @@ export function ConnectionsPage() {
             <div className="pm-connections-grid">
               {filteredConnections.map((profile) => (
                 <MiniProfileCard 
-                  key={profile.id} 
+                  key={profile.id}
                   profile={{
                     ...profile,
                     verified: true, // Mocking verified status for better UI
                     status: 'Online',
                     domain: profile.domain || 'Engineering'
                   }} 
-                  ctaLabel={activeTab === 'connected' ? 'Message' : 'Accept'}
-                  secondaryLabel={activeTab === 'connected' ? 'Book Call' : 'Ignore'}
+                  ctaLabel={activeTab === 'connected' ? 'Book 1:1 Session' : 'Accept'}
+                  ctaTo={activeTab === 'connected' ? `/student/sessions?with=${encodeURIComponent(profile.username || profile.id)}` : undefined}
+                  secondaryLabel={activeTab === 'connected' ? 'Message' : 'Ignore'}
+                  secondaryTo={activeTab === 'connected' ? `/student/messages/${profile.username || profile.id}` : undefined}
+                  secondaryIcon={activeTab === 'connected' ? 'messages' : undefined}
                   extraLink={`/profile/${profile.username}`} 
                 />
               ))}
@@ -107,22 +139,10 @@ export function ConnectionsPage() {
               icon="connections" 
               title="No connections found" 
               description={query ? `No results for "${query}" in this section.` : "Start exploring to build your network."}
-              actionLabel="Discover more"
-              onAction={() => setSearchOpen(true)}
             />
           )}
         </section>
       </div>
-
-      <ProfessionalSearchModal
-        isOpen={searchOpen}
-        onClose={() => setSearchOpen(false)}
-        onSubmit={(criteria) => {
-          saveProfessionalSearch(criteria);
-          setSearchOpen(false);
-          navigate('/student/search', { state: { professionalSearch: criteria } });
-        }}
-      />
 
     </AppShell>
   );

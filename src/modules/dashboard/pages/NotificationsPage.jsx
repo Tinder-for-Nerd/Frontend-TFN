@@ -12,6 +12,14 @@ function getIcon(type) {
       return 'messages';
     case 'event':
       return 'calendar';
+    case 'booking':
+    case 'session':
+      return 'video';
+    case 'analytics':
+    case 'profile_view':
+      return 'chart';
+    case 'connection':
+      return 'connections';
     default:
       return 'bell';
   }

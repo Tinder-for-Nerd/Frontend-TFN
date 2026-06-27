@@ -37,6 +37,14 @@
   flex-shrink: 0;
 }
 
+.discover__header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .discover__title {
   margin: 0;
   font-family: var(--font-display);

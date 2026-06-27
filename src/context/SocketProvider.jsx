@@ -27,12 +27,30 @@ export const SocketContext = createContext(null);
 function normalizeSeedNotifications(items) {
   return items.map((item, index) => ({
     id: String(item.id ?? index),
-    type: item.icon === 'messages' ? 'message' : item.icon === 'connections' ? 'match' : 'event',
+    type:
+      item.icon === 'messages'
+        ? 'message'
+        : item.icon === 'connections'
+          ? 'connection'
+          : item.icon === 'chart'
+            ? 'profile_view'
+            : item.icon === 'calendar'
+              ? 'booking'
+              : 'event',
     title: item.title,
     message: item.action || item.title,
     timestamp: item.meta,
     read: !item.unread,
-    link: item.icon === 'messages' ? '/student/messages' : undefined,
+    link:
+      item.icon === 'messages'
+        ? '/student/messages'
+        : item.icon === 'connections'
+          ? '/student/connections'
+          : item.icon === 'calendar'
+            ? '/student/sessions'
+            : item.icon === 'chart'
+              ? '/dashboard/analytics'
+              : '/student/events',
   }));
 }
 

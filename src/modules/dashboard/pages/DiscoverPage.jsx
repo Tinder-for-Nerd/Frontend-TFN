@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { RefreshCw, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { AppShell } from '../../../components/layout';
 import { Button } from '../../../components/ui';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 import { studentDiscoverProfiles, proDiscoverProfiles } from '../../../data/mockData';
+import { saveProfessionalSearch } from '../../../data/professionalSearch';
 import {
   DiscoverFilters,
   MatchModal,
+  ProfessionalSearchModal,
   SwipeStack,
   EMPTY_DISCOVER_FILTERS,
   filterDiscoverProfiles,
@@ -16,6 +19,7 @@ import {
 import '../../../styles/discover.css';
 
 export function DiscoverPage({ variant = 'student' }) {
+  const navigate = useNavigate();
   const defaultProfiles = variant === 'pro' ? proDiscoverProfiles : studentDiscoverProfiles;
 
   const profileBase = variant === 'pro' ? '/pro/profile' : '/profile';
@@ -24,6 +28,7 @@ export function DiscoverPage({ variant = 'student' }) {
   const [filters, setFilters] = useState(EMPTY_DISCOVER_FILTERS);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [matchProfile, setMatchProfile] = useState(null);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const filteredProfiles = useMemo(
     () => filterDiscoverProfiles(defaultProfiles, filters),
@@ -93,10 +98,17 @@ export function DiscoverPage({ variant = 'student' }) {
                 : 'Adjust filters or reset to see more matches'}
             </p>
           </div>
-          <Button variant="secondary" size="sm" className="discover__reset-btn" onClick={handleReset}>
-            <RefreshCw size={16} />
-            Reset
-          </Button>
+          <div className="discover__header-actions">
+            {variant === 'student' ? (
+              <Button variant="primary" size="sm" icon="spark" onClick={() => setSearchOpen(true)}>
+                Discover more
+              </Button>
+            ) : null}
+            <Button variant="secondary" size="sm" className="discover__reset-btn" onClick={handleReset}>
+              <RefreshCw size={16} />
+              Reset
+            </Button>
+          </div>
         </header>
 
         <div className="discover__layout">
@@ -141,6 +153,15 @@ export function DiscoverPage({ variant = 'student' }) {
           matchProfile={matchProfile}
           messagesPath={messagesPath}
           onClose={() => setMatchProfile(null)}
+        />
+        <ProfessionalSearchModal
+          isOpen={searchOpen}
+          onClose={() => setSearchOpen(false)}
+          onSubmit={(criteria) => {
+            saveProfessionalSearch(criteria);
+            setSearchOpen(false);
+            navigate('/student/search', { state: { professionalSearch: criteria } });
+          }}
         />
       </div>
     </AppShell>

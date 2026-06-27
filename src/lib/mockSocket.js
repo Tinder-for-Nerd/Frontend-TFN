@@ -236,6 +236,44 @@ export function createMockSocket() {
           break;
         }
 
+        case 'call_join': {
+          const { roomId, peerId = 'me' } = payload || {};
+          if (!roomId) break;
+          rooms.add(`call:${roomId}`);
+          window.setTimeout(() => {
+            emitLocal('call_ready', {
+              roomId,
+              peerId: 'demo-professional',
+              remoteName: 'Professional',
+              targetPeerId: peerId,
+            });
+          }, 500);
+          break;
+        }
+
+        case 'call_leave':
+        case 'call_ended': {
+          const { roomId, peerId = 'me' } = payload || {};
+          if (roomId) rooms.delete(`call:${roomId}`);
+          emitLocal('call_ended', { roomId, peerId });
+          break;
+        }
+
+        case 'call_offer':
+        case 'call_answer':
+        case 'call_ice_candidate': {
+          const { roomId, peerId = 'me', targetPeerId } = payload || {};
+          if (!roomId) break;
+          window.setTimeout(() => {
+            emitLocal(event, {
+              ...payload,
+              peerId: targetPeerId || 'demo-professional',
+              targetPeerId: peerId,
+            });
+          }, 160);
+          break;
+        }
+
         default:
           break;
       }

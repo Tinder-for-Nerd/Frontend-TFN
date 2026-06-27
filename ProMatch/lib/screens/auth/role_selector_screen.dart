@@ -1,47 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../data/app_seed_data.dart';
 import '../../providers/auth_provider.dart';
 import '../../theme/brand_theme.dart';
-import '../../widgets/brand_button.dart';
+import '../../widgets/web_parity_widgets.dart';
 import 'login_screen.dart';
 
 class RoleSelectorScreen extends StatelessWidget {
-  const RoleSelectorScreen({Key? key}) : super(key: key);
+  const RoleSelectorScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
-    final List<Map<String, dynamic>> roleCards = [
-      {
-        'id': 'student',
-        'icon': '🎓',
-        'label': 'Student',
-        'tagline': 'Your next co-founder is one swipe away.',
-        'description': 'Hackathons, side projects, early teams',
-        'accent': BrandColors.studentAccent,
-      },
-      {
-        'id': 'professional',
-        'icon': '💼',
-        'label': 'Professional',
-        'tagline': 'Where serious builders find their technical co-founder.',
-        'description': 'Co-founders, advisors, freelancers',
-        'accent': BrandColors.proAccent,
-      },
-      {
-        'id': 'organization',
-        'icon': '🏢',
-        'label': 'Organization',
-        'tagline': "Your community's builder network, supercharged.",
-        'description': 'Incubators, GDGs, startup clubs',
-        'accent': BrandColors.orgAccent,
-      },
-    ];
-
     return Scaffold(
-      body: SafeArea(
+      body: WebScaffoldBackground(
+        child: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
@@ -55,7 +30,7 @@ class RoleSelectorScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: BrandColors.textInverse.withOpacity(0.1),
+                        color: BrandColors.textInverse.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Icon(
@@ -66,7 +41,7 @@ class RoleSelectorScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      'ProMatch',
+                      'Tinder For Nerds',
                       style: theme.textTheme.displayMedium?.copyWith(
                         fontSize: 28,
                         fontWeight: FontWeight.w800,
@@ -88,34 +63,26 @@ class RoleSelectorScreen extends StatelessWidget {
                 Text(
                   'Select your identity to continue to the portal.',
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: BrandColors.textSecondary.withOpacity(0.8),
+                    color: BrandColors.textSecondary.withValues(alpha: 0.8),
                   ),
                 ),
                 const SizedBox(height: 36),
 
-                // Role cards
                 Column(
                   children: roleCards.map((card) {
-                    final accent = card['accent'] as Color;
+                    final accent = BrandColors.roleAccent(roleFromId(card.id));
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 20),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: BrandColors.surfaceMuted,
-                          borderRadius: BrandRadii.smBorderRadius,
-                          boxShadow: BrandShadows.sm,
-                          border: Border.all(
-                            color: BrandColors.borderSubtle,
-                            width: 1.0,
-                          ),
-                        ),
+                      child: WebCard(
+                        bold: true,
+                        padding: EdgeInsets.zero,
                         child: InkWell(
                           onTap: () {
-                            authProvider.selectRole(card['id'] as String);
+                            authProvider.selectRole(card.id);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => LoginScreen(roleId: card['id'] as String),
+                                builder: (_) => LoginScreen(roleId: card.id),
                               ),
                             );
                           },
@@ -127,9 +94,9 @@ class RoleSelectorScreen extends StatelessWidget {
                               children: [
                                 CircleAvatar(
                                   radius: 26,
-                                  backgroundColor: accent.withOpacity(0.1),
+                                  backgroundColor: accent.withValues(alpha: 0.1),
                                   child: Text(
-                                    card['icon'] as String,
+                                    card.icon,
                                     style: const TextStyle(fontSize: 22),
                                   ),
                                 ),
@@ -139,7 +106,7 @@ class RoleSelectorScreen extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        card['label'] as String,
+                                        card.label,
                                         style: theme.textTheme.titleLarge?.copyWith(
                                           fontWeight: FontWeight.w800,
                                           color: BrandColors.textPrimary,
@@ -147,7 +114,7 @@ class RoleSelectorScreen extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        card['tagline'] as String,
+                                        card.tagline,
                                         style: theme.textTheme.bodyMedium?.copyWith(
                                           fontWeight: FontWeight.w600,
                                           color: BrandColors.textPrimary,
@@ -155,10 +122,10 @@ class RoleSelectorScreen extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                        card['description'] as String,
+                                        card.description,
                                         style: theme.textTheme.bodyMedium?.copyWith(
                                           fontSize: 12,
-                                          color: BrandColors.textSecondary.withOpacity(0.6),
+                                          color: BrandColors.textSecondary.withValues(alpha: 0.6),
                                         ),
                                       ),
                                     ],
@@ -188,6 +155,7 @@ class RoleSelectorScreen extends StatelessWidget {
               ],
             ),
           ),
+        ),
         ),
       ),
     );

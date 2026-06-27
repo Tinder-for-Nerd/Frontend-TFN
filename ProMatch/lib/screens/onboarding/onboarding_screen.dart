@@ -7,7 +7,7 @@ import '../../widgets/brand_input.dart';
 import '../dashboard_shell.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({Key? key}) : super(key: key);
+  const OnboardingScreen({super.key});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -89,7 +89,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: LinearProgressIndicator(
                       value: stepPercentage,
                       color: roleAccent,
-                      backgroundColor: BrandColors.borderDefault.withOpacity(0.5),
+                      backgroundColor: BrandColors.borderDefault.withValues(alpha: 0.5),
                       minHeight: 6,
                     ),
                   ),
@@ -202,7 +202,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 return FilterChip(
                   label: Text(skill),
                   selected: isSelected,
-                  selectedColor: accentColor.withOpacity(0.12),
+                  selectedColor: accentColor.withValues(alpha: 0.12),
                   checkmarkColor: accentColor,
                   labelStyle: TextStyle(
                     fontWeight: FontWeight.w700,

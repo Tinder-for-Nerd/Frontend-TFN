@@ -4,6 +4,7 @@ import { AppShell } from '../../../components/layout';
 import { Badge, Button } from '../../../components/ui';
 import { usePageMeta } from '../../../hooks/usePageMeta';
 import { profiles as allProfiles } from '../../../data/mockData';
+import { saveBookedSession } from '../../../data/bookedSessions';
 import { PaymentCheckoutForm } from '../components/PaymentCheckoutForm';
 
 export function StudentBillingPage() {
@@ -22,8 +23,16 @@ export function StudentBillingPage() {
 
   const amount = 199;
 
-  const handleCheckout = () => {
-    navigate(`/student/sessions?paid=1&with=${encodeURIComponent(withUser)}`);
+  const handleCheckout = (payment) => {
+    const bookedSession = saveBookedSession({
+      withUser,
+      day,
+      slot,
+      amount,
+      currency: 'INR',
+      paymentMethod: payment?.method,
+    });
+    navigate(`/call/${encodeURIComponent(bookedSession.id)}?ready=1`);
   };
 
   return (
@@ -53,12 +62,6 @@ export function StudentBillingPage() {
         </header>
 
         <PaymentCheckoutForm amount={amount} currency="INR" onCheckout={handleCheckout} />
-
-        <div className="pm-billing-page__secondary">
-          <Button variant="secondary" onClick={() => navigate('/student/sessions')} style={{ flex: 1 }}>
-            Pay later
-          </Button>
-        </div>
       </div>
     </AppShell>
   );

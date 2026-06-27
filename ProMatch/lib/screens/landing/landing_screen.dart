@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../theme/brand_theme.dart';
@@ -32,9 +31,10 @@ class _LandingScreenState extends State<LandingScreen>
       duration: const Duration(seconds: 4),
     )..repeat(reverse: true);
 
-    _float = Tween<double>(begin: -7.0, end: 7.0).animate(
-      CurvedAnimation(parent: _floatCtrl, curve: Curves.easeInOut),
-    );
+    _float = Tween<double>(
+      begin: -7.0,
+      end: 7.0,
+    ).animate(CurvedAnimation(parent: _floatCtrl, curve: Curves.easeInOut));
 
     _entryCtrl = AnimationController(
       vsync: this,
@@ -46,15 +46,13 @@ class _LandingScreenState extends State<LandingScreen>
       curve: const Interval(0.0, 0.65, curve: Curves.easeOut),
     );
 
-    _entrySlide = Tween<Offset>(
-      begin: const Offset(0, 0.06),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _entryCtrl,
-        curve: const Interval(0.0, 0.75, curve: Curves.easeOut),
-      ),
-    );
+    _entrySlide = Tween<Offset>(begin: const Offset(0, 0.06), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _entryCtrl,
+            curve: const Interval(0.0, 0.75, curve: Curves.easeOut),
+          ),
+        );
   }
 
   @override
@@ -65,9 +63,9 @@ class _LandingScreenState extends State<LandingScreen>
   }
 
   void _goToApp() => Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const RoleSelectorScreen()),
-      );
+    context,
+    MaterialPageRoute(builder: (_) => const RoleSelectorScreen()),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +78,12 @@ class _LandingScreenState extends State<LandingScreen>
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _Nav(onCta: _goToApp),
-              _Hero(float: _float, entryFade: _entryFade, entrySlide: _entrySlide, onCta: _goToApp),
+              _Hero(
+                float: _float,
+                entryFade: _entryFade,
+                entrySlide: _entrySlide,
+                onCta: _goToApp,
+              ),
               _FeatureStrip(),
               _HowItWorks(),
               _FinalCta(onCta: _goToApp),
@@ -227,14 +230,20 @@ class _Hero extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Eyebrow row
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final compact = constraints.maxWidth < 380;
+                  final badge = Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0ABF7E).withOpacity(0.12),
+                      color: const Color(0xFF0ABF7E).withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(100),
-                      border: Border.all(color: const Color(0xFF0ABF7E).withOpacity(0.3)),
+                      border: Border.all(
+                        color: const Color(0xFF0ABF7E).withValues(alpha: 0.3),
+                      ),
                     ),
                     child: Text(
                       'SKILL-FIRST NETWORKING',
@@ -245,17 +254,50 @@ class _Hero extends StatelessWidget {
                         letterSpacing: 0.9,
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Row(
-                    children: List.generate(5, (i) => const Icon(Icons.star_rounded, size: 13, color: Color(0xFFF59E0B))),
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    '4.9 from 2,700+ builders',
-                    style: GoogleFonts.inter(fontSize: 11, color: BrandColors.textSecondary, fontWeight: FontWeight.w500),
-                  ),
-                ],
+                  );
+                  final rating = Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: List.generate(
+                          5,
+                          (_) => const Icon(
+                            Icons.star_rounded,
+                            size: 13,
+                            color: Color(0xFFF59E0B),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Flexible(
+                        child: Text(
+                          '4.9 from 2,700+ builders',
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            color: BrandColors.textSecondary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+
+                  if (compact) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [badge, const SizedBox(height: 8), rating],
+                    );
+                  }
+
+                  return Wrap(
+                    spacing: 10,
+                    runSpacing: 8,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [badge, rating],
+                  );
+                },
               ),
               const SizedBox(height: 18),
 
@@ -352,7 +394,7 @@ class _ShowcaseCards extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: float,
-      builder: (_, __) => Column(
+      builder: (_, _) => Column(
         children: [
           // New message notification chip
           Transform.translate(
@@ -397,7 +439,11 @@ class _NotifChip extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
-  const _NotifChip({required this.icon, required this.title, required this.subtitle});
+  const _NotifChip({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -409,17 +455,35 @@ class _NotifChip extends StatelessWidget {
         boxShadow: BrandShadows.md,
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 16, color: BrandColors.textInverse),
           const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(title, style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w700, color: BrandColors.textPrimary)),
-              Text(subtitle, style: GoogleFonts.inter(fontSize: 11, color: BrandColors.textSecondary)),
-            ],
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: BrandColors.textPrimary,
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.inter(
+                    fontSize: 11,
+                    color: BrandColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -449,23 +513,52 @@ class _ProfileShowCard extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 22,
-                  backgroundColor: BrandColors.textInverse.withOpacity(0.15),
-                  child: Text('SC', style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w800, color: BrandColors.textInverse)),
+                  backgroundColor: BrandColors.textInverse.withValues(
+                    alpha: 0.15,
+                  ),
+                  child: Text(
+                    'SC',
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w800,
+                      color: BrandColors.textInverse,
+                    ),
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Sarah Chen', style: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w700, color: BrandColors.textPrimary)),
-                      Text('Product @ Grab · Singapore', style: GoogleFonts.inter(fontSize: 12, color: BrandColors.textSecondary)),
+                      Text(
+                        'Sarah Chen',
+                        style: GoogleFonts.inter(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: BrandColors.textPrimary,
+                        ),
+                      ),
+                      Text(
+                        'Product @ Grab · Singapore',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: BrandColors.textSecondary,
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('94% match', style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w700, color: BrandColors.textInverse)),
+                    Text(
+                      '94% match',
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: BrandColors.textInverse,
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -475,20 +568,38 @@ class _ProfileShowCard extends StatelessWidget {
             // Skill tags
             Wrap(
               spacing: 8,
-              children: ['Product', 'UX', 'Mentor'].map((tag) => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: BrandColors.surfaceInset,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(tag, style: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.w600, color: BrandColors.textSecondary)),
-              )).toList(),
+              children: ['Product', 'UX', 'Mentor']
+                  .map(
+                    (tag) => Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: BrandColors.surfaceInset,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        tag,
+                        style: GoogleFonts.inter(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: BrandColors.textSecondary,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
             const SizedBox(height: 12),
 
             Text(
               'Open to mentoring students in PM and UX. Fast responder.',
-              style: GoogleFonts.inter(fontSize: 13, color: BrandColors.textSecondary, height: 1.4),
+              style: GoogleFonts.inter(
+                fontSize: 13,
+                color: BrandColors.textSecondary,
+                height: 1.4,
+              ),
             ),
             const SizedBox(height: 16),
 
@@ -501,9 +612,18 @@ class _ProfileShowCard extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       side: const BorderSide(color: BrandColors.borderDefault),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                    child: Text('Pass', style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w700, color: BrandColors.textSecondary)),
+                    child: Text(
+                      'Pass',
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: BrandColors.textSecondary,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -514,10 +634,18 @@ class _ProfileShowCard extends StatelessWidget {
                       backgroundColor: BrandColors.textInverse,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       elevation: 0,
                     ),
-                    child: Text('Connect', style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w700)),
+                    child: Text(
+                      'Connect',
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -538,25 +666,29 @@ class _FeatureStrip extends StatelessWidget {
     {
       'icon': Icons.psychology_alt_rounded,
       'title': 'AI-Guided Matching',
-      'desc': 'We don\'t just match resumes to keywords. Our AI learns your working style and matches you to the right people.',
+      'desc':
+          'We don\'t just match resumes to keywords. Our AI learns your working style and matches you to the right people.',
       'color': Color(0xFF0084FF),
     },
     {
       'icon': Icons.bar_chart_rounded,
       'title': 'Actionable Progress',
-      'desc': 'Track your growth over time. Visualize the value you\'re getting from your matches and measure collaboration quality.',
+      'desc':
+          'Track your growth over time. Visualize the value you\'re getting from your matches and measure collaboration quality.',
       'color': Color(0xFF0ABF7E),
     },
     {
       'icon': Icons.calendar_month_rounded,
       'title': 'Effortless Sessions',
-      'desc': 'No more back-and-forth scheduling. Set your availability, find mutual time slots, and sync your calendar automatically.',
+      'desc':
+          'No more back-and-forth scheduling. Set your availability, find mutual time slots, and sync your calendar automatically.',
       'color': Color(0xFFFF801E),
     },
     {
       'icon': Icons.event_note_rounded,
       'title': 'Curated Micro-Events',
-      'desc': 'Drop into hyper-focused, small-group sessions. High signal, low noise. Meet people who care about what you care about.',
+      'desc':
+          'Drop into hyper-focused, small-group sessions. High signal, low noise. Meet people who care about what you care about.',
       'color': Color(0xFF7B61FF),
     },
   ];
@@ -573,7 +705,7 @@ class _FeatureStrip extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           itemCount: _features.length,
-          separatorBuilder: (_, __) => const SizedBox(width: 12),
+          separatorBuilder: (_, _) => const SizedBox(width: 12),
           itemBuilder: (context, i) {
             final f = _features[i];
             return _FeatureCard(
@@ -594,7 +726,12 @@ class _FeatureCard extends StatelessWidget {
   final String title;
   final String desc;
   final Color color;
-  const _FeatureCard({required this.icon, required this.title, required this.desc, required this.color});
+  const _FeatureCard({
+    required this.icon,
+    required this.title,
+    required this.desc,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -613,20 +750,31 @@ class _FeatureCard extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: color, size: 20),
           ),
           const SizedBox(height: 10),
-          Text(title, style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w700, color: BrandColors.textPrimary)),
+          Text(
+            title,
+            style: GoogleFonts.inter(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: BrandColors.textPrimary,
+            ),
+          ),
           const SizedBox(height: 5),
           Expanded(
             child: Text(
               desc,
               maxLines: 4,
               overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.inter(fontSize: 11, color: BrandColors.textSecondary, height: 1.45),
+              style: GoogleFonts.inter(
+                fontSize: 11,
+                color: BrandColors.textSecondary,
+                height: 1.45,
+              ),
             ),
           ),
         ],
@@ -645,21 +793,24 @@ class _HowItWorks extends StatelessWidget {
       'num': '01',
       'icon': Icons.person_outline_rounded,
       'title': 'Build your profile',
-      'body': 'Add skills, intent, domain, and availability so matches are skill-first—not keyword spam.',
+      'body':
+          'Add skills, intent, domain, and availability so matches are skill-first—not keyword spam.',
       'color': Color(0xFF0084FF),
     },
     {
       'num': '02',
       'icon': Icons.bolt_rounded,
       'title': 'Discover & connect',
-      'body': 'Swipe through curated profiles, filter by fit, and connect with builders who share your goals.',
+      'body':
+          'Swipe through curated profiles, filter by fit, and connect with builders who share your goals.',
       'color': Color(0xFF0ABF7E),
     },
     {
       'num': '03',
       'icon': Icons.chat_bubble_outline_rounded,
       'title': 'Chat & meet',
-      'body': 'Move into real-time chat, book 1:1 sessions, and show up to events—all in one workspace.',
+      'body':
+          'Move into real-time chat, book 1:1 sessions, and show up to events—all in one workspace.',
       'color': Color(0xFFFF801E),
     },
   ];
@@ -675,7 +826,12 @@ class _HowItWorks extends StatelessWidget {
         children: [
           Text(
             'HOW IT WORKS',
-            style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w800, color: BrandColors.textInverse, letterSpacing: 1.4),
+            style: GoogleFonts.inter(
+              fontSize: 10,
+              fontWeight: FontWeight.w800,
+              color: BrandColors.textInverse,
+              letterSpacing: 1.4,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
@@ -693,7 +849,11 @@ class _HowItWorks extends StatelessWidget {
           Text(
             'No cold DMs. No random LinkedIn spam.\nJust high-intent matching built for builders.',
             textAlign: TextAlign.center,
-            style: GoogleFonts.inter(fontSize: 14, color: BrandColors.textSecondary, height: 1.5),
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              color: BrandColors.textSecondary,
+              height: 1.5,
+            ),
           ),
           const SizedBox(height: 24),
           SizedBox(
@@ -702,7 +862,7 @@ class _HowItWorks extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.zero,
               itemCount: _steps.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 12),
+              separatorBuilder: (_, _) => const SizedBox(width: 12),
               itemBuilder: (context, i) {
                 final s = _steps[i];
                 return _StepCard(
@@ -727,7 +887,13 @@ class _StepCard extends StatelessWidget {
   final String title;
   final String body;
   final Color color;
-  const _StepCard({required this.num, required this.icon, required this.title, required this.body, required this.color});
+  const _StepCard({
+    required this.num,
+    required this.icon,
+    required this.title,
+    required this.body,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -748,7 +914,7 @@ class _StepCard extends StatelessWidget {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(icon, color: color, size: 20),
@@ -756,19 +922,34 @@ class _StepCard extends StatelessWidget {
               const Spacer(),
               Text(
                 num,
-                style: GoogleFonts.inter(fontSize: 28, fontWeight: FontWeight.w900, color: BrandColors.borderSubtle.withOpacity(0.5)),
+                style: GoogleFonts.inter(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w900,
+                  color: BrandColors.borderSubtle.withValues(alpha: 0.5),
+                ),
               ),
             ],
           ),
           const SizedBox(height: 14),
-          Text(title, style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w800, color: BrandColors.textPrimary)),
+          Text(
+            title,
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: FontWeight.w800,
+              color: BrandColors.textPrimary,
+            ),
+          ),
           const SizedBox(height: 6),
           Expanded(
             child: Text(
               body,
               maxLines: 4,
               overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.inter(fontSize: 12, color: BrandColors.textSecondary, height: 1.5),
+              style: GoogleFonts.inter(
+                fontSize: 12,
+                color: BrandColors.textSecondary,
+                height: 1.5,
+              ),
             ),
           ),
         ],
@@ -799,7 +980,7 @@ class _FinalCta extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF3B82F6).withOpacity(0.32),
+            color: const Color(0xFF3B82F6).withValues(alpha: 0.32),
             offset: const Offset(0, 14),
             blurRadius: 40,
           ),
@@ -822,13 +1003,20 @@ class _FinalCta extends StatelessWidget {
           Text(
             'Join thousands of builders already matching on intent, not titles.',
             textAlign: TextAlign.center,
-            style: GoogleFonts.inter(fontSize: 14, color: Colors.white.withOpacity(0.75), height: 1.5),
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              color: Colors.white.withValues(alpha: 0.75),
+              height: 1.5,
+            ),
           ),
           const SizedBox(height: 26),
           Row(
             children: [
               Expanded(
-                child: _CtaPrimaryBtn(label: 'Create free account', onTap: onCta),
+                child: _CtaPrimaryBtn(
+                  label: 'Create free account',
+                  onTap: onCta,
+                ),
               ),
               const SizedBox(width: 10),
               _CtaGhostBtn(label: "I'm a startup", onTap: onCta),
@@ -860,7 +1048,10 @@ class _GlowButtonState extends State<_GlowButton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTapDown: (_) => setState(() => _down = true),
-      onTapUp: (_) { setState(() => _down = false); widget.onTap(); },
+      onTapUp: (_) {
+        setState(() => _down = false);
+        widget.onTap();
+      },
       onTapCancel: () => setState(() => _down = false),
       child: AnimatedScale(
         scale: _down ? 0.96 : 1.0,
@@ -872,23 +1063,49 @@ class _GlowButtonState extends State<_GlowButton> {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: BrandColors.textPrimary.withOpacity(0.28),
+                color: BrandColors.textPrimary.withValues(alpha: 0.28),
                 offset: const Offset(0, 6),
                 blurRadius: 16,
               ),
             ],
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(widget.label, style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w700, color: Colors.white)),
-              const SizedBox(width: 6),
-              Container(
-                width: 22, height: 22,
-                decoration: BoxDecoration(color: Colors.white.withOpacity(0.18), shape: BoxShape.circle),
-                child: const Icon(Icons.arrow_forward, size: 13, color: Colors.white),
-              ),
-            ],
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final showIcon = constraints.maxWidth >= 128;
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Text(
+                      widget.label,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  if (showIcon) ...[
+                    const SizedBox(width: 6),
+                    Container(
+                      width: 22,
+                      height: 22,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.18),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.arrow_forward,
+                        size: 13,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ],
+              );
+            },
           ),
         ),
       ),
@@ -912,7 +1129,14 @@ class _GhostButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: BrandColors.borderDefault),
         ),
-        child: Text(label, style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600, color: BrandColors.textPrimary)),
+        child: Text(
+          label,
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: BrandColors.textPrimary,
+          ),
+        ),
       ),
     );
   }
@@ -928,7 +1152,18 @@ class _CheckRow extends StatelessWidget {
       children: [
         const Icon(Icons.check, size: 15, color: Color(0xFF0ABF7E)),
         const SizedBox(width: 8),
-        Text(label, style: GoogleFonts.inter(fontSize: 13, color: BrandColors.textSecondary, fontWeight: FontWeight.w500)),
+        Expanded(
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.inter(
+              fontSize: 13,
+              color: BrandColors.textSecondary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -952,12 +1187,27 @@ class _CtaPrimaryBtn extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(label, style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w700, color: const Color(0xFF1D4ED8))),
+            Text(
+              label,
+              style: GoogleFonts.inter(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF1D4ED8),
+              ),
+            ),
             const SizedBox(width: 6),
             Container(
-              width: 20, height: 20,
-              decoration: BoxDecoration(color: const Color(0xFF1D4ED8).withOpacity(0.12), shape: BoxShape.circle),
-              child: const Icon(Icons.arrow_forward, size: 12, color: Color(0xFF1D4ED8)),
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                color: const Color(0xFF1D4ED8).withValues(alpha: 0.12),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.arrow_forward,
+                size: 12,
+                color: Color(0xFF1D4ED8),
+              ),
             ),
           ],
         ),
@@ -978,11 +1228,18 @@ class _CtaGhostBtn extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.14),
+          color: Colors.white.withValues(alpha: 0.14),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white.withOpacity(0.25)),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
         ),
-        child: Text(label, style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white)),
+        child: Text(
+          label,
+          style: GoogleFonts.inter(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }

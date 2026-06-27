@@ -12,14 +12,14 @@ class BrandButton extends StatelessWidget {
   final bool fullWidth;
 
   const BrandButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.variant = BrandButtonVariant.primary,
     this.roleColor,
     this.icon,
     this.fullWidth = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,37 +44,44 @@ class BrandButton extends StatelessWidget {
     );
 
     Decoration? decoration;
-    Color? buttonColor;
-
     if (variant == BrandButtonVariant.primary) {
-      decoration = const BoxDecoration(
+      decoration = BoxDecoration(
         gradient: LinearGradient(
-          colors: [BrandColors.textInverse, BrandColors.textInverseContainer],
+          colors: [BrandColors.primary, BrandColors.primaryContainer],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BrandRadii.smBorderRadius,
+        border: Border.all(color: BrandColors.boldBorder, width: 3),
+        boxShadow: BrandShadows.bold,
       );
     } else if (variant == BrandButtonVariant.roleAccent) {
       final accent = roleColor ?? BrandColors.textInverse;
       decoration = BoxDecoration(
         gradient: LinearGradient(
-          colors: [accent, accent.withOpacity(0.8)],
+          colors: [accent, accent.withValues(alpha: 0.8)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BrandRadii.smBorderRadius,
+        border: Border.all(color: BrandColors.boldBorder, width: 3),
+        boxShadow: BrandShadows.bold,
       );
     } else if (variant == BrandButtonVariant.secondary) {
-      buttonColor = BrandColors.surfaceInset;
+      decoration = BoxDecoration(
+        color: BrandColors.surfaceMuted,
+        borderRadius: BrandRadii.smBorderRadius,
+        border: Border.all(color: BrandColors.boldBorder, width: 3),
+        boxShadow: BrandShadows.bold,
+      );
     }
 
     Widget child = Container(
       width: fullWidth ? double.infinity : null,
       decoration: decoration,
-      child: buttonColor != null || decoration != null
+      child: decoration != null
           ? Material(
-              color: buttonColor ?? Colors.transparent,
+              color: Colors.transparent,
               borderRadius: BrandRadii.smBorderRadius,
               child: InkWell(
                 onTap: onPressed,

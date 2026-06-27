@@ -12,7 +12,7 @@ void main() {
 }
 
 class ProMatchApp extends StatelessWidget {
-  const ProMatchApp({Key? key}) : super(key: key);
+  const ProMatchApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class ProMatchApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ChatProvider()),
       ],
       child: MaterialApp(
-        title: 'ProMatch',
+        title: 'Tinder For Nerds',
         debugShowCheckedModeBanner: false,
         theme: BrandTheme.lightTheme,
         routes: {

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../data/app_seed_data.dart';
 import '../../models/profile_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/chat_provider.dart';
@@ -8,17 +9,26 @@ import '../../providers/swipe_provider.dart';
 import '../../theme/brand_theme.dart';
 import '../../widgets/brand_button.dart';
 import '../../widgets/swipe_card.dart';
+import '../../widgets/web_parity_widgets.dart';
+import '../profile/public_profile_screen.dart';
 
 class DiscoverScreen extends StatefulWidget {
-  const DiscoverScreen({Key? key}) : super(key: key);
+  const DiscoverScreen({super.key});
 
   @override
   State<DiscoverScreen> createState() => _DiscoverScreenState();
 }
 
 class _DiscoverScreenState extends State<DiscoverScreen> with TickerProviderStateMixin {
+  final TextEditingController _domainController = TextEditingController();
+  final TextEditingController _skillsController = TextEditingController();
+  final TextEditingController _intentController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _notesController = TextEditingController();
   Offset _dragOffset = Offset.zero;
   bool _isDragging = false;
+  String _professionalType = '';
+  String _commitment = '';
   late AnimationController _springController;
   late Animation<Offset> _springAnimation;
 
@@ -41,6 +51,11 @@ class _DiscoverScreenState extends State<DiscoverScreen> with TickerProviderStat
   @override
   void dispose() {
     _springController.dispose();
+    _domainController.dispose();
+    _skillsController.dispose();
+    _intentController.dispose();
+    _locationController.dispose();
+    _notesController.dispose();
     super.dispose();
   }
 
@@ -66,25 +81,17 @@ class _DiscoverScreenState extends State<DiscoverScreen> with TickerProviderStat
     final authProvider = Provider.of<AuthProvider>(context);
     
     final role = authProvider.currentRole;
-    Color roleAccent = BrandColors.textInverse;
-    if (role == 'student') {
-      roleAccent = BrandColors.studentAccent;
-    } else if (role == 'pro') {
-      roleAccent = BrandColors.proAccent;
-    } else if (role == 'org') {
-      roleAccent = BrandColors.orgAccent;
-    }
+    final roleAccent = BrandColors.roleAccent(roleFromId(role));
 
     final hasProfiles = swipeProvider.hasRemaining;
     final currentProfile = swipeProvider.currentProfile;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
       child: Column(
         children: [
-          // Filter Row
-          _buildFilterBar(swipeProvider),
-          const SizedBox(height: 16),
+          _buildDiscoverToolbar(swipeProvider),
+          const SizedBox(height: 10),
           
           // Cards Stage
           Expanded(
@@ -118,6 +125,14 @@ class _DiscoverScreenState extends State<DiscoverScreen> with TickerProviderStat
                           
                           // Top Active Card
                           GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => PublicProfileScreen(profile: currentProfile),
+                                ),
+                              );
+                            },
                             onPanStart: (_) {
                               setState(() {
                                 _isDragging = true;
@@ -204,7 +219,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> with TickerProviderStat
                   )
                 : _buildEmptyState(swipeProvider),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           
           // Action Buttons Bar
           if (hasProfiles)
@@ -218,16 +233,16 @@ class _DiscoverScreenState extends State<DiscoverScreen> with TickerProviderStat
                     swipeProvider.swipeLeft();
                   },
                 ),
-                const SizedBox(width: 24),
+                const SizedBox(width: 18),
                 _buildRoundButton(
                   icon: Icons.star,
                   color: BrandColors.tertiary,
-                  size: 54,
+                  size: 50,
                   onPressed: () {
                     _triggerMatchTransition(swipeProvider, currentProfile!, false);
                   },
                 ),
-                const SizedBox(width: 24),
+                const SizedBox(width: 18),
                 _buildRoundButton(
                   icon: Icons.flash_on,
                   color: roleAccent,
@@ -242,53 +257,49 @@ class _DiscoverScreenState extends State<DiscoverScreen> with TickerProviderStat
     );
   }
 
-  Widget _buildFilterBar(SwipeProvider swipeProvider) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      decoration: BoxDecoration(
-        color: BrandColors.surfaceMuted,
-        borderRadius: BrandRadii.smBorderRadius,
-        border: Border.all(color: BrandColors.borderSubtle),
-        boxShadow: BrandShadows.sm,
-      ),
+  Widget _buildDiscoverToolbar(SwipeProvider swipeProvider) {
+    return WebCard(
+      bold: true,
+      padding: const EdgeInsets.all(14),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              const Icon(Icons.tune, color: BrandColors.textSecondary, size: 18),
-              const SizedBox(width: 8),
-              Text(
-                'Filters:',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: BrandColors.textPrimary,
-                  fontSize: 12,
+          const Icon(Icons.people_alt_outlined, color: BrandColors.textSecondary, size: 20),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Discover builders',
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: BrandColors.textPrimary,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
+                Text(
+                  'AI-ranked profiles based on your skills and intent.',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          ElevatedButton.icon(
+            onPressed: () => _showProfessionalSearchForm(swipeProvider),
+            icon: const Icon(Icons.bolt, size: 16),
+            label: const Text('Discover more'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: BrandColors.primary,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BrandRadii.smBorderRadius,
+                side: const BorderSide(color: BrandColors.boldBorder, width: 2),
               ),
-            ],
-          ),
-          DropdownButton<String>(
-            value: swipeProvider.filterDomain,
-            underline: Container(),
-            style: const TextStyle(fontWeight: FontWeight.w700, color: BrandColors.textInverse, fontSize: 13),
-            items: ['All', 'FinTech', 'DeepTech', 'Climate', 'SaaS', 'EdTech'].map((domain) {
-              return DropdownMenuItem(value: domain, child: Text(domain));
-            }).toList(),
-            onChanged: (val) {
-              swipeProvider.setFilters(domain: val!, intent: swipeProvider.filterIntent);
-            },
-          ),
-          DropdownButton<String>(
-            value: swipeProvider.filterIntent,
-            underline: Container(),
-            style: const TextStyle(fontWeight: FontWeight.w700, color: BrandColors.textInverse, fontSize: 13),
-            items: ['All', 'Co-founder', 'Advisor', 'Side project'].map((intent) {
-              return DropdownMenuItem(value: intent, child: Text(intent));
-            }).toList(),
-            onChanged: (val) {
-              swipeProvider.setFilters(domain: swipeProvider.filterDomain, intent: val!);
-            },
+            ),
           ),
         ],
       ),
@@ -311,7 +322,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> with TickerProviderStat
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: BrandColors.textInverse.withOpacity(0.1),
+                color: BrandColors.textInverse.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: const Icon(Icons.people_outline, color: BrandColors.textInverse, size: 48),
@@ -325,16 +336,16 @@ class _DiscoverScreenState extends State<DiscoverScreen> with TickerProviderStat
             ),
             const SizedBox(height: 8),
             Text(
-              'Adjust your domain/intent filters or reset the stack to keep swiping.',
+              'Tap Discover more to refresh the stack and keep swiping.',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 24),
             BrandButton(
-              text: 'Refresh Queue',
-              icon: Icons.refresh,
+              text: 'Discover more',
+              icon: Icons.bolt,
               onPressed: () {
-                swipeProvider.resetDeck();
+                _showProfessionalSearchForm(swipeProvider);
               },
             ),
           ],
@@ -343,11 +354,124 @@ class _DiscoverScreenState extends State<DiscoverScreen> with TickerProviderStat
     );
   }
 
+  void _showProfessionalSearchForm(SwipeProvider swipeProvider) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setSheetState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                left: 20,
+                right: 20,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'What type of professional do you need?',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w900),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Fill details to find people with specific skills across the platform.',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 16),
+                    _SearchDropdown(
+                      label: 'Professional type *',
+                      value: _professionalType,
+                      items: const ['Student builder', 'Professional mentor', 'Designer', 'Engineer', 'Founder'],
+                      onChanged: (value) => setSheetState(() => _professionalType = value ?? ''),
+                    ),
+                    _SearchField(label: 'Domain', hint: 'e.g. FinTech, HealthTech', controller: _domainController),
+                    _SearchField(label: 'Skills needed', hint: 'e.g. React, Python, UX', controller: _skillsController),
+                    _SearchField(label: 'Intent / goal', hint: 'e.g. Hackathon teammate, mentor', controller: _intentController),
+                    _SearchField(label: 'Location', hint: 'e.g. Singapore, Remote', controller: _locationController),
+                    _SearchDropdown(
+                      label: 'Commitment',
+                      value: _commitment,
+                      items: const ['Any commitment', 'Flexible', 'Part-time', 'Full-time', 'Remote only'],
+                      onChanged: (value) => setSheetState(() => _commitment = value ?? ''),
+                    ),
+                    _SearchField(label: 'Additional notes', hint: 'Anything else we should match on?', controller: _notesController, maxLines: 3),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () => Navigator.pop(context),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: BrandColors.textPrimary,
+                              side: const BorderSide(color: BrandColors.boldBorder, width: 2),
+                              shape: RoundedRectangleBorder(borderRadius: BrandRadii.smBorderRadius),
+                            ),
+                            child: const Text('Cancel'),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_professionalType.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Select the type of professional you need.'),
+                                    behavior: SnackBarBehavior.floating,
+                                  ),
+                                );
+                                return;
+                              }
+                              final domain = _domainController.text.trim();
+                              final intent = _intentController.text.trim();
+                              swipeProvider.setFilters(
+                                domain: domain.isEmpty ? 'All' : domain,
+                                intent: intent.isEmpty ? 'All' : intent,
+                              );
+                              swipeProvider.resetDeck();
+                              setState(() => _dragOffset = Offset.zero);
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Searching for $_professionalType with ${_skillsController.text.trim().isEmpty ? 'matching' : _skillsController.text.trim()} skills.'),
+                                  behavior: SnackBarBehavior.floating,
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: BrandColors.primary,
+                              foregroundColor: Colors.white,
+                              side: const BorderSide(color: BrandColors.boldBorder, width: 2),
+                              shape: RoundedRectangleBorder(borderRadius: BrandRadii.smBorderRadius),
+                            ),
+                            child: const Text('Search all accounts'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   Widget _buildRoundButton({
     required IconData icon,
     required Color color,
     required VoidCallback onPressed,
-    double size = 48,
+    double size = 44,
   }) {
     return Container(
       width: size,
@@ -434,7 +558,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> with TickerProviderStat
                   children: [
                     CircleAvatar(
                       radius: 36,
-                      backgroundColor: BrandColors.textInverse.withOpacity(0.12),
+                      backgroundColor: BrandColors.textInverse.withValues(alpha: 0.12),
                       child: Text(
                         currentUser?.avatar ?? 'ME',
                         style: theme.textTheme.titleLarge?.copyWith(
@@ -452,7 +576,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> with TickerProviderStat
                     const SizedBox(width: 16),
                     CircleAvatar(
                       radius: 36,
-                      backgroundColor: BrandColors.textInverse.withOpacity(0.12),
+                      backgroundColor: BrandColors.textInverse.withValues(alpha: 0.12),
                       child: Text(
                         matchedProfile.avatar,
                         style: theme.textTheme.titleLarge?.copyWith(
@@ -488,6 +612,111 @@ class _DiscoverScreenState extends State<DiscoverScreen> with TickerProviderStat
           ),
         );
       },
+    );
+  }
+}
+
+class _SearchField extends StatelessWidget {
+  const _SearchField({
+    required this.label,
+    required this.hint,
+    required this.controller,
+    this.maxLines = 1,
+  });
+
+  final String label;
+  final String hint;
+  final TextEditingController controller;
+  final int maxLines;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w900)),
+          const SizedBox(height: 6),
+          TextField(
+            controller: controller,
+            maxLines: maxLines,
+            decoration: InputDecoration(
+              hintText: hint,
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BrandRadii.smBorderRadius,
+                borderSide: const BorderSide(color: BrandColors.boldBorder, width: 2),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BrandRadii.smBorderRadius,
+                borderSide: const BorderSide(color: BrandColors.boldBorder, width: 2),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BrandRadii.smBorderRadius,
+                borderSide: const BorderSide(color: BrandColors.primary, width: 2),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SearchDropdown extends StatelessWidget {
+  const _SearchDropdown({
+    required this.label,
+    required this.value,
+    required this.items,
+    required this.onChanged,
+  });
+
+  final String label;
+  final String value;
+  final List<String> items;
+  final ValueChanged<String?> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final values = ['', ...items];
+    final selected = values.contains(value) ? value : '';
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w900)),
+          const SizedBox(height: 6),
+          DropdownButtonFormField<String>(
+            initialValue: selected,
+            items: values.map((item) {
+              return DropdownMenuItem(
+                value: item,
+                child: Text(item.isEmpty ? 'Select...' : item),
+              );
+            }).toList(),
+            onChanged: onChanged,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BrandRadii.smBorderRadius,
+                borderSide: const BorderSide(color: BrandColors.boldBorder, width: 2),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BrandRadii.smBorderRadius,
+                borderSide: const BorderSide(color: BrandColors.boldBorder, width: 2),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BrandRadii.smBorderRadius,
+                borderSide: const BorderSide(color: BrandColors.primary, width: 2),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

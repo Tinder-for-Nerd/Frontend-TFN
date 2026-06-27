@@ -1,33 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../data/app_seed_data.dart';
 import '../../providers/auth_provider.dart';
-import '../../providers/chat_provider.dart';
 import '../../theme/brand_theme.dart';
 import '../../widgets/brand_button.dart';
-import '../chat/chat_detail_screen.dart';
+import '../../widgets/web_parity_widgets.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final authProvider = Provider.of<AuthProvider>(context);
-    final chatProvider = Provider.of<ChatProvider>(context);
 
     final user = authProvider.currentUser;
     final role = authProvider.currentRole;
     
-    Color roleAccent = BrandColors.textInverse;
-    if (role == 'student') {
-      roleAccent = BrandColors.studentAccent;
-    } else if (role == 'pro') {
-      roleAccent = BrandColors.proAccent;
-    } else if (role == 'org') {
-      roleAccent = BrandColors.orgAccent;
-    }
-
-    final threads = chatProvider.threads;
+    final roleType = roleFromId(role);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -36,29 +26,16 @@ class ProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // User Header Profile Card
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: BrandColors.surfaceMuted,
-                borderRadius: BrandRadii.mdBorderRadius,
-                boxShadow: BrandShadows.sm,
-                border: Border.all(color: BrandColors.borderSubtle),
-              ),
+            WebCard(
+              bold: true,
               child: Padding(
-                padding: const EdgeInsets.all(24.0),
+                padding: EdgeInsets.zero,
                 child: Column(
                   children: [
-                    CircleAvatar(
+                    WebAvatar(
+                      initials: user?.avatar ?? 'ME',
+                      role: roleType,
                       radius: 40,
-                      backgroundColor: roleAccent.withOpacity(0.12),
-                      child: Text(
-                        user?.avatar ?? 'ME',
-                        style: TextStyle(
-                          color: roleAccent,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 32,
-                        ),
-                      ),
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -86,7 +63,7 @@ class ProfileScreen extends StatelessWidget {
                           user?.location ?? 'Singapore',
                           style: TextStyle(
                             fontSize: 12,
-                            color: BrandColors.textSecondary.withOpacity(0.8),
+                            color: BrandColors.textSecondary.withValues(alpha: 0.8),
                           ),
                         ),
                       ],
@@ -127,14 +104,8 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: BrandColors.surfaceMuted,
-                borderRadius: BrandRadii.smBorderRadius,
-                border: Border.all(color: BrandColors.borderSubtle),
-              ),
+            WebCard(
+              bold: true,
               child: Text(
                 user?.bio ?? 'No biography written yet.',
                 style: theme.textTheme.bodyMedium?.copyWith(
@@ -145,113 +116,7 @@ class ProfileScreen extends StatelessWidget {
 
             const SizedBox(height: 28),
 
-            // Matched Connections Grid
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'My Connections (${threads.length})',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const Icon(Icons.bolt, color: BrandColors.textInverse, size: 20),
-              ],
-            ),
-            const SizedBox(height: 12),
-            
-            if (threads.isEmpty)
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: BrandColors.surfaceMuted,
-                  borderRadius: BrandRadii.smBorderRadius,
-                  border: Border.all(color: BrandColors.borderSubtle),
-                ),
-                child: const Text(
-                  'No connections made yet. Keep swiping on the Discover tab!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: BrandColors.textSecondary),
-                ),
-              )
-            else
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  childAspectRatio: 1.1,
-                ),
-                itemCount: threads.length,
-                itemBuilder: (context, index) {
-                  final participant = threads[index].participant;
-                  
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: BrandColors.surfaceMuted,
-                      borderRadius: BrandRadii.smBorderRadius,
-                      border: Border.all(color: BrandColors.borderSubtle),
-                      boxShadow: BrandShadows.sm,
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        // Open direct thread chat detail
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ChatDetailScreen(threadId: threads[index].id),
-                          ),
-                        );
-                      },
-                      borderRadius: BrandRadii.smBorderRadius,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundColor: BrandColors.textInverse.withOpacity(0.08),
-                              child: Text(
-                                participant.avatar,
-                                style: const TextStyle(
-                                  color: BrandColors.textInverse,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              participant.name,
-                              style: theme.textTheme.labelLarge?.copyWith(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              participant.title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: BrandColors.textSecondary.withOpacity(0.6),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              
-            const SizedBox(height: 36),
+            const SizedBox(height: 28),
             
             // Logout Action
             BrandButton(
@@ -278,7 +143,7 @@ class ProfileScreen extends StatelessWidget {
           style: theme.textTheme.labelSmall?.copyWith(
             fontSize: 8,
             fontWeight: FontWeight.w800,
-            color: BrandColors.textSecondary.withOpacity(0.6),
+            color: BrandColors.textSecondary.withValues(alpha: 0.6),
           ),
         ),
         const SizedBox(height: 2),

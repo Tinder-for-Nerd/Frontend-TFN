@@ -11,4 +11,11 @@ export const SOCKET_EVENTS = Object.freeze({
   MESSAGE_READ_ACK: 'message_read_ack',
   NOTIFICATION: 'notification',
   PRESENCE_UPDATE: 'presence_update',
+  CALL_JOIN: 'call_join',
+  CALL_LEAVE: 'call_leave',
+  CALL_READY: 'call_ready',
+  CALL_OFFER: 'call_offer',
+  CALL_ANSWER: 'call_answer',
+  CALL_ICE_CANDIDATE: 'call_ice_candidate',
+  CALL_ENDED: 'call_ended',
 });

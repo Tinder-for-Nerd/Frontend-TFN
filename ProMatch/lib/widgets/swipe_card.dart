@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import '../models/profile_model.dart';
 import '../theme/brand_theme.dart';
+import 'web_parity_widgets.dart';
 
 class SwipeCard extends StatelessWidget {
   final ProfileModel profile;
 
   const SwipeCard({
-    Key? key,
+    super.key,
     required this.profile,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +21,11 @@ class SwipeCard extends StatelessWidget {
             ? BrandColors.proAccent
             : BrandColors.orgAccent);
 
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        color: BrandColors.surfaceMuted,
-        borderRadius: BrandRadii.lgBorderRadius,
-        boxShadow: BrandShadows.sm,
-        border: Border.all(
-          color: BrandColors.borderSubtle,
-          width: 1.0,
-        ),
-      ),
-      child: ClipRRect(
+    return SizedBox.expand(
+      child: WebCard(
+        bold: true,
+        padding: EdgeInsets.zero,
+        child: ClipRRect(
         borderRadius: BrandRadii.lgBorderRadius,
         child: Stack(
           children: [
@@ -45,7 +38,7 @@ class SwipeCard extends StatelessWidget {
                 height: 6,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [roleAccent, roleAccent.withOpacity(0.5)],
+                    colors: [roleAccent, roleAccent.withValues(alpha: 0.5)],
                   ),
                 ),
               ),
@@ -53,10 +46,12 @@ class SwipeCard extends StatelessWidget {
             
             // Card Content
             Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   const SizedBox(height: 12),
                   // Match Rating Badge & Role Pill
                   Row(
@@ -65,7 +60,7 @@ class SwipeCard extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
-                          color: BrandColors.textInverse.withOpacity(0.08),
+                          color: BrandColors.textInverse.withValues(alpha: 0.08),
                           borderRadius: BrandRadii.fullBorderRadius,
                         ),
                         child: Row(
@@ -86,7 +81,7 @@ class SwipeCard extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
-                          color: roleAccent.withOpacity(0.08),
+                          color: roleAccent.withValues(alpha: 0.08),
                           borderRadius: BrandRadii.fullBorderRadius,
                         ),
                         child: Text(
@@ -109,7 +104,7 @@ class SwipeCard extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 28,
-                        backgroundColor: roleAccent.withOpacity(0.12),
+                        backgroundColor: roleAccent.withValues(alpha: 0.12),
                         child: Text(
                           profile.avatar,
                           style: theme.textTheme.titleLarge?.copyWith(
@@ -188,16 +183,20 @@ class SwipeCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Expanded(
-                    child: Text(
+                    Text(
                       profile.bio,
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        height: 1.4,
+                        height: 1.35,
+                        fontSize: 13,
                       ),
-                      overflow: TextOverflow.fade,
                     ),
-                  ),
                   
+                  const SizedBox(height: 12),
+
+                  // Skills Title & Chips
+                  FitScoreBars(score: profile.match),
                   const SizedBox(height: 12),
 
                   // Skills Title & Chips
@@ -234,10 +233,12 @@ class SwipeCard extends StatelessWidget {
                       );
                     }).toList(),
                   ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
+        ),
         ),
       ),
     );
@@ -252,7 +253,7 @@ class SwipeCard extends StatelessWidget {
             fontSize: 9,
             fontWeight: FontWeight.w800,
             letterSpacing: 0.5,
-            color: BrandColors.textSecondary.withOpacity(0.6),
+            color: BrandColors.textSecondary.withValues(alpha: 0.6),
           ),
         ),
         const SizedBox(height: 4),

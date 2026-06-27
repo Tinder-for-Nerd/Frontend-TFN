@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../data/app_seed_data.dart';
 import '../models/profile_model.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -27,33 +28,38 @@ class AuthProvider with ChangeNotifier {
   }
 
   void login(String email, String name) {
+    final seededUser = seedCurrentUsers[_currentRole] ?? seedCurrentUsers['student']!;
+    final displayName = name.trim().isNotEmpty ? name.trim() : seededUser.name;
     _currentUser = ProfileModel(
-      id: 'me',
-      username: 'me',
-      name: name.isNotEmpty ? name : 'Alex Kumar',
-      title: _currentRole == 'student'
-          ? 'Student & ML Engineer | FinTech Builder'
-          : (_currentRole == 'pro'
-              ? 'Senior Architect | Startup Advisor'
-              : 'Accelerator Director'),
-      role: _currentRole == 'student' ? 'Student' : (_currentRole == 'pro' ? 'Professional' : 'Organization'),
-      audience: _currentRole == 'student' ? 'Student' : (_currentRole == 'pro' ? 'Professional' : 'Organization'),
-      domain: _currentRole == 'student' ? 'FinTech' : (_currentRole == 'pro' ? 'DeepTech' : 'SaaS'),
-      intent: _currentRole == 'student' ? 'Co-founder' : 'Advisor',
-      commitment: 'Flexible',
-      workStyle: 'Hybrid',
-      location: 'Singapore',
-      avatar: name.isNotEmpty ? name.substring(0, 2).toUpperCase() : 'AK',
-      tone: _currentRole == 'student' ? 'teal' : (_currentRole == 'pro' ? 'blue' : 'amber'),
-      match: 100,
-      verified: _currentRole == 'pro' || _currentRole == 'org',
-      bio: _currentRole == 'student'
-          ? 'Developing ML-powered FinTech apps to solve real-world problems.'
-          : 'Advising early stage developers and building tech architectures.',
-      headline: 'Building the future of developer networks',
-      skills: _currentRole == 'student' ? ['ML', 'FinTech', 'Python', 'React'] : ['System Design', 'ML', 'Strategy'],
-      goals: ['Find mentor', 'Book sessions', 'Build teams'],
-      why: ['Complete your profile', 'Book a session', 'Join a cohort'],
+      id: seededUser.id,
+      username: seededUser.username,
+      name: displayName,
+      title: seededUser.title,
+      role: seededUser.role,
+      audience: seededUser.audience,
+      domain: seededUser.domain,
+      intent: seededUser.intent,
+      commitment: seededUser.commitment,
+      workStyle: seededUser.workStyle,
+      location: seededUser.location,
+      avatar: displayName
+          .split(' ')
+          .where((part) => part.isNotEmpty)
+          .take(2)
+          .map((part) => part[0])
+          .join()
+          .toUpperCase(),
+      tone: seededUser.tone,
+      match: seededUser.match,
+      verified: seededUser.verified,
+      bio: seededUser.bio,
+      headline: seededUser.headline,
+      skills: seededUser.skills,
+      goals: seededUser.goals,
+      why: seededUser.why,
+      views: seededUser.views,
+      sessions: seededUser.sessions,
+      events: seededUser.events,
     );
     _isAuthenticated = true;
     _isOnboarded = false; // Need onboarding

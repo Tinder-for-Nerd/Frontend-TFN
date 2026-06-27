@@ -6,6 +6,7 @@ import { AppShell } from '../../../components/layout';
 import { Button, Badge, Avatar } from '../../../components/ui';
 import { SectionHeader } from '../../../components/common';
 import { profiles, availabilityWeeks, sessions } from '../../../data/mockData';
+import { getBookedSessions } from '../../../data/bookedSessions';
 
 export function SessionsPage() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ export function SessionsPage() {
   const [selectedDay, setSelectedDay] = useState(availabilityWeeks[0].date);
   const [selectedSlot, setSelectedSlot] = useState(availabilityWeeks[0].slots[0]);
   const selectedDayInfo = availabilityWeeks.find((day) => day.date === selectedDay) || availabilityWeeks[0];
+  const bookedSessions = useMemo(() => getBookedSessions(), []);
 
   usePageMeta('Tinder for Nerds | Sessions', 'Student bookings and availability management for calls, feedback, and mentoring sessions.');
 
@@ -40,6 +42,9 @@ export function SessionsPage() {
         <section className="pm-panel">
           <SectionHeader eyebrow="Upcoming sessions" title="Your scheduled calls" description="Join, reschedule, or cancel without losing the conversation context." />
           <div className="pm-stack-list">
+            {bookedSessions.map((session) => (
+              <BookedSessionCard key={session.id} session={session} />
+            ))}
             {sessions.map((session, index) => (
               <SessionCard key={session.id} session={session} active={index === 0} />
             ))}
@@ -74,6 +79,54 @@ export function SessionsPage() {
         </section>
       </div>
     </AppShell>
+  );
+}
+
+function BookedSessionCard({ session }) {
+  const profile = Object.values(profiles ?? {}).find((person) => person?.username === session.withUser) || profiles.sarah;
+
+  return (
+    <article
+      className="pm-card is-active"
+      style={{
+        padding: 14,
+        borderRadius: 12,
+        display: 'grid',
+        gap: 10,
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+          <Avatar
+            name={profile.name}
+            src={profile.src}
+            initials={profile.avatar}
+            tone={profile.tone}
+            size="sm"
+          />
+          <div style={{ minWidth: 0 }}>
+            <strong style={{ display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              1:1 with {profile.name}
+            </strong>
+            <span style={{ display: 'block', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+              Confirmed after payment
+            </span>
+          </div>
+        </div>
+        <Badge tone="teal" variant="soft">
+          Booked
+        </Badge>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+        <span style={{ color: 'var(--text-secondary)', fontWeight: 700 }}>
+          {session.day} · {session.slot}
+        </span>
+        <Button to={`/call/${encodeURIComponent(session.id)}?ready=1`} variant="secondary" size="sm">
+          Join
+        </Button>
+      </div>
+    </article>
   );
 }
 

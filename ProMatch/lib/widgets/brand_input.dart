@@ -10,14 +10,14 @@ class BrandInput extends StatefulWidget {
   final String? Function(String?)? validator;
 
   const BrandInput({
-    Key? key,
+    super.key,
     required this.label,
     required this.hintText,
     required this.controller,
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
     this.validator,
-  }) : super(key: key);
+  });
 
   @override
   State<BrandInput> createState() => _BrandInputState();
@@ -25,7 +25,6 @@ class BrandInput extends StatefulWidget {
 
 class _BrandInputState extends State<BrandInput> {
   bool _obscureText = true;
-  bool _isFocused = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,24 +42,13 @@ class _BrandInputState extends State<BrandInput> {
         ),
         const SizedBox(height: 6),
         Focus(
-          onFocusChange: (hasFocus) {
-            setState(() {
-              _isFocused = hasFocus;
-            });
-          },
+          onFocusChange: (_) {},
           child: Container(
             decoration: BoxDecoration(
               color: BrandColors.surfaceMuted,
               borderRadius: BrandRadii.smBorderRadius,
-              boxShadow: _isFocused
-                  ? [
-                      BoxShadow(
-                        color: BrandColors.textInverse.withOpacity(0.12),
-                        spreadRadius: 3,
-                        blurRadius: 0,
-                      )
-                    ]
-                  : null,
+              border: Border.all(color: BrandColors.boldBorder, width: 3),
+              boxShadow: BrandShadows.bold,
             ),
             child: TextFormField(
               controller: widget.controller,
@@ -71,24 +59,18 @@ class _BrandInputState extends State<BrandInput> {
               decoration: InputDecoration(
                 hintText: widget.hintText,
                 hintStyle: theme.textTheme.bodyMedium?.copyWith(
-                  color: BrandColors.textSecondary.withOpacity(0.6),
+                  color: BrandColors.textSecondary.withValues(alpha: 0.6),
                 ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 filled: true,
                 fillColor: Colors.transparent,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BrandRadii.smBorderRadius,
-                  borderSide: const BorderSide(
-                    color: BrandColors.borderDefault,
-                    width: 1.0,
-                  ),
+                  borderSide: BorderSide.none,
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BrandRadii.smBorderRadius,
-                  borderSide: const BorderSide(
-                    color: BrandColors.textInverse,
-                    width: 1.0,
-                  ),
+                  borderSide: BorderSide.none,
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BrandRadii.smBorderRadius,

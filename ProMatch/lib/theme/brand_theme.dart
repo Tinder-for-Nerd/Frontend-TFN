@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+enum BrandRole { student, pro, org }
+
 class BrandColors {
+  static const Color primary = Color(0xFF0084FF);
+  static const Color primaryContainer = Color(0xFF319AFF);
+  static const Color navy = Color(0xFF111A3E);
+  static const Color ivory = Color(0xFFFFFAF0);
+  static const Color boldBorder = Color(0xFF111111);
+
   static const Color textPrimary = Color(0xFF111A3E);
   static const Color textSecondary = Color(0xFF5A6078);
   static const Color surfaceMuted = Color(0xFFFFFFFF);
@@ -24,6 +32,17 @@ class BrandColors {
 
   static const Color borderDefault = Color(0x1F111A3E);
   static const Color borderSubtle = Color(0x0D111A3E);
+
+  static Color roleAccent(BrandRole role) {
+    switch (role) {
+      case BrandRole.student:
+        return studentAccent;
+      case BrandRole.pro:
+        return proAccent;
+      case BrandRole.org:
+        return orgAccent;
+    }
+  }
 }
 
 class BrandTypography {
@@ -72,9 +91,17 @@ class BrandRadii {
 }
 
 class BrandShadows {
+  static final List<BoxShadow> bold = [
+    BoxShadow(
+      color: Colors.black.withValues(alpha: 0.16),
+      offset: const Offset(6, 6),
+      blurRadius: 0,
+    ),
+  ];
+
   static final List<BoxShadow> sm = [
     BoxShadow(
-      color: const Color(0xFF111A3E).withOpacity(0.06),
+      color: const Color(0xFF111A3E).withValues(alpha: 0.06),
       offset: const Offset(0, 4),
       blurRadius: 12,
     ),
@@ -82,7 +109,7 @@ class BrandShadows {
 
   static final List<BoxShadow> md = [
     BoxShadow(
-      color: const Color(0xFF111A3E).withOpacity(0.10),
+      color: const Color(0xFF111A3E).withValues(alpha: 0.10),
       offset: const Offset(0, 12),
       blurRadius: 32,
     ),
@@ -90,7 +117,7 @@ class BrandShadows {
 
   static final List<BoxShadow> lg = [
     BoxShadow(
-      color: const Color(0xFF111A3E).withOpacity(0.06),
+      color: const Color(0xFF111A3E).withValues(alpha: 0.06),
       offset: const Offset(0, 8),
       blurRadius: 20,
     ),
@@ -98,7 +125,7 @@ class BrandShadows {
 
   static final List<BoxShadow> xl = [
     BoxShadow(
-      color: const Color(0xFF0084FF).withOpacity(0.28),
+      color: const Color(0xFF0084FF).withValues(alpha: 0.28),
       offset: const Offset(0, 14),
       blurRadius: 36,
     ),
@@ -116,8 +143,8 @@ class BrandTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: BrandColors.textInverse,
-        primary: BrandColors.textInverse,
+        seedColor: BrandColors.primary,
+        primary: BrandColors.primary,
         onPrimary: BrandColors.surfaceMuted,
         surface: BrandColors.surfaceMuted,
         onSurface: BrandColors.textPrimary,
@@ -125,15 +152,26 @@ class BrandTheme {
         onError: BrandColors.surfaceMuted,
       ),
       scaffoldBackgroundColor: BrandColors.surfaceStrong,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: BrandColors.surfaceMuted,
+        foregroundColor: BrandColors.textPrimary,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: false,
+      ),
+      dividerTheme: const DividerThemeData(
+        color: BrandColors.borderDefault,
+        thickness: 1,
+      ),
       textTheme: TextTheme(
-        displayLarge: GoogleFonts.inter(
+        displayLarge: GoogleFonts.fustat(
           fontSize: BrandTypography.xxxxl,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w800,
           color: BrandColors.textPrimary,
         ),
-        displayMedium: GoogleFonts.inter(
+        displayMedium: GoogleFonts.fustat(
           fontSize: BrandTypography.xxxl,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w800,
           color: BrandColors.textPrimary,
         ),
         headlineLarge: GoogleFonts.inter(

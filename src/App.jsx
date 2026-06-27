@@ -196,6 +196,7 @@ export default function App() {
           <Route path="/profile/:username" element={<P><ProfilePage variant="student" /></P>} />
           <Route path="/settings" element={<Navigate to="/student/settings" replace />} />
           <Route path="/notifications" element={<P><NotificationsPage /></P>} />
+          <Route path="/call/:sessionId/ended" element={<P><CallPage /></P>} />
           <Route path="/call/:sessionId" element={<P><CallPage /></P>} />
 
           {/* Redirects */}

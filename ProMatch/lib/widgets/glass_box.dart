@@ -10,13 +10,13 @@ class GlassBox extends StatelessWidget {
   final double borderOpacity;
 
   const GlassBox({
-    Key? key,
+    super.key,
     required this.child,
     this.blur = 16.0,
     this.borderRadius,
     this.color,
     this.borderOpacity = 0.15,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class GlassBox extends StatelessWidget {
             color: color ?? BrandColors.bgSurfaceLow,
             borderRadius: effectiveRadius,
             border: Border.all(
-              color: Colors.white.withOpacity(borderOpacity),
+              color: Colors.white.withValues(alpha: borderOpacity),
               width: 1.0,
             ),
           ),
